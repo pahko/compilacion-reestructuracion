@@ -1,4 +1,3 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 04:39:18 p.m.
 // Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   AGENTE_NotasCredito.java
@@ -13,7 +12,7 @@ import javax.swing.JLabel;
 // Referenced classes of package create:
 //            Fosar_Agente_NotasCredito, AGENTE_NotasCredito, Fosar_Agente
 
-class AGENTE_NotasCredito$1
+class AGENTE_NotasCredito$1 extends AGENTE_NotasCredito
     implements Observer
 {
 
@@ -69,7 +68,8 @@ class AGENTE_NotasCredito$1
 
     AGENTE_NotasCredito$1()
     {
-        this$0 = AGENTE_NotasCredito.this;
-        super();
+    	super();
+    	this$0 = AGENTE_NotasCredito.this;
+        
     }
 }
