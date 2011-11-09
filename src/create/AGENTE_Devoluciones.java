@@ -9,6 +9,8 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.Timer;
+
 import javax.swing.*;
 import javax.swing.border.SoftBevelBorder;
 
@@ -26,8 +28,8 @@ public class AGENTE_Devoluciones extends JFrame
 
         public RelojModeloUtil()
         {
+        	super();
             this$0 = AGENTE_Devoluciones.this;
-            super();
             timerTask = new TimerTask() {
 
                 public void run()
@@ -40,8 +42,8 @@ public class AGENTE_Devoluciones extends JFrame
 
                 
                 {
+                	//super();
                     this$1 = RelojModeloUtil.this;
-                    super();
                 }
             }
 ;
@@ -119,7 +121,7 @@ public class AGENTE_Devoluciones extends JFrame
             
             {
                 this$0 = AGENTE_Devoluciones.this;
-                super();
+                //super();
             }
         }
 );
