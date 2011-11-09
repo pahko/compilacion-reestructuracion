@@ -25,7 +25,6 @@ import org.jdom.Element;
 public class AppcfdComprobante
     implements Runnable
 {
-
     public AppcfdComprobante()
     {
         firmasdigitales = new FirmasDigitales();
