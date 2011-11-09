@@ -18,6 +18,8 @@ import java.sql.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
+
 import javax.swing.*;
 import mx.com.codinet.err.ImpresionRefException;
 import org.jdom.Element;
