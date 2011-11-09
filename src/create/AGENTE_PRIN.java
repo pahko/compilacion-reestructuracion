@@ -1,4 +1,4 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 04:40:52 p.m.
+// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov
 // Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   AGENTE_PRIN.java
@@ -10,6 +10,8 @@ import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.Timer;
+
 import javax.swing.*;
 import javax.swing.border.SoftBevelBorder;
 
@@ -27,8 +29,8 @@ public class AGENTE_PRIN extends JFrame
 
         public RelojModeloUtil()
         {
+        	super();
             this$0 = AGENTE_PRIN.this;
-            super();
             timerTask = new TimerTask() {
 
                 public void run()
@@ -41,27 +43,24 @@ public class AGENTE_PRIN extends JFrame
 
                 
                 {
+                	super();
                     this$1 = RelojModeloUtil.this;
-                    super();
                 }
-            }
-;
+            };
             Timer timer = new Timer();
             timer.schedule(timerTask, 0L, 60000L);
         }
     }
 
 
-    public AGENTE_PRIN()
-    {
+    public AGENTE_PRIN() {
         SEGUNDOS = 0;
         seg = 0;
         FACTURANDO = false;
         FACTURA = true;
         initComponents();
         String system = "C:\\FDE\\FDE.BAT";
-        try
-        {
+        try {
             Process hijo = Runtime.getRuntime().exec(system);
             hijo.waitFor();
             if(hijo.exitValue() == 0)
@@ -69,18 +68,15 @@ public class AGENTE_PRIN extends JFrame
             else
                 System.out.println((new StringBuilder()).append("imposible finalizar . Exit code: ").append(hijo.exitValue()).toString());
         }
-        catch(IOException e)
-        {
+        catch(IOException e) {
             System.out.println("Incapaz de matar soffice.");
         }
-        catch(InterruptedException e)
-        {
+        catch(InterruptedException e) {
             System.out.println("Incapaz de matar soffice.");
         }
     }
 
-    void Init_Reloj()
-    {
+    void Init_Reloj() {
         RelojModeloUtil modelo = new RelojModeloUtil();
         modelo.addObserver(new Observer() {
 
@@ -95,13 +91,11 @@ public class AGENTE_PRIN extends JFrame
             private Fosar_Agente fosa;
             final AGENTE_PRIN this$0;
 
-            
             {
                 this$0 = AGENTE_PRIN.this;
-                super();
+//                super();
             }
-        }
-);
+        });
     }
 
     private void initComponents()
@@ -126,14 +120,12 @@ public class AGENTE_PRIN extends JFrame
     public static void main(String args[])
     {
         EventQueue.invokeLater(new Runnable() {
-
             public void run()
             {
                 (new AGENTE_PRIN()).setVisible(true);
             }
 
-        }
-);
+        });
     }
 
     int SEGUNDOS;
