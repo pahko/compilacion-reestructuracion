@@ -1,4 +1,3 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 04:39:52 p.m.
 // Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   AGENTE_NotasCredito.java
@@ -19,8 +18,9 @@ public class AGENTE_NotasCredito$RelojModeloUtil extends Observable
 
     public AGENTE_NotasCredito$RelojModeloUtil()
     {
-        this$0 = AGENTE_NotasCredito.this;
-        super();
+    	super();
+    	this$0 = AGENTE_NotasCredito.this;
+        
         timerTask = new TimerTask() {
 
             public void run()
@@ -33,8 +33,8 @@ public class AGENTE_NotasCredito$RelojModeloUtil extends Observable
 
             
             {
-                this$1 = AGENTE_NotasCredito.RelojModeloUtil.this;
-                super();
+            	super();
+            	this$1 = AGENTE_NotasCredito.RelojModeloUtil.this;
             }
         }
 ;
