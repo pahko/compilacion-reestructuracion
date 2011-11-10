@@ -39,13 +39,9 @@ final class JDialogProblem
                 System.exit(0);
             }
 
-        }
-);
+        });
         frame.pack();
         frame.setVisible(true);
         frame.setLocation(200, 100);
     }
-
-    static final String s1 = "Click your mouse here =============>.";
-    static final String s2 = "You see, you can't do anything. To get it back, overlap it by any windows appl. and minimize it back";
 }
