@@ -67,27 +67,9 @@ public class TableFrame extends JFrame
             }, new Object[] {
                 "Juan Perez", "25"
             }
-        }, new String[] {
+        	}, new String[] {
             "Nombre", "Edad"
-        }) {
-
-            public Class getColumnClass(int columnIndex)
-            {
-                return types[columnIndex];
-            }
-
-            Class types[] = {
-                java/lang/String, java/lang/String
-            };
-            final TableFrame this$0;
-
-            
-            {
-                this$0 = TableFrame.this;
-                super(x0, x1);
-            }
-        }
-);
+        }));
         jScrollPane2.setViewportView(tablaInfo);
         jTabbedPane1.addTab("Hoja2", jScrollPane2);
         getContentPane().add(jTabbedPane1, "Center");
@@ -103,16 +85,7 @@ public class TableFrame extends JFrame
             {
                 jButton1ActionPerformed(evt);
             }
-
-            final TableFrame this$0;
-
-            
-            {
-                this$0 = TableFrame.this;
-                super();
-            }
-        }
-);
+        });
         jToolBar1.add(jButton1);
         getContentPane().add(jToolBar1, "First");
         pack();
@@ -147,8 +120,7 @@ public class TableFrame extends JFrame
                 (new TableFrame()).setVisible(true);
             }
 
-        }
-);
+        });
     }
 
     private JButton jButton1;
