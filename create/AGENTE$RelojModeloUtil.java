@@ -19,8 +19,8 @@ public class AGENTE$RelojModeloUtil extends Observable
 
     public AGENTE$RelojModeloUtil()
     {
+    	super();
         this$0 = AGENTE.this;
-        super();
         timerTask = new TimerTask() {
 
             public void run()
