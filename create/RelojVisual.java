@@ -12,54 +12,28 @@ import java.util.Observer;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-public class RelojVisual extends JLabel
-{
+public class RelojVisual extends JLabel {
 
-    public RelojVisual(Observable modelo)
-    {
+    public RelojVisual(Observable modelo) {
         format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         setHorizontalAlignment(0);
         modelo.addObserver(new Observer() {
 
-            public void update(Observable o, Object arg)
-            {
+            public void update(Observable o, Object arg) {
                 final Object fecha = arg;
                 SwingUtilities.invokeLater(new Runnable() {
 
-                    public void run()
-                    {
+                    public void run() {
                         setText(format.format(fecha));
                     }
-
-                    final Object val$fecha;
-                    final _cls1 this$1;
-
-                    
-                    {
-                        this$1 = _cls1.this;
-                        fecha = obj;
-                        super();
-                    }
-                }
-);
+                });
             }
-
-            final RelojVisual this$0;
-
-            
-            {
-                this$0 = RelojVisual.this;
-                super();
-            }
-        }
-);
+        });
         setPreferredSize(new Dimension(200, 50));
     }
 
-    public void setFormat(SimpleDateFormat unFormato)
-    {
+    public void setFormat(SimpleDateFormat unFormato) {
         format = unFormato;
     }
-
     SimpleDateFormat format;
 }

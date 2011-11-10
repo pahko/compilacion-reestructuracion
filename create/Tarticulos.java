@@ -12,124 +12,94 @@ import java.sql.SQLException;
 // Referenced classes of package create:
 //            ConexionFirebird
 
-public class Tarticulos
-{
-
+public class Tarticulos {
     public Tarticulos()
-        throws SQLException, FileNotFoundException, IOException
-    {
+        throws SQLException, FileNotFoundException, IOException {
         sql = null;
         cnx = new ConexionFirebird();
-        try
-        {
+        try {
             ConexionFirebird.conectarFirebird();
         }
-        catch(ClassNotFoundException e1)
-        {
+        catch(ClassNotFoundException e1) {
             e1.printStackTrace();
         }
     }
 
-    public void ActulalizaEdo()
-        throws SQLException
-    {
-        try
-        {
+    public void ActulalizaEdo() throws SQLException {
+        try {
             sql = "UPDATE CNET_ARTICULOS SET TIPO_ARTICULO = 'V'";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
     }
 
-    public void ComprobanteAnio()
-        throws SQLException
-    {
-        try
-        {
+    public void ComprobanteAnio() throws SQLException {
+        try {
             sql = "ALTER TABLE CFD_COMPROBANTE ADD ANIOAPROB INTEGER DEFAULT 0";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
     }
 
-    public void CatEdos()
-        throws SQLException
-    {
-        try
-        {
+    public void CatEdos() throws SQLException {
+        try {
             sql = "CREATE TABLE CFD_EDOS (ESTADO VARCHAR(28),COLOR INTEGER,IDEDOS INTEGER NOT NULL,EDOS VARCHAR(1)) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
-        try
-        {
+        try {
             sql = " CREATE UNIQUE INDEX SQL070911053112600 ON CFD_EDOS (IDEDOS ASC) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
-        try
-        {
+        try {
             sql = " ALTER TABLE CFD_EDOS ADD CONSTRAINT SQL070911053112600 PRIMARY KEY (IDEDOS) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
-        try
-        {
+        try {
             sql = " INSERT INTO CFD_EDOS(ESTADO,COLOR,IDEDOS,EDOS) VALUES('Vigente',0,1,'T') ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
-        try
-        {
+        try {
             sql = " INSERT INTO CFD_EDOS(ESTADO,COLOR,IDEDOS,EDOS) VALUES('Cancelado',255,2,'X') ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
-        try
-        {
+        try {
             sql = "INSERT INTO CFD_EDOS (ESTADO, COLOR, IDEDOS, EDOS) VALUES ('Remision', 15993634, 3, 'R')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
     }
 
-    public void CamMoneda()
-        throws SQLException
-    {
-        try
-        {
+    public void CamMoneda() throws SQLException {
+        try {
             sql = " ALTER TABLE CFD_COMPROBANTE ADD COLUMN TIPO_CAMBIO DECIMAL(10,2)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
@@ -137,28 +107,22 @@ public class Tarticulos
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes(Cambio de moneda ya realizado...");
         }
-        try
-        {
+        try {
             sql = "UPDATE CFD_COMPROBANTE SET TIPO_CAMBIO = 0.0, MONEDA = 'PSM' WHERE moneda is null  and  tipo_cambio is null";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Valores de tipo de cambio actualizados a pesos...");
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes(Tipo de cambio no se encontraron valores nulos...)");
         }
     }
 
-    public void CatAddenda()
-        throws SQLException
-    {
-        try
-        {
+    public void CatAddenda() throws SQLException {
+        try {
             sql = "CREATE TABLE CFD_CAMADE (IDCAMPO INTEGER NOT NULL,IDEMPRESA INTEGER,IDSUCURSAL INTEGER,NOMBRE VARCHAR(255),FORMATO VARCHAR(25),PLANTILLA INTEGER)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
@@ -169,80 +133,66 @@ public class Tarticulos
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Addenda)");
         }
-        try
-        {
+        try {
             sql = "ALTER TABLE CFD_ADDENDA ADD TIPO INTEGER DEFAULT 1 NOT NULL";
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("Valores ya existentes (Tipo Addenda)");
         }
     }
 
-    public void Cam_Imp()
-        throws SQLException
-    {
-        try
-        {
+    public void Cam_Imp() throws SQLException {
+        try {
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'calle_receptor'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'calle_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'noexterior_receptor'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'noexterior_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'nointerior_receptor'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'nointerior_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'colonia_receptor'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'colonia_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'calle_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'calle_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'noexterior_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'noexterior_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'nointerior_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'nointerior_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'colonia_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'colonia_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
