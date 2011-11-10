@@ -1,4 +1,4 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 04:04:31 p.m.
+// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov
 // Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   AGENTE.java
@@ -15,44 +15,34 @@ import javax.swing.border.SoftBevelBorder;
 // Referenced classes of package create:
 //            Fosar_Agente
 
-public class AGENTE extends JFrame
-{
-    public class RelojModeloUtil extends Observable
-    {
-
+public class AGENTE extends JFrame {
+    public class RelojModeloUtil extends Observable {
         TimerTask timerTask;
         final AGENTE this$0;
 
-
-        public RelojModeloUtil()
-        {
+        public RelojModeloUtil() {
             this$0 = AGENTE.this;
             super();
             timerTask = new TimerTask() {
 
-                public void run()
-                {
+                public void run() {
                     setChanged();
                     notifyObservers(new Date());
                 }
 
                 final RelojModeloUtil this$1;
 
-                
                 {
                     this$1 = RelojModeloUtil.this;
                     super();
                 }
-            }
-;
+            };
             Timer timer = new Timer();
             timer.schedule(timerTask, 0L, 1000L);
         }
     }
 
-
-    public AGENTE()
-    {
+    public AGENTE() {
         SEGUNDOS = 0;
         seg = 0;
         FACTURANDO = false;
@@ -61,42 +51,34 @@ public class AGENTE extends JFrame
         Init_Reloj();
     }
 
-    void Init_Reloj()
-    {
+    void Init_Reloj() {
         RelojModeloUtil modelo = new RelojModeloUtil();
         modelo.addObserver(new Observer() {
 
-            public void update(Observable unObservable, Object dato)
-            {
+            public void update(Observable unObservable, Object dato) {
                 Reloj.setText(dato.toString());
                 System.out.println(dato);
                 System.out.println((new StringBuilder()).append("SEG : ").append(seg).toString());
                 if(FACTURA && (seg == 0 || seg == 10 || seg == 20 || seg == 30 || seg == 40 || seg == 50))
-                    try
-                    {
+                    try {
                         FACTURANDO = true;
                         Fosar_Agente fosa;
-                        try
-                        {
+                        try {
                             fosa = new Fosar_Agente(1);
                         }
-                        catch(Exception ex)
-                        {
+                        catch(Exception ex) {
                             ex.printStackTrace();
                         }
                         FACTURANDO = false;
                         System.gc();
                     }
-                    catch(Exception ex)
-                    {
+                    catch(Exception ex) {
                         ex.printStackTrace();
                     }
-                if(seg >= 60)
-                {
+                if(seg >= 60) {
                     seg = 0;
                     System.exit(0);
-                } else
-                {
+                } else {
                     seg++;
                 }
             }
@@ -109,12 +91,10 @@ public class AGENTE extends JFrame
                 this$0 = AGENTE.this;
                 super();
             }
-        }
-);
+        });
     }
 
-    private void initComponents()
-    {
+    private void initComponents() {
         Reloj = new JLabel();
         setDefaultCloseOperation(3);
         setTitle("FACT_ELECTRONICA");
@@ -132,17 +112,12 @@ public class AGENTE extends JFrame
         pack();
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
-
-            public void run()
-            {
+            public void run() {
                 (new AGENTE()).setVisible(true);
             }
-
-        }
-);
+        });
     }
 
     int SEGUNDOS;
@@ -150,5 +125,4 @@ public class AGENTE extends JFrame
     boolean FACTURANDO;
     boolean FACTURA;
     private JLabel Reloj;
-
 }
