@@ -30,14 +30,8 @@ public class AGENTE_PRIN extends JFrame {
                     setChanged();
                     notifyObservers(new Date());
                 }
-
-                final RelojModeloUtil this$1;
-
-                {
-                    super();
-                    this$1 = RelojModeloUtil.this;
-                }
             };
+            
             Timer timer = new Timer();
             timer.schedule(timerTask, 0L, 60000L);
         }
@@ -75,14 +69,6 @@ public class AGENTE_PRIN extends JFrame {
                 System.out.println(dato);
                 System.out.println((new StringBuilder()).append("SEG : ").append(seg).toString());
                 (new EJECUTA_COMANDO()).EJECUTA();
-            }
-
-            private Fosar_Agente fosa;
-            final AGENTE_PRIN this$0;
-
-            {
-                this$0 = AGENTE_PRIN.this;
-//                super();
             }
         });
     }
