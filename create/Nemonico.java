@@ -12,46 +12,36 @@ import java.sql.SQLException;
 // Referenced classes of package create:
 //            ConexionFirebird
 
-public class Nemonico
-{
+public class Nemonico {
+    String sql;
+    ResultSet rs;
+    ConexionFirebird cnx;
 
-    public Nemonico()
-        throws SQLException, FileNotFoundException, IOException
-    {
+    public Nemonico() throws SQLException, FileNotFoundException, IOException {
         sql = null;
         cnx = new ConexionFirebird();
-        try
-        {
+        try {
             ConexionFirebird.conectarFirebird();
         }
-        catch(ClassNotFoundException e1)
-        {
+        catch(ClassNotFoundException e1) {
             e1.printStackTrace();
         }
     }
 
-    public void Activa_Nemonico(String Version)
-    {
-        try
-        {
+    public void Activa_Nemonico(String Version) {
+        try {
             sql = (new StringBuilder("UPDATE CNET_MODULOS SET NEMONICO = '")).append(Version).append("' WHERE IDMODULO = 1").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
         }
-        catch(SQLException e)
-        {
+        catch(SQLException e) {
             System.out.println("NEMONICO YA ACTIVO...");
         }
     }
 
     public static void main(String args[])
-        throws FileNotFoundException, SQLException, IOException
-    {
+        throws FileNotFoundException, SQLException, IOException {
         Nemonico ne = new Nemonico();
         ne.Activa_Nemonico(args[0]);
     }
-
-    String sql;
-    ResultSet rs;
-    ConexionFirebird cnx;
 }

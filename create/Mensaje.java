@@ -1,4 +1,4 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 05:17:39 p.m.
+// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov
 // Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   Mensaje.java
@@ -11,17 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
-public class Mensaje
-{
-
-    public Mensaje()
-    {
-    }
-
-    private static JFrame getJFrame(String mensaje)
-    {
-        if(jFrame == null)
-        {
+public class Mensaje {
+    private static JFrame getJFrame(String mensaje) {
+        if(jFrame == null) {
             jFrame = new JFrame();
             jFrame.setSize(new Dimension(400, 150));
             jFrame.setResizable(false);
@@ -36,10 +28,8 @@ public class Mensaje
         return jFrame;
     }
 
-    private static JPanel getJPanel(String text)
-    {
-        if(jPanel == null)
-        {
+    private static JPanel getJPanel(String text) {
+        if(jPanel == null) {
             jLabel = new JLabel();
             jLabel.setSize(new Dimension(400, 100));
             jLabel.setText(text);
@@ -56,10 +46,8 @@ public class Mensaje
         return jPanel;
     }
 
-    private static JButton getJButton()
-    {
-        if(jButton == null)
-        {
+    private static JButton getJButton() {
+        if(jButton == null) {
             jButton = new JButton();
             jButton.setBounds(new Rectangle(125, 78, 169, 23));
             jButton.setVisible(true);
@@ -67,24 +55,19 @@ public class Mensaje
             jButton.setText("Aceptar");
             jButton.addMouseListener(new MouseAdapter() {
 
-                public void mouseClicked(MouseEvent evt)
-                {
+                public void mouseClicked(MouseEvent evt) {
                     Mensaje.MouseClicked(evt);
                 }
-
-            }
-);
+            });
         }
         return jButton;
     }
 
-    private static void MouseClicked(MouseEvent evt)
-    {
+    private static void MouseClicked(MouseEvent evt) {
         System.exit(0);
     }
 
-    public void Mensajes(String args)
-    {
+    public void Mensajes(String args) {
         getJFrame(args);
     }
 
@@ -93,6 +76,4 @@ public class Mensaje
     private static JButton jButton = null;
     private static JLabel jLabel = null;
     private static JTextArea jTextArea = null;
-
-
 }

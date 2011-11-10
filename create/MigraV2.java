@@ -1,4 +1,4 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 05:18:08 p.m.
+// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov
 // Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   MigraV2.java
@@ -21,17 +21,14 @@ import org.apache.derby.client.am.ResultSet;
 public class MigraV2
 {
 
-    public void CrearProgreso()
-    {
+    public void CrearProgreso() {
         ps.CreaFrame("Migrando base de datos V2.0");
         ps.CreaProgreso();
         ps.SetBorde("Iniciando proceso");
         ps.CreaBorde();
     }
 
-    public MigraV2()
-        throws SQLException, FileNotFoundException, IOException
-    {
+    public MigraV2() throws SQLException, FileNotFoundException, IOException {
         id_descdetalle = 0L;
         id_descgrupo = 0L;
         idEntidad = 0L;

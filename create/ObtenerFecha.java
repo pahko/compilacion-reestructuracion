@@ -8,15 +8,8 @@ package create;
 import java.io.PrintStream;
 import java.util.*;
 
-public class ObtenerFecha
-{
-
-    public ObtenerFecha()
-    {
-    }
-
-    public static void main(String args[])
-    {
+public class ObtenerFecha {
+    public static void main(String args[]) {
         System.out.println(new Date());
         Calendar c = new GregorianCalendar();
         String dia = Integer.toString(c.get(5));
