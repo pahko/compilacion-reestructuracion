@@ -230,3 +230,15 @@ class AGENTE_Devoluciones$1 implements Observer
 	    this$0 = new AGENTE_Devoluciones();
 	}
 }
+
+class AGENTE_Devoluciones$2 implements Runnable 
+{
+    public void run()
+    {
+        (new AGENTE_Devoluciones()).setVisible(true);
+    }
+
+    AGENTE_Devoluciones$2()
+    {
+    }
+}
