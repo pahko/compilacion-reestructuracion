@@ -22,30 +22,19 @@ public class AGENTE_NotasCredito extends JFrame
     {
 
         TimerTask timerTask;
-        final AGENTE_NotasCredito this$0;
-
 
         public RelojModeloUtil()
         {
         	super();
-        	this$0 = AGENTE_NotasCredito.this;
-            timerTask = new TimerTask() {
+            timerTask = new TimerTask(){
 
                 public void run()
                 {
                     setChanged();
                     notifyObservers(new Date());
                 }
-
-                final RelojModeloUtil this$1;
-
-                
-                {
-                	this$1 = RelojModeloUtil.this;
-                	//super();
-                }
-            }
-;
+            };
+            
             Timer timer = new Timer();
             timer.schedule(timerTask, 0L, 1000L);
         }
@@ -113,17 +102,7 @@ public class AGENTE_NotasCredito extends JFrame
                     seg++;
                 }
             }
-
-            private Fosar_Agente fosa;
-            final AGENTE_NotasCredito this$0;
-
-            
-            {
-                this$0 = AGENTE_NotasCredito.this;
-                //super();
-            }
-        }
-);
+        });
     }
 
     private void initComponents()
@@ -154,8 +133,7 @@ public class AGENTE_NotasCredito extends JFrame
                 (new AGENTE_NotasCredito()).setVisible(true);
             }
 
-        }
-);
+        });
     }
 
     int SEGUNDOS;

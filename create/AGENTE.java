@@ -9,6 +9,8 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.Timer;
+
 import javax.swing.*;
 import javax.swing.border.SoftBevelBorder;
 
@@ -18,23 +20,13 @@ import javax.swing.border.SoftBevelBorder;
 public class AGENTE extends JFrame {
     public class RelojModeloUtil extends Observable {
         TimerTask timerTask;
-        final AGENTE this$0;
-
+        
         public RelojModeloUtil() {
-            this$0 = AGENTE.this;
-            super();
             timerTask = new TimerTask() {
 
                 public void run() {
                     setChanged();
                     notifyObservers(new Date());
-                }
-
-                final RelojModeloUtil this$1;
-
-                {
-                    this$1 = RelojModeloUtil.this;
-                    super();
                 }
             };
             Timer timer = new Timer();
@@ -81,15 +73,6 @@ public class AGENTE extends JFrame {
                 } else {
                     seg++;
                 }
-            }
-
-            private Fosar_Agente fosa;
-            final AGENTE this$0;
-
-            
-            {
-                this$0 = AGENTE.this;
-                super();
             }
         });
     }
