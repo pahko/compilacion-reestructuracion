@@ -105,16 +105,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton1ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         jButton2.setText("Guardar");
         jButton2.addActionListener(new ActionListener() {
 
@@ -122,16 +113,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton2ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(jLabel1, -2, 44, -2)).addGroup(jPanel1Layout.createSequentialGroup().addGap(43, 43, 43).addComponent(TxtParadox, -2, 291, -2)).addGroup(jPanel1Layout.createSequentialGroup().addGap(22, 22, 22).addComponent(jButton1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, 32767).addComponent(jButton2, -2, 88, -2)).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(jLabel2, -2, 336, -2))).addContainerGap(93, -2)));
@@ -149,16 +131,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton3ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         jButton4.setText("Guardar");
         jButton4.addActionListener(new ActionListener() {
 
@@ -166,16 +139,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton4ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(jLabel3, -2, 44, -2)).addGroup(jPanel2Layout.createSequentialGroup().addGap(43, 43, 43).addComponent(TxtRegistros, -2, 291, -2)).addGroup(jPanel2Layout.createSequentialGroup().addGap(22, 22, 22).addComponent(jButton3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, 32767).addComponent(jButton4, -2, 88, -2)).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(jLabel4, -2, 336, -2))).addContainerGap(93, -2)));
@@ -201,16 +165,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton5ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         jButton6.setText("Guardar");
         jButton6.addActionListener(new ActionListener() {
 
@@ -218,16 +173,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton6ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         jLabel11.setFont(new Font("Tahoma", 1, 11));
         jLabel11.setText("NOTA: TECLEAR UNICAMENTE NUMEROS ENTEROS SIN FORMATO.");
         GroupLayout jPanel3Layout = new GroupLayout(jPanel3);
@@ -246,16 +192,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton7ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         jButton8.setText("Guardar");
         jButton8.addActionListener(new ActionListener() {
 
@@ -263,16 +200,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton8ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup().addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup().addContainerGap().addComponent(TxtAcrobat, -1, 336, 32767)).addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup().addContainerGap().addComponent(jLabel12, -2, 44, -2)).addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup().addGap(22, 22, 22).addComponent(jButton7).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, 32767).addComponent(jButton8, -2, 88, -2)).addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup().addContainerGap().addComponent(jLabel13, -1, 336, 32767))).addContainerGap(93, -2)));
@@ -289,16 +217,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton9ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         jButton10.setText("Guardar");
         jButton10.addActionListener(new ActionListener() {
 
@@ -306,16 +225,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton10ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         GroupLayout jPanel5Layout = new GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel5Layout.createSequentialGroup().addContainerGap().addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jButton9).addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false).addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, -1, -1, 32767).addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, -1, -1, 32767).addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, -1, 125, 32767))).addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel5Layout.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addComponent(TxtSerDev).addComponent(TxtSerFac).addComponent(TxtSerNce, -2, 63, -2))).addGroup(jPanel5Layout.createSequentialGroup().addGap(69, 69, 69).addComponent(jButton10))).addContainerGap(162, 32767)));
@@ -332,16 +242,7 @@ public class Fosar_Configuracion extends JFrame
             {
                 jButton12ActionPerformed(evt);
             }
-
-            final Fosar_Configuracion this$0;
-
-            
-            {
-                this$0 = Fosar_Configuracion.this;
-                super();
-            }
-        }
-);
+        });
         GroupLayout jPanel6Layout = new GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel6Layout.createSequentialGroup().addContainerGap().addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jScrollPane1, -2, 356, -2).addComponent(jButton12)).addContainerGap(73, 32767)));
@@ -808,15 +709,4 @@ public class Fosar_Configuracion extends JFrame
     private JPanel jPanel6;
     private JScrollPane jScrollPane1;
     private JTabbedPane jTabbedPane1;
-
-
-
-
-
-
-
-
-
-
-
 }

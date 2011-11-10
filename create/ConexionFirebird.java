@@ -36,14 +36,12 @@ public class ConexionFirebird
         System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
         break MISSING_BLOCK_LABEL_166;
         Exception ex;
-        ex;
         ex.printStackTrace();
         System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
         fproperties.close();
         System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
         break MISSING_BLOCK_LABEL_166;
         Exception exception;
-        exception;
         System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
         fproperties.close();
         System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
@@ -78,7 +76,7 @@ public class ConexionFirebird
             }
         }
         // Misplaced declaration of an exception variable
-        catch(String databaseURL)
+        catch(Exception e)
         {
             m.GetMensaje("CONEXION A SERVIDOR DE FACTURACION ERRONEA, FAVOR DE VERIFICAR SU RED");
             System.exit(1);
