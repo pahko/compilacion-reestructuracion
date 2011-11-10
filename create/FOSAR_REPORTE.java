@@ -105,16 +105,7 @@ public class FOSAR_REPORTE extends JFrame
             {
                 jButton1ActionPerformed(evt);
             }
-
-            final FOSAR_REPORTE this$0;
-
-            
-            {
-                this$0 = FOSAR_REPORTE.this;
-                super();
-            }
-        }
-);
+        });
         jToolBar1.add(jButton1);
         jButton2.setIcon(new ImageIcon(getClass().getResource("/excelexporter/icon/excel.png")));
         jButton2.setToolTipText("Exportar Excel");
@@ -128,16 +119,7 @@ public class FOSAR_REPORTE extends JFrame
             {
                 jButton2ActionPerformed(evt);
             }
-
-            final FOSAR_REPORTE this$0;
-
-            
-            {
-                this$0 = FOSAR_REPORTE.this;
-                super();
-            }
-        }
-);
+        });
         jToolBar1.add(jButton2);
         jButton3.setIcon(new ImageIcon(getClass().getResource("/excelexporter/icon/reporte_SAT_ico.png")));
         jButton3.setToolTipText("Reporte Mensual SAT");
@@ -151,16 +133,7 @@ public class FOSAR_REPORTE extends JFrame
             {
                 jButton3ActionPerformed(evt);
             }
-
-            final FOSAR_REPORTE this$0;
-
-            
-            {
-                this$0 = FOSAR_REPORTE.this;
-                super();
-            }
-        }
-);
+        });
         jToolBar1.add(jButton3);
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
