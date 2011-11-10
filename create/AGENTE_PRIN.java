@@ -4,7 +4,6 @@
 // Source File Name:   AGENTE_PRIN.java
 
 package create;
-
 import java.awt.Container;
 import java.awt.EventQueue;
 import java.io.IOException;
@@ -17,32 +16,25 @@ import javax.swing.border.SoftBevelBorder;
 // Referenced classes of package create:
 //            EJECUTA_COMANDO, Fosar_Agente
 
-public class AGENTE_PRIN extends JFrame
-{
-    public class RelojModeloUtil extends Observable
-    {
-
+public class AGENTE_PRIN extends JFrame {
+    public class RelojModeloUtil extends Observable {
         TimerTask timerTask;
         final AGENTE_PRIN this$0;
 
-
-        public RelojModeloUtil()
-        {
-        	super();
+        public RelojModeloUtil() {
+            super();
             this$0 = AGENTE_PRIN.this;
             timerTask = new TimerTask() {
 
-                public void run()
-                {
+                public void run() {
                     setChanged();
                     notifyObservers(new Date());
                 }
 
                 final RelojModeloUtil this$1;
 
-                
                 {
-                	super();
+                    super();
                     this$1 = RelojModeloUtil.this;
                 }
             };
@@ -50,7 +42,6 @@ public class AGENTE_PRIN extends JFrame
             timer.schedule(timerTask, 0L, 60000L);
         }
     }
-
 
     public AGENTE_PRIN() {
         SEGUNDOS = 0;
@@ -79,8 +70,7 @@ public class AGENTE_PRIN extends JFrame
         RelojModeloUtil modelo = new RelojModeloUtil();
         modelo.addObserver(new Observer() {
 
-            public void update(Observable unObservable, Object dato)
-            {
+            public void update(Observable unObservable, Object dato) {
                 Reloj.setText(dato.toString());
                 System.out.println(dato);
                 System.out.println((new StringBuilder()).append("SEG : ").append(seg).toString());
@@ -97,8 +87,7 @@ public class AGENTE_PRIN extends JFrame
         });
     }
 
-    private void initComponents()
-    {
+    private void initComponents() {
         Reloj = new JLabel();
         setDefaultCloseOperation(3);
         setTitle("FACT_ELECTRONICA");
@@ -116,14 +105,11 @@ public class AGENTE_PRIN extends JFrame
         pack();
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
-            public void run()
-            {
+            public void run() {
                 (new AGENTE_PRIN()).setVisible(true);
             }
-
         });
     }
 
@@ -131,6 +117,5 @@ public class AGENTE_PRIN extends JFrame
     int seg;
     boolean FACTURANDO;
     boolean FACTURA;
-    private JLabel Reloj;
-
+    public JLabel Reloj;
 }
