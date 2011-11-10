@@ -7,11 +7,8 @@ package create;
 
 import javax.swing.*;
 
-public class Mensajes
-{
-
-    public Mensajes()
-    {
+public class Mensajes {
+    public Mensajes() {
         fr = new JFrame("Aviso");
         fr.setAlwaysOnTop(true);
         fr.setLocationRelativeTo(null);
@@ -21,22 +18,18 @@ public class Mensajes
         fr.getRootPane().setWindowDecorationStyle(2);
     }
 
-    public void GetMensaje(String m)
-    {
+    public void GetMensaje(String m) {
         fr.setVisible(true);
         JOptionPane.showMessageDialog(fr, m, "Aviso", 1);
         fr.setVisible(false);
         fr.dispose();
     }
 
-    void GetMensajes(String m)
-    {
+    void GetMensajes(String m) {
         fr.setVisible(true);
         JOptionPane.showMessageDialog(fr, m, "Aviso", 1);
         fr.setVisible(false);
         fr.dispose();
     }
-
     static JFrame fr = null;
-
 }

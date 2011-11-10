@@ -9,23 +9,19 @@ package create;
 // Referenced classes of package create:
 //            Archivos, EJECUTA_COMANDO
 
-class Muestra_Factura
-{
+class Muestra_Factura {
+    String ADOBE;
 
-    void Obten_Ruta()
-    {
+    void Obten_Ruta() {
         Archivos Arch = new Archivos("C:\\FDE\\Acrobat.txt");
         ADOBE = Arch.Leer();
         int i = ADOBE.indexOf("|");
         ADOBE = (new StringBuilder()).append(ADOBE.substring(0, i)).append(" ").toString();
     }
 
-    public Muestra_Factura(String direccion, String nombre)
-    {
+    public Muestra_Factura(String direccion, String nombre) {
         ADOBE = "";
         Obten_Ruta();
         new EJECUTA_COMANDO((new StringBuilder()).append(ADOBE).append(direccion).append(nombre).toString(), 1);
     }
-
-    String ADOBE;
 }
