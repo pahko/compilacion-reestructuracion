@@ -181,9 +181,7 @@ public class Fosar_Main
         Imprime(SQL_CNET_CLIENTES_2);
     }
 
-    int Recupera_ClienteFDB(String cclie)
-        throws ClassNotFoundException, SQLException, IOException
-    {
+    int Recupera_ClienteFDB(String cclie)  throws Exception {
         String fbsql = "";
         int num_reg = 0;
         ConexionFirebird fbx = new ConexionFirebird();
@@ -437,8 +435,7 @@ public class Fosar_Main
             CFD_DESCUENTOS_2(DESC_FIN);
     }
 
-    int Recupera_ArticuloFDB(String cveart)
-        throws ClassNotFoundException, SQLException, IOException
+    int Recupera_ArticuloFDB(String cveart) throws Exception
     {
         String fbsql = "";
         int num_reg = 0;

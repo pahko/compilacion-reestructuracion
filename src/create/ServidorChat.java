@@ -14,6 +14,8 @@ import javax.swing.DefaultListModel;
 
 public class ServidorChat implements Runnable {
 
+	private DefaultListModel charla;
+	
     public void run() {
         try {
             ServidorChat_Inicio();
@@ -36,12 +38,11 @@ public class ServidorChat implements Runnable {
                 Runnable nuevoCliente = new HiloDeCliente(charla, cliente);
                 Thread hilo = new Thread(nuevoCliente);
                 hilo.start();
-            } while(true);
+            } while (true);
         }
         catch(Exception e) {
             e.printStackTrace();
         }
         System.exit(1);
     }
-    private DefaultListModel charla;
 }

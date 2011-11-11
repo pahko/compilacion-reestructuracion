@@ -12,10 +12,6 @@ package excelexporter;
 public class MySelector
 {
 
-    public MySelector()
-    {
-    }
-
     public static void main(String args[])
     {
         MyFrame frame = new MyFrame();

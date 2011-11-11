@@ -146,7 +146,7 @@ public class Appcfd
         {
             ConexionFirebird.conectarFirebird();
         }
-        catch(ClassNotFoundException e1)
+        catch(Exception e1)
         {
             e1.printStackTrace();
         }

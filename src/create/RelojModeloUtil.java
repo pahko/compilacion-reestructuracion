@@ -10,26 +10,25 @@ import java.util.*;
 
 public class RelojModeloUtil extends Observable {
 
+	TimerTask timerTask;
+	
     public RelojModeloUtil() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 0L, 1000L);
         timerTask = new TimerTask() {
-
             public void run() {
                 setChanged();
                 notifyObservers(new Date());
             }
         };
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0L, 1000L);
     }
 
     public static void main(String args[]) {
         RelojModeloUtil modelo = new RelojModeloUtil();
         modelo.addObserver(new Observer() {
-
             public void update(Observable unObservable, Object dato) {
                 System.out.println(dato);
             }
         });
     }
-    TimerTask timerTask;
 }

@@ -95,9 +95,7 @@ public class FOSAR_RecuperaCFD_FACTURA
         System.out.println((new StringBuilder()).append("VALOR DE SERIE ---> ").append(series).append("|").toString());
     }
 
-    FOSAR_RecuperaCFD_FACTURA(boolean Inicializado)
-        throws SQLException, ComprobanteArchRefException, ClassNotFoundException, IOException
-    {
+    FOSAR_RecuperaCFD_FACTURA(boolean Inicializado) throws Exception {
         TIPO = 1;
         UltimoFolio = 0;
         FOLIO = 0;

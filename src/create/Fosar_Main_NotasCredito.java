@@ -145,9 +145,7 @@ public class Fosar_Main_NotasCredito
         Imprime(SQL_CNET_CLIENTES_2);
     }
 
-    int Recupera_ClienteFDB(String cclie)
-        throws ClassNotFoundException, SQLException, IOException
-    {
+    int Recupera_ClienteFDB(String cclie) throws Exception {
         String fbsql = "";
         int num_reg = 0;
         ConexionFirebird fbx = new ConexionFirebird();

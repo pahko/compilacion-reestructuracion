@@ -18,8 +18,7 @@ public class FOSAR_ACT_ARTICULOS {
     ArrayList ARTS;
     int MAX_NUM_REG;
 
-    FOSAR_ACT_ARTICULOS() throws SQLException, ComprobanteArchRefException,
-        ClassNotFoundException, IOException {
+    FOSAR_ACT_ARTICULOS() throws Exception {
         sql = "";
         cnx = new ConexionFirebird();
         pnx = new ConexionParadox();

@@ -17,9 +17,7 @@ import java.util.ArrayList;
 public class FOSAR_GeneraReporte
 {
 
-    FOSAR_GeneraReporte(String FInicial, String FFinal, String serie)
-        throws ClassNotFoundException, SQLException, IOException
-    {
+    FOSAR_GeneraReporte(String FInicial, String FFinal, String serie) throws Exception {
         cnx = new ConexionFirebird();
         FINICIAL = "";
         FFINAL = "";
@@ -168,8 +166,7 @@ public class FOSAR_GeneraReporte
         return receptor;
     }
 
-    public static void main(String args[])
-        throws ClassNotFoundException, SQLException, IOException
+    public static void main(String args[]) throws Exception
     {
         new FOSAR_GeneraReporte("01/01/2011", "03/05/2011", "MO");
     }

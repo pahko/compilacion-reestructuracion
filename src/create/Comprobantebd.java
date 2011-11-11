@@ -488,9 +488,7 @@ public class Comprobantebd
         return totaldesc;
     }
 
-    public void reporteMensual(String dir, String fini, String ffin)
-        throws SQLException, IOException, ClassNotFoundException
-    {
+    public void reporteMensual(String dir, String fini, String ffin) throws Exception {
         DecimalFormat df = new DecimalFormat("0.00");
         SimpleDateFormat sdf_rep = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         SimpleDateFormat sdf_arg = new SimpleDateFormat("yyyy-MM-dd");
@@ -585,9 +583,7 @@ public class Comprobantebd
         cnx1.finalizar();
     }
 
-    public void reporteMensualV2(String dir, String fini, String ffin)
-        throws SQLException, IOException, ClassNotFoundException
-    {
+    public void reporteMensualV2(String dir, String fini, String ffin) throws Exception {
         DecimalFormat df = new DecimalFormat("0.00");
         SimpleDateFormat sdf_rep = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         SimpleDateFormat sdf_arg = new SimpleDateFormat("yyyy-MM-dd");

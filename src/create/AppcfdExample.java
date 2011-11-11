@@ -32,7 +32,7 @@ public class AppcfdExample
 {
 
     private static void GuardaPaths(String direccion, String prefijo)
-        throws SQLException, ComprobanteArchRefException, ClassNotFoundException, IOException
+        throws Exception
     {
         System.out.println((new StringBuilder()).append("RUTA : ").append(direccion).append(prefijo).toString());
         new FOSAR_AlmacenaCFD(direccion, prefijo, args[1], args[2]);

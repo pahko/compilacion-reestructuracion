@@ -28,9 +28,7 @@ public class FOSAR_AlmacenaCFD
         return tmp;
     }
 
-    FOSAR_AlmacenaCFD(String ruta, String prefijo, String folio, String serie)
-        throws SQLException, ComprobanteArchRefException, ClassNotFoundException, IOException
-    {
+    FOSAR_AlmacenaCFD(String ruta, String prefijo, String folio, String serie) throws Exception {
         FOLIO = "";
         SERIE = "MO";
         appcfdRUTA = "";

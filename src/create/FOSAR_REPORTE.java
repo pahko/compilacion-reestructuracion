@@ -38,8 +38,7 @@ import javax.swing.LayoutStyle;
 //            Archivos, MyTableModel_FOSAR, FOSAR_GeneraReporte, Comprobantebd, 
 //            ConexionFirebird
 
-public class FOSAR_REPORTE extends JFrame
-{
+public class FOSAR_REPORTE extends JFrame { 
 
     String Formato_Texto(String dato)
     {
@@ -154,11 +153,8 @@ public class FOSAR_REPORTE extends JFrame
             MyTableModel_FOSAR modelo = (MyTableModel_FOSAR)jTable1.getModel();
             modelo.Actualizar_Datos(datos.REPORTE);
             jScrollPane1.setViewportView(jTable1);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}        
         System.out.println((new StringBuilder()).append("Parametros: FInicial ").append(finicial).append(" FFinal ").append(ffinal).append(" SERIE ").append(JCSeries.getSelectedItem().toString()).toString());
@@ -202,11 +198,8 @@ public class FOSAR_REPORTE extends JFrame
             cbd.estableceConexion(cnx);
             cbd.reporteMensualV2(ruta, finicial, ffinal);
             JOptionPane.showMessageDialog(this, (new StringBuilder()).append("REPORTE GENERADO EN :\n").append(ruta).toString(), "REPORTE MENSUAL SAT", 1);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+    	} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    	
     }

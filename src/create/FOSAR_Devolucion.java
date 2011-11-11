@@ -17,9 +17,7 @@ import mx.com.codinet.err.ComprobanteArchRefException;
 public class FOSAR_Devolucion
 {
 
-    FOSAR_Devolucion(String cve_doc)
-        throws SQLException, ComprobanteArchRefException, ClassNotFoundException, IOException
-    {
+    FOSAR_Devolucion(String cve_doc) throws Exception {
         CVE_DOC = "";
         FOLIO = 0;
         SERIE = "";

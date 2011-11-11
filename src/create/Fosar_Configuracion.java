@@ -240,7 +240,12 @@ public class Fosar_Configuracion extends JFrame
 
             public void actionPerformed(ActionEvent evt)
             {
-                jButton12ActionPerformed(evt);
+                try {
+					jButton12ActionPerformed(evt);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         GroupLayout jPanel6Layout = new GroupLayout(jPanel6);
@@ -544,7 +549,7 @@ public class Fosar_Configuracion extends JFrame
         Mensaje("DATOS GUARDADOS DE MANERA CORRECTA");
     }
 
-    private void jButton12ActionPerformed(ActionEvent evt)
+    private void jButton12ActionPerformed(ActionEvent evt) throws Exception
     {
     	try {
 			Realiza_Scripts();
@@ -557,9 +562,7 @@ public class Fosar_Configuracion extends JFrame
 		}
     }
 
-    void Realiza_Scripts()
-        throws ClassNotFoundException, SQLException, IOException
-    {
+    void Realiza_Scripts() throws Exception {
         ConexionFirebird _tmp = fbx;
         ConexionFirebird.conectarFirebird();
         ObtenScripts();

@@ -25,20 +25,16 @@ public class AGENTE_Devoluciones extends JFrame
 
         TimerTask timerTask;
 
-        public RelojModeloUtil()
-        {
+        public RelojModeloUtil() {
         	super();
+        	Timer timer = new Timer();
+            timer.schedule(timerTask, 0L, 1000L);
             timerTask = new TimerTask() {
-
-                public void run()
-                {
+                public void run() {
                     setChanged();
                     notifyObservers(new Date());
                 }
-            };
-            
-            Timer timer = new Timer();
-            timer.schedule(timerTask, 0L, 1000L);
+            };           
         }
     }
 

@@ -23,7 +23,6 @@ public class ConexionFirebird {
     static ProgressBarSample ps = new ProgressBarSample();
 
     public static void conectarFirebird() throws Exception {
-<<<<<<< HEAD:create/ConexionFirebird.java
     	try {
 	        System.out.println("Ruta de instalacion de Base Facture " +
 	        		"FB..C:\\FDE\\ ");
@@ -43,8 +42,6 @@ public class ConexionFirebird {
     	} catch(Exception ex) {
     		ex.printStackTrace();
     	}   
-    	
-=======
         try {
             System.out.println("Ruta de instalacion de Base Facture FB..C:\\FDE\\ ");
             System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
@@ -61,7 +58,6 @@ public class ConexionFirebird {
         } catch(Exception ex) {
             ex.printStackTrace();
         }
->>>>>>> 611c7c90d1d5680ab436bbacfdb36ad2769f33ed:src/create/ConexionFirebird.java
         try {
             String databaseURL = (new StringBuilder())
             	.append("jdbc:firebirdsql:").append(maquina).append("/")

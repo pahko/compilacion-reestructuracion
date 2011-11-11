@@ -94,8 +94,7 @@ public class Fosar_Agente_NotasCredito {
         ERROR = FosarMain.ERROR;
     }
 
-    void Ejecuta_Scripts() throws SQLException, ComprobanteArchRefException,
-        ClassNotFoundException, IOException {
+    void Ejecuta_Scripts() throws Exception {
         String serie = FosarMain.SERIE;
         String rfc = FosarMain.RFC;
         String ent = FosarMain.SQL_CNET_ENTIDADES;
@@ -237,8 +236,7 @@ public class Fosar_Agente_NotasCredito {
         return acepta;
     }
 
-    void Cancelar_Factura(String cve_doc) throws SQLException,
-        ComprobanteArchRefException, ClassNotFoundException, IOException {
+    void Cancelar_Factura(String cve_doc) throws Exception {
         cve_doc = cve_doc.replaceAll("F-", "");
         new FOSAR_Devolucion(cve_doc);
     }

@@ -40,7 +40,12 @@ public class FOSAR
         cnx = new ConexionFirebird();
         ERROR = 0;
         ConexionFirebird _tmp = cnx;
-        ConexionFirebird.conectarFirebird();
+        try {
+			ConexionFirebird.conectarFirebird();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         RFC = rfc;
         SERIE = serie;
         NUM_REG = numreg;

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JTable;
 import jxl.Workbook;
 import jxl.write.*;
+import jxl.write.Number;
 
 public class ExcelTableExporter
 {

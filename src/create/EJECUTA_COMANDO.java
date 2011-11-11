@@ -3,6 +3,10 @@ package create;
 import java.io.PrintStream;
 
 public class EJECUTA_COMANDO {
+	
+	public EJECUTA_COMANDO(){
+	}
+	
     public void EJECUTA_COPIA_FACT() {
         String comando = "xcopy f:\\datosw\\FACT01*.* c:\\FDE\\datosw\\ /H /I /C /R /Y /F";
         Process pr;

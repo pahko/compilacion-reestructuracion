@@ -20,9 +20,7 @@ public class FOSAR_NotasCredito
 
     FOSAR_NotasCredito(String cve_doc, String serie, String rfc, String ent, String ent2, String dom, String dom2, 
             String clt, String clt2, String comprobante, String descuentos, String descuentos_2, ArrayList conceptos, ArrayList impuestos, 
-            String numreg, int folioaspel)
-        throws SQLException, ComprobanteArchRefException, ClassNotFoundException, IOException
-    {
+            String numreg, int folioaspel) throws Exception {
         RFC = "";
         IDDOM = 0;
         IDENT = 0;

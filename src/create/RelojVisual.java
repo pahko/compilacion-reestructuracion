@@ -14,15 +14,15 @@ import javax.swing.SwingUtilities;
 
 public class RelojVisual extends JLabel {
 
+	SimpleDateFormat format;
+	
     public RelojVisual(Observable modelo) {
         format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         setHorizontalAlignment(0);
         modelo.addObserver(new Observer() {
-
             public void update(Observable o, Object arg) {
                 final Object fecha = arg;
                 SwingUtilities.invokeLater(new Runnable() {
-
                     public void run() {
                         setText(format.format(fecha));
                     }
@@ -35,5 +35,4 @@ public class RelojVisual extends JLabel {
     public void setFormat(SimpleDateFormat unFormato) {
         format = unFormato;
     }
-    SimpleDateFormat format;
 }

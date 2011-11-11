@@ -77,15 +77,8 @@ public class TableFrame extends JFrame
             }
 
             Class types[] = {
-                java/lang/String, java/lang/String
+                String.class, String.class
             };
-            final TableFrame this$0;
-
-            
-            {
-                this$0 = TableFrame.this;
-                super(x0, x1);
-            }
         }
 );
         jScrollPane2.setViewportView(tablaInfo);
@@ -102,14 +95,6 @@ public class TableFrame extends JFrame
             public void actionPerformed(ActionEvent evt)
             {
                 jButton1ActionPerformed(evt);
-            }
-
-            final TableFrame this$0;
-
-            
-            {
-                this$0 = TableFrame.this;
-                super();
             }
         }
 );
