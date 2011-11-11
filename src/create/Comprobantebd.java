@@ -459,17 +459,15 @@ public class Comprobantebd
         ind = fini.indexOf("/");
         fini = fini.substring(ind + 1);
         mesanio = (new StringBuilder()).append(mesanio).append(fini.substring(0, 4)).toString();
-        try
-        {
-            String sql = "Select RFC from CNET_ENTIDADES where identidad = 1";
+        try {
+        	String sql = "Select RFC from CNET_ENTIDADES where identidad = 1";
             rs1 = cnx1.consulta(sql, true);
-            if(rs1.next())
-                name = (new StringBuilder()).append("1").append(rs1.getString("RFC")).toString();
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/Comprobantebd.getName()).log(Level.SEVERE, null, ex);
-        }
+			if(rs1.next())
+			    name = (new StringBuilder()).append("1").append(rs1.getString("RFC")).toString();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return (new StringBuilder()).append(name).append(mesanio).append(".txt").toString();
     }
 
@@ -477,17 +475,16 @@ public class Comprobantebd
     {
         double totaldesc = 0.0D;
         String sql = "";
-        try
-        {
-            sql = (new StringBuilder()).append("select sum(importe_total) as tot  from CFD_DESCUENTOS  where serie = '").append(serie).append("' and ").append(" folio =").append(folio).toString();
-            rs1 = cnx1.consulta(sql, true);
-            if(rs1.next())
-                totaldesc = rs1.getDouble("tot");
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/Comprobantebd.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+        sql = (new StringBuilder()).append("select sum(importe_total) as tot  from CFD_DESCUENTOS  where serie = '").append(serie).append("' and ").append(" folio =").append(folio).toString();
+        try {
+			rs1 = cnx1.consulta(sql, true);
+			if(rs1.next())
+	            totaldesc = rs1.getDouble("tot");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return totaldesc;
     }
 

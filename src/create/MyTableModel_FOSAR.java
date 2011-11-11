@@ -41,23 +41,27 @@ public class MyTableModel_FOSAR implements TableModel {
     public Class getColumnClass(int columnIndex) {
         switch(columnIndex) {
         case 0:
-            return java/lang/String;
+            return String.class;
         case 1:
-            return java/lang/String;
+        	return String.class;
         case 2:
-            return java/lang/Integer;
+            return Integer.class;
         case 3:
-            return java/lang/String;
+        	return String.class;
         case 4:
-            return java/lang/String;
+        	return String.class;
         case 5:
-            return java/lang/String;
+        	return String.class;
         case 6:
+        	return Double.class;
         case 7:
+        	return Double.class;
         case 8:
+        	return Double.class;
         case 9:
+        	return Double.class;
         case 10:
-            return java/lang/Double;
+            return Double.class;
         }
         return null;
     }

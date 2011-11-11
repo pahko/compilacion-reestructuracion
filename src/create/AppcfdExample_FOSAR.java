@@ -46,51 +46,41 @@ public class AppcfdExample_FOSAR
         args[2] = "VF";
         args[3] = "1";
         AppcfdExample app = new AppcfdExample();
-        try
-        {
-            app.AppcfdExample_main(args);
-        }
-        catch(ComprobanteArchRefException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(CFDException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(JDOMException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(NumberFormatException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(HeadlessException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(ClassNotFoundException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(SgiLibException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(JaxenException ex)
-        {
-            Logger.getLogger(create/AppcfdExample_FOSAR.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+        try {
+			app.AppcfdExample_main(args);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ComprobanteArchRefException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JaxenException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CFDException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SgiLibException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+     }
 
     public static String args[] = new String[4];
 

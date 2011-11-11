@@ -245,8 +245,13 @@ public class Fosar_Agente implements Runnable {
 
     public void run() {
         try {
-            Nucleo();
-        }
-        catch(Exception ex) {}
+			Nucleo();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }
