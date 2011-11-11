@@ -1,8 +1,3 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 04:56:40 p.m.
-// Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
-// Decompiler options: packimports(3) 
-// Source File Name:   ConexionFirebird.java
-
 package create;
 
 import java.io.*;
@@ -13,8 +8,8 @@ import java.util.Properties;
 //            Mensajes, ProgressBarSample
 
 public class ConexionFirebird {
-	
-	static String maquina;
+
+    static String maquina;
     static String port;
     static String ruta;
     static String Installdir;
@@ -30,22 +25,22 @@ public class ConexionFirebird {
     static ProgressBarSample ps = new ProgressBarSample();
 
     public static void conectarFirebird() throws Exception {
-    	try {
-	        System.out.println("Ruta de instalacion de Base Facture FB..C:\\FDE\\ ");
-	        System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
-	        fproperties = new FileInputStream("C:\\FDE\\firebird.properties");
-	        p.load(fproperties);
-	        maquina = p.getProperty("firebird.drda.host");
-	        if(maquina.equals("0.0.0.0"))
-	            maquina = "localhost";
-	        port = p.getProperty("firebird.drda.portNumber");
-	        ruta = p.getProperty("firebird.drda.path");
-	        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
-	        fproperties.close();
-	        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-    	} catch(Exception ex) {
-    		ex.printStackTrace();
-    	}        
+        try {
+            System.out.println("Ruta de instalacion de Base Facture FB..C:\\FDE\\ ");
+            System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
+            fproperties = new FileInputStream("C:\\FDE\\firebird.properties");
+            p.load(fproperties);
+            maquina = p.getProperty("firebird.drda.host");
+            if(maquina.equals("0.0.0.0"))
+                maquina = "localhost";
+            port = p.getProperty("firebird.drda.portNumber");
+            ruta = p.getProperty("firebird.drda.path");
+            System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
+            fproperties.close();
+            System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
         try {
             String databaseURL = (new StringBuilder()).append("jdbc:firebirdsql:").append(maquina).append("/").append(port).append(":").append(ruta).toString();
             System.out.println((new StringBuilder("Ejecutando de conexion..[ ")).append(databaseURL).append(" ]").toString());
