@@ -262,22 +262,18 @@ public class Fosar_Agente
 
     public void run()
     {
-        try
-        {
-            Nucleo();
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/Fosar_Agente.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(ClassNotFoundException ex)
-        {
-            Logger.getLogger(create/Fosar_Agente.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(create/Fosar_Agente.getName()).log(Level.SEVERE, null, ex);
-        }
+        try {
+			Nucleo();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     String sql;

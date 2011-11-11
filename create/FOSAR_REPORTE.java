@@ -18,6 +18,7 @@ import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -148,25 +149,18 @@ public class FOSAR_REPORTE extends JFrame
         lbMensajes.setText("REALIZANDO BUSQUEDA .....!!");
         String finicial = Formato_Fecha(FInicial.getCalendar(), 0);
         String ffinal = Formato_Fecha(FFinal.getCalendar(), 0);
-        try
-        {
-            FOSAR_GeneraReporte datos = new FOSAR_GeneraReporte(finicial, ffinal, JCSeries.getSelectedItem().toString());
+        try {
+        	FOSAR_GeneraReporte datos = new FOSAR_GeneraReporte(finicial, ffinal, JCSeries.getSelectedItem().toString());
             MyTableModel_FOSAR modelo = (MyTableModel_FOSAR)jTable1.getModel();
             modelo.Actualizar_Datos(datos.REPORTE);
             jScrollPane1.setViewportView(jTable1);
-        }
-        catch(ClassNotFoundException ex)
-        {
-            Logger.getLogger(create/FOSAR_REPORTE.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/FOSAR_REPORTE.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(create/FOSAR_REPORTE.getName()).log(Level.SEVERE, null, ex);
-        }
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}        
         System.out.println((new StringBuilder()).append("Parametros: FInicial ").append(finicial).append(" FFinal ").append(ffinal).append(" SERIE ").append(JCSeries.getSelectedItem().toString()).toString());
         FOSAR_REPORTE _tmp1 = this;
         lbMensajes.setText("");
@@ -199,28 +193,22 @@ public class FOSAR_REPORTE extends JFrame
 
     void Genera_reporteSAT(String finicial, String ffinal, String ruta)
     {
-        try
-        {
-            Comprobantebd cbd = new Comprobantebd();
+
+    	try {
+    		Comprobantebd cbd = new Comprobantebd();
             ConexionFirebird cnx = new ConexionFirebird();
             ConexionFirebird _tmp = cnx;
             ConexionFirebird.conectarFirebird();
             cbd.estableceConexion(cnx);
             cbd.reporteMensualV2(ruta, finicial, ffinal);
             JOptionPane.showMessageDialog(this, (new StringBuilder()).append("REPORTE GENERADO EN :\n").append(ruta).toString(), "REPORTE MENSUAL SAT", 1);
-        }
-        catch(ClassNotFoundException ex)
-        {
-            Logger.getLogger(create/FOSAR_REPORTE.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/FOSAR_REPORTE.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(create/FOSAR_REPORTE.getName()).log(Level.SEVERE, null, ex);
-        }
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}    	
     }
 
     String Selecciona_Archivo_ReporteMensual()
@@ -262,8 +250,8 @@ public class FOSAR_REPORTE extends JFrame
     {
         try
         {
-            java.util.List tables = new ArrayList();
-            java.util.List sheetsName = new ArrayList();
+            List tables = new ArrayList();
+            List sheetsName = new ArrayList();
             tables.add(jTable1);
             sheetsName.add("DOCUMENTOS_FOSAR");
             ExcelTableExporter excelExporter = new ExcelTableExporter(tables, new File((new StringBuilder()).append(ruta).append(".xls").toString()), sheetsName);
@@ -333,7 +321,4 @@ public class FOSAR_REPORTE extends JFrame
     private JTable jTable1;
     private JToolBar jToolBar1;
     private static JLabel lbMensajes;
-
-
-
 }

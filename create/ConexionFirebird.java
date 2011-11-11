@@ -22,32 +22,22 @@ public class ConexionFirebird
     public static void conectarFirebird()
         throws ClassNotFoundException, SQLException, IOException
     {
-        System.out.println("Ruta de instalacion de Base Facture FB..C:\\FDE\\ ");
-        System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
-        fproperties = new FileInputStream("C:\\FDE\\firebird.properties");
-        p.load(fproperties);
-        maquina = p.getProperty("firebird.drda.host");
-        if(maquina.equals("0.0.0.0"))
-            maquina = "localhost";
-        port = p.getProperty("firebird.drda.portNumber");
-        ruta = p.getProperty("firebird.drda.path");
-        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
-        fproperties.close();
-        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-        break MISSING_BLOCK_LABEL_166;
-        Exception ex;
-        ex;
-        ex.printStackTrace();
-        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
-        fproperties.close();
-        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-        break MISSING_BLOCK_LABEL_166;
-        Exception exception;
-        exception;
-        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
-        fproperties.close();
-        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-        throw exception;
+    	try{
+	        System.out.println("Ruta de instalacion de Base Facture FB..C:\\FDE\\ ");
+	        System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
+	        fproperties = new FileInputStream("C:\\FDE\\firebird.properties");
+	        p.load(fproperties);
+	        maquina = p.getProperty("firebird.drda.host");
+	        if(maquina.equals("0.0.0.0"))
+	            maquina = "localhost";
+	        port = p.getProperty("firebird.drda.portNumber");
+	        ruta = p.getProperty("firebird.drda.path");
+	        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
+	        fproperties.close();
+	        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
+    	} catch(Exception ex){
+    		ex.printStackTrace();
+    	}        
         try
         {
             String databaseURL = (new StringBuilder()).append("jdbc:firebirdsql:").append(maquina).append("/").append(port).append(":").append(ruta).toString();
@@ -78,7 +68,7 @@ public class ConexionFirebird
             }
         }
         // Misplaced declaration of an exception variable
-        catch(String databaseURL)
+        catch(Exception e)
         {
             m.GetMensaje("CONEXION A SERVIDOR DE FACTURACION ERRONEA, FAVOR DE VERIFICAR SU RED");
             System.exit(1);

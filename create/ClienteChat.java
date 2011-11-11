@@ -27,32 +27,22 @@ public class ClienteChat
         }
     }
 
-    void ObtenServer()
-        throws IOException
+    void ObtenServer() throws IOException
     {
-        System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
-        fproperties = new FileInputStream("C:\\FDE\\firebird.properties");
-        p.load(fproperties);
-        maquina = p.getProperty("firebird.drda.host");
-        if(maquina.equals("0.0.0.0"))
-            maquina = "localhost";
-        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
-        fproperties.close();
-        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-        break MISSING_BLOCK_LABEL_136;
-        Exception ex;
-        ex;
-        ex.printStackTrace();
-        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
-        fproperties.close();
-        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-        break MISSING_BLOCK_LABEL_136;
-        Exception exception;
-        exception;
-        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
-        fproperties.close();
-        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-        throw exception;
+    	try{
+	        System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
+	        fproperties = new FileInputStream("C:\\FDE\\firebird.properties");
+	        p.load(fproperties);
+	        maquina = p.getProperty("firebird.drda.host");
+	        if(maquina.equals("0.0.0.0"))
+	            maquina = "localhost";
+	        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
+	        fproperties.close();
+	        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
+    	}
+    	catch(IOException ex){
+    		ex.printStackTrace();
+    	}
     }
 
     public ClienteChat(int tipo)

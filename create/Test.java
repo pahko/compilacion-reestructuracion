@@ -39,49 +39,26 @@ public class Test
 
     static void Escribearchivo()
     {
-        FileWriter fichero;
-        fichero = null;
-        PrintWriter pw = null;
-        File archivo = new File("MAYO2010.txt");
-        fichero = new FileWriter(archivo, true);
-        PrintWriter pw = new PrintWriter(fichero);
-        for(int i = 0; i < 10; i++)
-            pw.println((new StringBuilder()).append("Linea ").append(i).toString());
-
-        try
-        {
-            if(null != fichero)
-                fichero.close();
-        }
-        catch(Exception e2)
-        {
-            e2.printStackTrace();
-        }
-        break MISSING_BLOCK_LABEL_139;
-        Exception e;
-        e;
-        e.printStackTrace();
-        try
-        {
-            if(null != fichero)
-                fichero.close();
-        }
-        catch(Exception e2)
-        {
-            e2.printStackTrace();
-        }
-        break MISSING_BLOCK_LABEL_139;
-        Exception exception;
-        exception;
-        try
-        {
-            if(null != fichero)
-                fichero.close();
-        }
-        catch(Exception e2)
-        {
-            e2.printStackTrace();
-        }
-        throw exception;
+    	try{
+	        FileWriter fichero;
+	        fichero = null;
+	        PrintWriter pw = null;
+	        File archivo = new File("MAYO2010.txt");
+	        fichero = new FileWriter(archivo, true);
+	        pw = new PrintWriter(fichero);
+	        for(int i = 0; i < 10; i++)
+	            pw.println((new StringBuilder()).append("Linea ").append(i).toString());	
+	        try
+	        {
+	            if(null != fichero)
+	                fichero.close();
+	        }
+	        catch(Exception e2)
+	        {
+	            e2.printStackTrace();
+	        }
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
 }

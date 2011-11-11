@@ -421,24 +421,17 @@ public class Fosar_Configuracion extends JFrame
         Facturas_txt();
         Devoluciones_txt();
         NotasCredito_txt();
-        try
-        {
-            Facturas_Prx();
-            Devoluciones_Prx();
-            NotasCredito_Prx();
-        }
-        catch(ClassNotFoundException ex)
-        {
-            Logger.getLogger(create/Fosar_Configuracion.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/Fosar_Configuracion.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(create/Fosar_Configuracion.getName()).log(Level.SEVERE, null, ex);
-        }
+        try {
+				Facturas_Prx();
+				Devoluciones_Prx();
+				NotasCredito_Prx();				
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         ps.CerrarProgreso();
     }
 
@@ -553,22 +546,15 @@ public class Fosar_Configuracion extends JFrame
 
     private void jButton12ActionPerformed(ActionEvent evt)
     {
-        try
-        {
-            Realiza_Scripts();
-        }
-        catch(ClassNotFoundException ex)
-        {
-            Logger.getLogger(create/Fosar_Configuracion.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(SQLException ex)
-        {
-            Logger.getLogger(create/Fosar_Configuracion.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(create/Fosar_Configuracion.getName()).log(Level.SEVERE, null, ex);
-        }
+    	try {
+			Realiza_Scripts();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     void Realiza_Scripts()
