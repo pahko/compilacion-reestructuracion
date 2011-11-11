@@ -12,17 +12,25 @@ import java.util.Properties;
 // Referenced classes of package create:
 //            Mensajes, ProgressBarSample
 
-public class ConexionFirebird
-{
+public class ConexionFirebird {
+	
+	static String maquina;
+    static String port;
+    static String ruta;
+    static String Installdir;
+    static String InstallDb;
+    static Driver d = null;
+    static Connection con = null;
+    static Statement stmt = null;
+    static ResultSet rs = null;
+    static FileInputStream fproperties = null;
+    static Properties p = new Properties();
+    PreparedStatement pst;
+    static Mensajes m = new Mensajes();
+    static ProgressBarSample ps = new ProgressBarSample();
 
-    public ConexionFirebird()
-    {
-    }
-
-    public static void conectarFirebird()
-        throws ClassNotFoundException, SQLException, IOException
-    {
-    	try{
+    public static void conectarFirebird() throws Exception {
+    	try {
 	        System.out.println("Ruta de instalacion de Base Facture FB..C:\\FDE\\ ");
 	        System.out.println("Leyendo archivo de propiedades en ruta princial  C:\\FDE\\");
 	        fproperties = new FileInputStream("C:\\FDE\\firebird.properties");
@@ -35,28 +43,23 @@ public class ConexionFirebird
 	        System.out.println("Cerrando Archivo en C:\\FDE\\ .......");
 	        fproperties.close();
 	        System.out.println("Archivo en C:\\FDE\\  CERRADO !!!!");
-    	} catch(Exception ex){
+    	} catch(Exception ex) {
     		ex.printStackTrace();
     	}        
-        try
-        {
+        try {
             String databaseURL = (new StringBuilder()).append("jdbc:firebirdsql:").append(maquina).append("/").append(port).append(":").append(ruta).toString();
             System.out.println((new StringBuilder("Ejecutando de conexion..[ ")).append(databaseURL).append(" ]").toString());
             String user = "SYSDBA";
             String password = "masterkey";
             String driverName = "org.firebirdsql.jdbc.FBDriver";
             Class.forName(driverName);
-            if(!databaseURL.equals(null))
-            {
+            if(!databaseURL.equals(null)) {
                 boolean centinela = true;
-                try
-                {
+                try {
                     con = DriverManager.getConnection(databaseURL, user, password);
                     con.setAutoCommit(false);
                     centinela = false;
-                }
-                catch(SQLException e)
-                {
+                } catch(SQLException e) {
                     System.out.println((new StringBuilder("Servicio FireBird No Activo en ruta\n")).append(databaseURL).append("\nContacte A Su Proveedor").toString());
                     m.GetMensaje("CONEXION A SERVIDOR DE FACTURACION ERRONEA, FAVOR DE VERIFICAR SU RED");
                     System.exit(1);
@@ -198,20 +201,5 @@ public class ConexionFirebird
         conectarFirebird();
         cnx.finalizar();
     }
-
-    static String maquina;
-    static String port;
-    static String ruta;
-    static String Installdir;
-    static String InstallDb;
-    static Driver d = null;
-    static Connection con = null;
-    static Statement stmt = null;
-    static ResultSet rs = null;
-    static FileInputStream fproperties = null;
-    static Properties p = new Properties();
-    PreparedStatement pst;
-    static Mensajes m = new Mensajes();
-    static ProgressBarSample ps = new ProgressBarSample();
 
 }

@@ -6,14 +6,13 @@
 package excelexporter;
 
 
-public class Main
-{
+public class Main {
 
-    public Main()
-    {
+    public Main() {
+    
     }
 
-    public static void main(String args1[])
-    {
+    public static void main(String args1[]) {
+    	
     }
 }
