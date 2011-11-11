@@ -1,20 +1,18 @@
-// Decompiled by DJ v3.12.12.96 Copyright 2011 Atanas Neshkov  Date: 07/11/2011 05:27:33 p.m.
-// Home Page: http://members.fortunecity.com/neshkov/dj.html  http://www.neshkov.com/dj.html - Check often for new version!
-// Decompiler options: packimports(3) 
-// Source File Name:   Tarticulos.java
-
-package create;
+package create
 
 import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// Referenced classes of package create:
-//            ConexionFirebird
 
 public class Tarticulos {
-    public Tarticulos()
-        throws SQLException, FileNotFoundException, IOException {
+    
+	String sql;
+    ResultSet rs;
+    ConexionFirebird cnx;
+	
+	
+	public Tarticulos() throws Exception {
         sql = null;
         cnx = new ConexionFirebird();
         try {
@@ -49,91 +47,84 @@ public class Tarticulos {
 
     public void CatEdos() throws SQLException {
         try {
-            sql = "CREATE TABLE CFD_EDOS (ESTADO VARCHAR(28),COLOR INTEGER,IDEDOS INTEGER NOT NULL,EDOS VARCHAR(1)) ";
+            sql = "CREATE TABLE CFD_EDOS (ESTADO VARCHAR(28),COLOR " +
+            		"INTEGER,IDEDOS INTEGER NOT NULL,EDOS VARCHAR(1)) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
-            System.out.println("Valores ya existentes (Estados)");
-        }
-        try {
-            sql = " CREATE UNIQUE INDEX SQL070911053112600 ON CFD_EDOS (IDEDOS ASC) ";
+            
+            sql = " CREATE UNIQUE INDEX SQL070911053112600 ON CFD_EDOS " +
+            		"(IDEDOS ASC) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
-            System.out.println("Valores ya existentes (Estados)");
-        }
-        try {
-            sql = " ALTER TABLE CFD_EDOS ADD CONSTRAINT SQL070911053112600 PRIMARY KEY (IDEDOS) ";
+            
+            sql = " ALTER TABLE CFD_EDOS ADD CONSTRAINT SQL070911053112600 " +
+            		"PRIMARY KEY (IDEDOS) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
-            System.out.println("Valores ya existentes (Estados)");
-        }
-        try {
-            sql = " INSERT INTO CFD_EDOS(ESTADO,COLOR,IDEDOS,EDOS) VALUES('Vigente',0,1,'T') ";
+            
+            sql = " INSERT INTO CFD_EDOS(ESTADO,COLOR,IDEDOS,EDOS) " +
+            		"VALUES('Vigente',0,1,'T') ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
-            System.out.println("Valores ya existentes (Estados)");
-        }
-        try {
-            sql = " INSERT INTO CFD_EDOS(ESTADO,COLOR,IDEDOS,EDOS) VALUES('Cancelado',255,2,'X') ";
+            
+            sql = " INSERT INTO CFD_EDOS(ESTADO,COLOR,IDEDOS,EDOS) " +
+            		"VALUES('Cancelado',255,2,'X') ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
-            System.out.println("Valores ya existentes (Estados)");
-        }
-        try {
-            sql = "INSERT INTO CFD_EDOS (ESTADO, COLOR, IDEDOS, EDOS) VALUES ('Remision', 15993634, 3, 'R')";
+            
+            sql = "INSERT INTO CFD_EDOS (ESTADO, COLOR, IDEDOS, EDOS) " +
+            		"VALUES ('Remision', 15993634, 3, 'R')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
+            
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Estados)");
         }
     }
 
     public void CamMoneda() throws SQLException {
         try {
-            sql = " ALTER TABLE CFD_COMPROBANTE ADD COLUMN TIPO_CAMBIO DECIMAL(10,2)";
+            sql = " ALTER TABLE CFD_COMPROBANTE ADD COLUMN " +
+            		"TIPO_CAMBIO DECIMAL(10,2)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             sql = " ALTER TABLE CFD_COMPROBANTE ADD COLUMN MONEDA VARCHAR(3)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
-            System.out.println("Valores ya existentes(Cambio de moneda ya realizado...");
+        } catch(SQLException e) {
+            System.out.println("Valores ya existentes(Cambio de moneda ya " +
+            		"realizado...");
         }
         try {
-            sql = "UPDATE CFD_COMPROBANTE SET TIPO_CAMBIO = 0.0, MONEDA = 'PSM' WHERE moneda is null  and  tipo_cambio is null";
+            sql = "UPDATE CFD_COMPROBANTE SET TIPO_CAMBIO = 0.0, MONEDA = " +
+            		"'PSM' WHERE moneda is null  and  tipo_cambio is null";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-            System.out.println("Valores de tipo de cambio actualizados a pesos...");
-        }
-        catch(SQLException e) {
-            System.out.println("Valores ya existentes(Tipo de cambio no se encontraron valores nulos...)");
+            System.out.println("Valores de tipo de cambio actualizados " +
+            		"a pesos...");
+        } catch(SQLException e) {
+            System.out.println("Valores ya existentes(Tipo de cambio no se " +
+            		"encontraron valores nulos...)");
         }
     }
 
     public void CatAddenda() throws SQLException {
         try {
-            sql = "CREATE TABLE CFD_CAMADE (IDCAMPO INTEGER NOT NULL,IDEMPRESA INTEGER,IDSUCURSAL INTEGER,NOMBRE VARCHAR(255),FORMATO VARCHAR(25),PLANTILLA INTEGER)";
+            sql = "CREATE TABLE CFD_CAMADE (IDCAMPO INTEGER NOT" +
+            		" NULL,IDEMPRESA INTEGER,IDSUCURSAL INTEGER,NOMBRE " +
+            		"VARCHAR(255),FORMATO VARCHAR(25),PLANTILLA INTEGER)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-            sql = " CREATE UNIQUE INDEX SQL070918110145790 ON CFD_CAMADE (IDCAMPO ASC)";
+            
+            sql = " CREATE UNIQUE INDEX SQL070918110145790 ON CFD_CAMADE " +
+            		"(IDCAMPO ASC)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
+            
             sql = " ALTER TABLE CFD_CAMADE ADD CONSTRAINT SQL070918110145790 PRIMARY KEY (IDCAMPO)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e) {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Addenda)");
         }
         try {
@@ -151,785 +142,862 @@ public class Tarticulos {
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'calle_receptor'";
             rs = cnx.consulta(sql, true);
             if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'calle_receptor',2,2)").toString();
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'calle_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'noexterior_receptor'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'noexterior_receptor',2,2)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'noexterior_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'nointerior_receptor'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'nointerior_receptor',2,2)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'nointerior_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'colonia_receptor'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'colonia_receptor',2,2)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'colonia_receptor',2,2)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'calle_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'calle_sucursal',2,1)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'calle_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'noexterior_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'noexterior_sucursal',2,1)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'noexterior_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'nointerior_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'nointerior_sucursal',2,1)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'nointerior_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'colonia_sucursal'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next()) {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'colonia_sucursal',2,1)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'colonia_sucursal',2,1)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'desglose_impuestos'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'desglose_impuestos',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'desglose_impuestos',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'retencion_iva'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'retencion_iva',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'retencion_iva',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'retencion_isr'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'retencion_isr',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'retencion_isr',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'traslado_iva'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'traslado_iva',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'traslado_iva',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'traslado_ieps'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'traslado_ieps',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'traslado_ieps',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'subtotal_honorarios'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'subtotal_honorarios',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'subtotal_honorarios',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'anio_de_aprobacion'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'anio_de_aprobacion',1,4)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'anio_de_aprobacion',1,4)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'subtotal_iva_tra'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'subtotal_iva_tra',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'subtotal_iva_tra',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'subtotal_isr_ret'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'subtotal_isr_ret',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'subtotal_isr_ret',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'subtotal_ieps_tra'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'subtotal_ieps_tra',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'subtotal_ieps_tra',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMPO WHERE campo = 'subtotal_iva_ret'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, CAMPO, ESTADO, GRUPO) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMPO")).append(",'subtotal_iva_ret',1,3)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMPO(IDCAMPO, " +
+                		"CAMPO, ESTADO, GRUPO) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMPO"))
+                		.append(",'subtotal_iva_ret',1,3)").toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             System.out.println("Valores creados (Campos Impresion)");
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             e.printStackTrace();
             System.out.println("Valores ya existentes (Campos Impresion)");
         }
     }
 
-    public void ValAddenda()
-        throws SQLException
-    {
-        try
-        {
-            sql = "CREATE TABLE CFD_VALADE (IDVAL INTEGER,IDCAMPO INTEGER,FOLIO INTEGER,SERIE VARCHAR(5),VAL VARCHAR(800),CVEART VARCHAR(30),IDEMPRESA INTEGER )";
+    public void ValAddenda() throws SQLException {
+        try {
+            sql = "CREATE TABLE CFD_VALADE (IDVAL INTEGER,IDCAMPO " +
+            		"INTEGER,FOLIO INTEGER,SERIE VARCHAR(5),VAL " +
+            		"VARCHAR(800),CVEART VARCHAR(30),IDEMPRESA INTEGER )";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Valores Adenda)");
         }
-        try
-        {
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noVersAdd' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+        
+        try {
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noVersAdd' " +
+            		"and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'noVersAdd','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'noVersAdd','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'claseDoc' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'claseDoc' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'claseDoc','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'claseDoc','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noSociedad' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noSociedad' " +
+            		"and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'noSociedad','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'noSociedad','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noProveedor' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'noProveedor','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'noProveedor','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noPedido' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noPedido' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'noPedido','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'noPedido','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'moneda' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'moneda' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'moneda','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'moneda','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noEntrada' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noEntrada' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'noEntrada','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'noEntrada','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noRemision' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noRemision' " +
+            		"and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'noRemision','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'noRemision','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noSocio' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'noSocio' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'noSocio','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'noSocio','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'centro' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'centro' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'centro','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'centro','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'iniPerLiq' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'iniPerLiq' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'iniPerLiq','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'iniPerLiq','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'finPerLiq' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'finPerLiq' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'finPerLiq','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'finPerLiq','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'retencion1' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'retencion1' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'retencion1','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'retencion1','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'retencion2' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'retencion2' " +
+            		"and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'retencion2','FacturaFemsa',1,'Documento')").toString();
+            if(!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'retencion2','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
-            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'email' and FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
+            
+            sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'email' and " +
+            		"FORMATO = 'FacturaFemsa' AND COMPANY = 'Documento'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES (")).append(nextID("IDCAMPO", "CFD_CAMADE")).append(",'email','FacturaFemsa',1,'Documento')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE(IDCAMPO, " +
+                		"NOMBRE, FORMATO, PLANTILLA, COMPANY) VALUES ("))
+                		.append(nextID("IDCAMPO", "CFD_CAMADE"))
+                		.append(",'email','FacturaFemsa',1,'Documento')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
             }
+            
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             e.printStackTrace();
             System.out.println("Valores ya existentes (Addenda Femsa)");
         }
     }
 
-    public void Descuentos()
-        throws SQLException
-    {
-        try
-        {
-            sql = "CREATE TABLE CFD_DESCUENTOS (IDDECUENTO INTEGER NOT NULL,IDCDECUENTO INTEGER,IDEMPRESA INTEGER,FOLIO INTEGER,SERIE VARCHAR(5),CVEART VARCHAR(30),IMPORTE_UNITARIO DECIMAL(10,2),IMPORTE_TOTAL DECIMAL(10,2))";
+    public void Descuentos() throws SQLException {
+        try {
+            sql = "CREATE TABLE CFD_DESCUENTOS (IDDECUENTO INTEGER NOT " +
+            		"NULL,IDCDECUENTO INTEGER,IDEMPRESA INTEGER,FOLIO " +
+            		"INTEGER,SERIE VARCHAR(5),CVEART VARCHAR(30)," +
+            		"IMPORTE_UNITARIO DECIMAL(10,2),IMPORTE_TOTAL " +
+            		"DECIMAL(10,2))";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Descuentos)");
         }
     }
 
-    public void CatDescuentos()
-        throws SQLException
-    {
-        try
-        {
-            sql = "CREATE TABLE CFD_CATDESCUENTOS ( IDCDECUENTO INTEGER NOT NULL,DESCRIPCION VARCHAR(250),TASA DOUBLE,IDEMPRESA INTEGER) ";
+    public void CatDescuentos() throws SQLException {
+        try {
+            sql = "CREATE TABLE CFD_CATDESCUENTOS ( IDCDECUENTO INTEGER NOT " +
+            		"NULL,DESCRIPCION VARCHAR(250),TASA DOUBLE," +
+            		"IDEMPRESA INTEGER) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-            sql = " CREATE UNIQUE INDEX SQL071002115450450 ON CFD_CATDESCUENTOS (IDCDECUENTO ASC)";
+            
+            sql = " CREATE UNIQUE INDEX SQL071002115450450 ON " +
+            		"CFD_CATDESCUENTOS (IDCDECUENTO ASC)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-            sql = " ALTER TABLE CFD_CATDESCUENTOS ADD CONSTRAINT SQL071002115450450 PRIMARY KEY (IDCDECUENTO)";
+            
+            sql = " ALTER TABLE CFD_CATDESCUENTOS ADD CONSTRAINT " +
+            		"SQL071002115450450 PRIMARY KEY (IDCDECUENTO)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Catalogo de descuentos)");
         }
-        try
-        {
+        
+        try {
             sql = "ALTER TABLE CFD_CATDESCUENTOS ADD COLUMN TIPO VARCHAR(2)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-            try
-            {
+            try {
                 sql = "UPDATE CFD_CATDESCUENTOS SET TIPO = 'D'";
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Valores ya existentes");
             }
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Campo tipo en catdescuentos)");
         }
-        try
-        {
+        
+        try {
             sql = "ALTER TABLE CFD_DESCUENTOS ADD COLUMN TIPO VARCHAR(2)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-            try
-            {
+            try {
                 sql = "UPDATE CFD_DESCUENTOS SET TIPO = 'D'";
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Valores ya existentes");
             }
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Campo tipo en descuentos)");
         }
     }
 
-    public void CampoISH()
-        throws SQLException
-    {
-        try
-        {
+    public void CampoISH() throws SQLException {
+        try {
             sql = "INSERT INTO cfd_campo VALUES (60, 'traslado_ish', 1, 3 ) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Campo traslado_ish en catalogo de campos dise\361o)");
         }
     }
 
-    public void ArticulosFactura()
-        throws SQLException
-    {
-        try
-        {
+    public void ArticulosFactura() throws SQLException {
+        try {
             sql = "INSERT INTO cfd_campo VALUES (38, 'num_art', 1, 4 ) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
+        } catch(SQLException e) {
+            System.out.println("Valores ya existentes (Campo clave en " +
+            		"catalogo de campos dise\361o)");
         }
-        catch(SQLException e)
-        {
-            System.out.println("Valores ya existentes (Campo clave en catalogo de campos dise\361o)");
-        }
-        try
-        {
-            sql = "INSERT INTO CFD_IMPRESION VALUES(38,'',15,15,15,15,0,'',-1,null)";
+        
+        try {
+            sql = "INSERT INTO CFD_IMPRESION VALUES(38,'',15,15,15,15,0,''" +
+            		",-1,null)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
+        } catch(SQLException e) {
+            System.out.println("Valores ya existentes (Campo clave de " +
+            		"articulo)");
         }
-        catch(SQLException e)
-        {
-            System.out.println("Valores ya existentes (Campo clave de articulo)");
-        }
-        try
-        {
+        
+        try {
             sql = "ALTER TABLE CFD_CATDESCUENTOS ADD COLUMN EDOS int DEFAULT 1";
             rs = cnx.consulta(sql, false);
             cnx.commit();
+        } catch(SQLException e) {
+            System.out.println("Valores ya existentes (Campo estados en " +
+            		"descuentos)");
         }
-        catch(SQLException e)
-        {
-            System.out.println("Valores ya existentes (Campo estados en descuentos)");
-        }
-        try
-        {
+        
+        try {
             sql = "INSERT INTO cfd_campo VALUES (39, 'cveart', 1, 3)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
-        try
-        {
-            sql = "CREATE TABLE CNET_MEMPRESA (IDMULTIE INTEGER NOT NULL,IDEMPRESA INTEGER,IDENTIDAD INTEGER) ";
+        
+        try {
+            sql = "CREATE TABLE CNET_MEMPRESA (IDMULTIE INTEGER NOT " +
+            		"NULL,IDEMPRESA INTEGER,IDENTIDAD INTEGER) ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
-        try
-        {
-            sql = "CREATE UNIQUE INDEX SQL071024062044310 ON CNET_MEMPRESA (IDMULTIE ASC)";
+        
+        try {
+            sql = "CREATE UNIQUE INDEX SQL071024062044310 ON CNET_MEMPRESA " +
+            		"(IDMULTIE ASC)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Multiples empresas)");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_MEMPRESA ADD CONSTRAINT SQL071024062044310 PRIMARY KEY (IDMULTIE)";
+        
+        try {
+            sql = "ALTER TABLE CNET_MEMPRESA ADD CONSTRAINT " +
+            		"SQL071024062044310 PRIMARY KEY (IDMULTIE)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
-        try
-        {
+        
+        try {
             sql = "ALTER TABLE CFD_CAMADE ADD COLUMN COMPANY VARCHAR(25)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
-        try
-        {
-            sql = "ALTER TABLE ALM_DESC_DETALLE ALTER COLUMN DESCRIPCION SET DATA TYPE VARCHAR(800)";
+        
+        try {
+            sql = "ALTER TABLE ALM_DESC_DETALLE ALTER COLUMN DESCRIPCION " +
+            		"SET DATA TYPE VARCHAR(800)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             e.printStackTrace();
-            System.out.println("Valores ya modificados (Se amplia descripcion a 800 en articulos)");
+            System.out.println("Valores ya modificados (Se amplia " +
+            		"descripcion a 800 en articulos)");
         }
-        try
-        {
-            sql = "ALTER TABLE cfd_conceptos ALTER COLUMN DESCRIPCION SET DATA TYPE VARCHAR(800)";
+        
+        try {
+            sql = "ALTER TABLE cfd_conceptos ALTER COLUMN DESCRIPCION " +
+            		"SET DATA TYPE VARCHAR(800)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             e.printStackTrace();
-            System.out.println("Valores ya modificado (Se amplia descripcion a 800 en conceptos)");
+            System.out.println("Valores ya modificado (Se amplia " +
+            		"descripcion a 800 en conceptos)");
         }
     }
 
-    private long nextID(String campoID, String tabla)
-        throws SQLException
-    {
-        String sql = (new StringBuilder("SELECT MAX(")).append(campoID).append(") as m_id FROM ").append(tabla).toString();
+    private long nextID(String campoID, String tabla) throws SQLException {
+        String sql = (new StringBuilder("SELECT MAX(")).append(campoID)
+        	.append(") as m_id FROM ").append(tabla).toString();
         ResultSet rs = cnx.consulta(sql, true);
         rs.next();
         long id = rs.getLong("m_id");
-        if(id == 0L)
-            id = 1L;
-        else
-            id++;
+        if (id == 0L) {
+        	id = 1L;
+        } else {
+        	id++;
+        }
         return id;
     }
 
-    public boolean ControlV(String ver1, String ver2, String ver3)
-        throws SQLException
-    {
-        try
-        {
+    public boolean ControlV(String ver1, String ver2, String ver3) 
+    		throws SQLException {
+        try {
             sql = "ALTER TABLE CNET_MODULOS ADD UP INTEGER DEFAULT 0";
             rs = cnx.consulta(sql, false);
             cnx.commit();
+        } catch(SQLException e) {
+            System.out.println("Columna de registro de actualizacion " +
+            		"ya exite..");
         }
-        catch(SQLException e)
-        {
-            System.out.println("Columna de registro de actualizacion ya exite..");
-        }
-        sql = (new StringBuilder("SELECT * FROM CNET_MODULOS WHERE IDMODULO = 1 and X = ")).append(ver1).append(" and Y = ").append(ver2).append(" and Z = ").append(ver3).toString();
+        
+        sql = (new StringBuilder("SELECT * FROM CNET_MODULOS WHERE " +
+        		"IDMODULO = 1 and X = ")).append(ver1)
+        		.append(" and Y = ").append(ver2)
+        		.append(" and Z = ").append(ver3).toString();
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
-            try
-            {
-                sql = (new StringBuilder("UPDATE CNET_MODULOS SET X = ")).append(ver1).append(", Y = ").append(ver2).append(", Z = ").append(ver3).append(", UP = 1 WHERE IDMODULO = 1").toString();
+        if (!rs.next()) {
+            try {
+                sql = (new StringBuilder("UPDATE CNET_MODULOS SET X = "))
+                	.append(ver1).append(", Y = ").append(ver2)
+                	.append(", Z = ").append(ver3)
+                	.append(", UP = 1 WHERE IDMODULO = 1").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
                 System.out.println("Se actualiza la version");
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("No se realizo actualizacion de version");
             }
+            
             return true;
-        } else
-        {
-            System.out.println((new StringBuilder("La version: ")).append(ver1).append(".").append(ver2).append(".").append(ver3).append(" ya ha sido actualizada").toString());
+        
+        } else {
+            System.out.println((new StringBuilder("La version: "))
+            		.append(ver1).append(".").append(ver2).append(".")
+            		.append(ver3).append(" ya ha sido actualizada").toString());
             return false;
         }
     }
 
-    public void Precision()
-        throws SQLException
-    {
-        try
-        {
+    public void Precision() throws SQLException {
+        try {
             sql = "ALTER TABLE CFD_CONFIG ADD REDONDEA INTEGER DEFAULT 0";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Se actualiza precision ...");
-        }
-        catch(SQLException e)
-        {
-            System.out.println("Columna de precision de actualizacion ya exite..");
+        } catch(SQLException e) {
+            System.out.println("Columna de precision de actualizacion " +
+            		"ya exite..");
         }
     }
 
-    public void BackUpMode()
-        throws SQLException
-    {
-        try
-        {
+    public void BackUpMode() throws SQLException {
+        try {
             sql = "SELECT * FROM CNET_CAT_MOVTOS WHERE DESCRIPCION = 'BACKUP'";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if (!rs.next()) {
                 String imagen = ".\\resources\\icons\\backup.bmp";
-                sql = (new StringBuilder("INSERT INTO CNET_CAT_MOVTOS(IDCATMOVTO,DESCRIPCION,NIVEL,SUBNIVEL,X,Y,Z,VENTANA,SMALL_PICTURE,LARGE_PICTURE) VALUES (")).append(nextID("IDCATMOVTO", "CNET_CAT_MOVTOS")).append(",'BACKUP',4,8,0,0,1,'w_backup','").append(imagen).append("','").append(imagen).append("')").toString();
+                sql = (new StringBuilder("INSERT INTO " +
+                		"CNET_CAT_MOVTOS(IDCATMOVTO,DESCRIPCION,NIVEL," +
+                		"SUBNIVEL,X,Y,Z,VENTANA,SMALL_PICTURE,LARGE_PICTURE) " +
+                		"VALUES ("))
+                		.append(nextID("IDCATMOVTO", "CNET_CAT_MOVTOS"))
+                		.append(",'BACKUP',4,8,0,0,1,'w_backup','")
+                		.append(imagen).append("','").append(imagen)
+                		.append("')").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
             }
-            sql = "SELECT * FROM CNET_MODTOS WHERE IDMODULO = 1 and IDCATMOVTO = 33";
+            
+            sql = "SELECT * FROM CNET_MODTOS WHERE IDMODULO = 1 and " +
+            		"IDCATMOVTO = 33";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CNET_MODTOS(IDMODTO,IDMODULO,IDCATMOVTO) VALUES (")).append(nextID("IDMODTO", "CNET_MODTOS")).append(",1,33)").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO " +
+                		"CNET_MODTOS(IDMODTO,IDMODULO,IDCATMOVTO) VALUES ("))
+                		.append(nextID("IDMODTO", "CNET_MODTOS"))
+                		.append(",1,33)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
             }
-            sql = "SELECT * FROM CNET_PERMISOS WHERE IDUSUARIO = 1 AND IDMODTO = 15";
+            
+            sql = "SELECT * FROM CNET_PERMISOS WHERE IDUSUARIO = 1 AND " +
+            		"IDMODTO = 15";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
+            if(!rs.next()) {
                 sql = "INSERT INTO CNET_PERMISOS(IDUSUARIO,IDMODTO,ESTADO) VALUES (1,15,'A')";
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
             }
+            
             System.out.println("Se han actualizado (BackUpMode)");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (BackUpMode)");
         }
     }
 
-    public void ActulalizaTDocto()
-        throws SQLException
-    {
-        try
-        {
+    public void ActulalizaTDocto() throws SQLException {
+        try {
             sql = "ALTER TABLE CFD_TDOCTOS ALTER COLUMN LDESC TYPE VARCHAR(80)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
-        try
-        {
+        
+        try {
             sql = "ALTER TABLE CFD_TDOCTOS ALTER COLUMN SDESC TYPE VARCHAR(80)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
-        try
-        {
-            sql = "UPDATE CFD_TDOCTOS SET SDESC = 'RECIBO DE HONORARIOS' WHERE IDTDOCTO = 2";
+        
+        try {
+            sql = "UPDATE CFD_TDOCTOS SET SDESC = 'RECIBO DE HONORARIOS' " +
+            		"WHERE IDTDOCTO = 2";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes");
         }
-        try
-        {
+        
+        try {
             sql = "SELECT * FROM CFD_TDOCTOS WHERE IDTDOCTO = 5";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_TDOCTOS(IDTDOCTO, LDESC, SDESC, ESTADO) VALUES (")).append(nextID("IDTDOCTO", "CFD_TDOCTOS")).append(",'RECIBO DE PAGO','RECIBO DE PAGO','A')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_TDOCTOS(IDTDOCTO, " +
+                		"LDESC, SDESC, ESTADO) VALUES ("))
+                		.append(nextID("IDTDOCTO", "CFD_TDOCTOS"))
+                		.append(",'RECIBO DE PAGO','RECIBO DE PAGO','A')")
+                		.toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
             }
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Recibo de pago)");
         }
-        try
-        {
+        
+        try {
             sql = "SELECT * FROM CFD_TDOCTOS WHERE IDTDOCTO = 6";
             rs = cnx.consulta(sql, true);
-            if(!rs.next())
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_TDOCTOS(IDTDOCTO, LDESC, SDESC, ESTADO) VALUES (")).append(nextID("IDTDOCTO", "CFD_TDOCTOS")).append(",'RECIBO DE ARRENDAMIENTO','RECIBO DE ARRENDAMIENTO','A')").toString();
+            if (!rs.next()) {
+                sql = (new StringBuilder("INSERT INTO CFD_TDOCTOS(IDTDOCTO, " +
+                		"LDESC, SDESC, ESTADO) VALUES ("))
+                		.append(nextID("IDTDOCTO", "CFD_TDOCTOS"))
+                		.append(",'RECIBO DE ARRENDAMIENTO'," +
+                				"'RECIBO DE ARRENDAMIENTO','A')").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
             }
-        }
-        catch(SQLException e)
-        {
-            System.out.println("Valores ya existentes (Recibo de arrendamiento)");
+        } catch(SQLException e) {
+            System.out.println("Valores ya existentes " +
+            		"(Recibo de arrendamiento)");
         }
     }
 
-    public void RazonSocial()
-        throws SQLException
-    {
+    public void RazonSocial() throws SQLException {
         System.out.println("Actualizando Razon Social");
-        try
-        {
-            sql = "ALTER TABLE CNET_ENTIDADES ALTER COLUMN NOMBRE TYPE VARCHAR(200)";
+        try {
+            sql = "ALTER TABLE CNET_ENTIDADES ALTER COLUMN NOMBRE TYPE " +
+            		"VARCHAR(200)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (CNET_ENTIDADES)");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_PROVEEDOR ALTER COLUMN RAZON_SOCIAL TYPE VARCHAR(200)";
+        
+        try {
+            sql = "ALTER TABLE CNET_PROVEEDOR ALTER COLUMN RAZON_SOCIAL " +
+            		"TYPE VARCHAR(200)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (CNET_PROVEEDOR)");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_CLIENTE ALTER COLUMN RAZON_SOCIAL TYPE VARCHAR(200)";
+        
+        try {
+            sql = "ALTER TABLE CNET_CLIENTE ALTER COLUMN RAZON_SOCIAL TYPE " +
+            		"VARCHAR(200)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (CNET_CLIENTE)");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_EMPRESAALTER COLUMN NOMBRECOMERCIAL TYPE VARCHAR(200)";
+        
+        try {
+            sql = "ALTER TABLE CNET_EMPRESAALTER COLUMN NOMBRECOMERCIAL TYPE " +
+            		"VARCHAR(200)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (CNET_EMPRESAALTER)");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_SUCURSAL ALTER COLUMN DESCRIPCION TYPE VARCHAR(200)";
+        
+        try {
+            sql = "ALTER TABLE CNET_SUCURSAL ALTER COLUMN DESCRIPCION TYPE " +
+            		"VARCHAR(200)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (CNET_SUCURSAL)");
         }
     }
 
-    public void Vacios_Addenda()
-    {
-        try
-        {
+    public void Vacios_Addenda() {
+        try {
             sql = "ALTER TABLE CFD_ADDENDA ADD VACIO INTEGER DEFAULT 0";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (Vacios_Addenda)");
         }
     }
 
-    public void Cfg_Rango_Fechas()
-    {
-        try
-        {
+    public void Cfg_Rango_Fechas() {
+        try {
             sql = "ALTER TABLE CFD_CONFIG ADD RDATE INTEGER DEFAULT 0";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Se actualiza rango de fechas ...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna rango de fechas ya exite..");
         }
     }
 
-    public void FOLIOS_APROB()
-    {
-        try
-        {
+    public void FOLIOS_APROB() {
+        try {
             sql = "ALTER TABLE CFD_FOLIOS ADD AAPROB INTEGER DEFAULT 0";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Se actualiza anio de aprobacion ...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna anio de aprobacion ya exite..");
         }
     }
 
-    public void Desc_Entidad()
-    {
-        try
-        {
+    public void Desc_Entidad() {
+        try {
             sql = "ALTER TABLE CNET_CLIENTE ALTER COLUMN RAZON_SOCIAL TYPE VARCHAR(800)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Se actualiza RAZON_SOCIAL ...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna RAZON_SOCIAL ya exite..");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_EMPRESA ALTER COLUMN NOMBRECOMERCIAL TYPE VARCHAR(800)";
+        
+        try {
+            sql = "ALTER TABLE CNET_EMPRESA ALTER COLUMN NOMBRECOMERCIAL " +
+            		"TYPE VARCHAR(800)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Se actualiza NOMBRECOMERCIAL ...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna NOMBRECOMERCIAL ya exite..");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_ENTIDADES ALTER COLUMN NOMBRE TYPE VARCHAR(800)";
+        
+        try {
+            sql = "ALTER TABLE CNET_ENTIDADES ALTER COLUMN NOMBRE TYPE " +
+            		"VARCHAR(800)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Se actualiza NOMBRE ...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna NOMBRE ya exite..");
         }
-        try
-        {
-            sql = "ALTER TABLE CNET_PROVEEDOR ALTER COLUMN RAZON_SOCIAL TYPE VARCHAR(800)";
+        
+        try {
+            sql = "ALTER TABLE CNET_PROVEEDOR ALTER COLUMN RAZON_SOCIAL TYPE " +
+            		"VARCHAR(800)";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Se actualiza RAZON_SOCIAL ...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna RAZON_SOCIAL ya exite..");
         }
     }
 
-    public void DetallistaCom()
-        throws SQLException
-    {
+    public void DetallistaCom() throws SQLException {
         long ll_idadd = 0L;
         long ll_iddetallista = 0L;
         long ll_idRQFP = 0L;
@@ -952,763 +1020,1034 @@ public class Tarticulos {
         long ll_idcampo = 0L;
         sql = "SELECT * FROM CFD_ADDENDA WHERE DESCRIPCION = 'Detallista'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idadd = nextID("IDADD", "CFD_ADDENDA");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_ADDENDA (IDADD, DESCRIPCION, VACIO, TIPO) VALUES (")).append(ll_idadd).append(", 'Detallista', 0,2)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_ADDENDA " +
+                		"(IDADD, DESCRIPCION, VACIO, TIPO) VALUES ("))
+                		.append(ll_idadd).append(", 'Detallista', 0,2)")
+                		.toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna Detallista ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idadd = rs.getLong("IDADD");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:detallista'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        
+        if (!rs.next()) {
             ll_iddetallista = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_iddetallista).append(", NULL, NULL, 'detallista:detallista', NULL, 2, NULL, 1, 0, 0, 0, 1, 1, '', ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_iddetallista)
+                		.append(", NULL, NULL, 'detallista:detallista', " +
+                				"NULL, 2, NULL, 1, 0, 0, 0, 1, 1, '', ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:detallista ya exite..");
             }
-        } else
-        {
+        } else {
             ll_iddetallista = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'type'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        
+        if (!rs.next()) {
             ll_idcampo = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idcampo).append(", NULL, NULL, 'type', '', 2, 'Detallista', 1, 52, 0, ").append(ll_iddetallista).append(", 2, 0, 'SimpleInvoiceType', ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idcampo).append(", NULL, " +
+                		"NULL, 'type', '', 2, 'Detallista', 1, 52, 0, ")
+                		.append(ll_iddetallista)
+                		.append(", 2, 0, 'SimpleInvoiceType', ")
+                		.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna type ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idcampo = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'contentVersion'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idcampo = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idcampo).append(", NULL, NULL, 'contentVersion', '', 2, 'Detallista', 2, 97, 0, ").append(ll_iddetallista).append(", 2, 0, '1.3.1',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idcampo)
+                		.append(", NULL, NULL, 'contentVersion', '', 2, " +
+                				"'Detallista', 2, 97, 0, ")
+                				.append(ll_iddetallista)
+                				.append(", 2, 0, '1.3.1',  ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna contentVersion ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idcampo = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'documentStructureVersion'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'documentStructureVersion'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if(!rs.next()) {
             ll_idcampo = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idcampo).append(", NULL, NULL, 'documentStructureVersion', '', 2, 'Detallista', 3, 97, 0, ").append(ll_iddetallista).append(", 2, 1, 'AMC8.1',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idcampo)
+                		.append(", NULL, NULL, 'documentStructureVersion', " +
+                				"'', 2, 'Detallista', 3, 97, 0, ")
+                				.append(ll_iddetallista).
+                				append(", 2, 1, 'AMC8.1',  ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna documentStructureVersion " +
+                		"ya exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna documentStructureVersion ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idcampo = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'documentStatus'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idcampo = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idcampo).append(", NULL, NULL, 'documentStatus', '', 2, 'Detallista', 4, 108, 0, ").append(ll_iddetallista).append(", 2, 1, 'ORIGINAL',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idcampo)
+                		.append(", NULL, NULL, 'documentStatus', '', 2, " +
+                				"'Detallista', 4, 108, 0, ")
+                				.append(ll_iddetallista)
+                				.append(", 2, 1, 'ORIGINAL',  ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna documentStatus ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idcampo = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:requestForPaymentIdentification'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:requestForPaymentIdentification'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idRQFP = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idRQFP).append(", NULL, NULL, 'detallista:requestForPaymentIdentification', '', 2, 'Detallista', 1, 0, ").append(ll_iddetallista).append(", 0, 2, 1, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+                		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+                		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, " +
+                		"STATUS, IDASC) VALUES (")).append(ll_idRQFP)
+                		.append(", NULL, NULL, " +
+                			"'detallista:requestForPaymentIdentification', " +
+                			"'', 2, 'Detallista', 1, 0, ")
+                			.append(ll_iddetallista)
+                			.append(", 0, 2, 1, '',  ")
+                			.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna " +
+                	"detallista:requestForPaymentIdentification ya exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna detallista:requestForPaymentIdentification ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idRQFP = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:specialInstruction'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:specialInstruction'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idSI = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idSI).append(", NULL, NULL, 'detallista:specialInstruction', '', 2, 'Detallista', 2, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idSI)
+                		.append(", NULL, NULL, " +
+                				"'detallista:specialInstruction', '', 2, " +
+                				"'Detallista', 2, NULL, ").
+                				append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna detallista:specialInstruction ya " +
+                		"	exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna detallista:specialInstruction ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idSI = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:orderIdentification'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:orderIdentification'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idORI = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
+            try {
                 sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idORI).append(", NULL, NULL, 'detallista:orderIdentification', '', 2, 'Detallista', 3, 0, ").append(ll_iddetallista).append(", 0, 2, 1, '',  ").append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:orderIdentification ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idORI = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:AdditionalInformation'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:AdditionalInformation'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if(!rs.next()) {
             ll_idADI = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idADI).append(", NULL, NULL, 'detallista:AdditionalInformation', '', 2, 'Detallista', 4, 0, ").append(ll_iddetallista).append(", 0, 2, 1, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE " +
+                		"(IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+                		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+                		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, " +
+                		"STATUS, IDASC) VALUES (")).append(ll_idADI)
+                		.append(", NULL, NULL, " +
+                				"'detallista:AdditionalInformation', '', " +
+                				"2, 'Detallista', 4, 0, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 1, '',  ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna detallista:AdditionalInformation " +
+                		"ya exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna detallista:AdditionalInformation ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idADI = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:DeliveryNote'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:DeliveryNote'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idDVN = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idDVN).append(", NULL, NULL, 'detallista:DeliveryNote', '', 2, 'Detallista', 5, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idDVN)
+                		.append(", NULL, NULL, 'detallista:DeliveryNote', " +
+                				"'', 2, 'Detallista', 5, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna detallista:DeliveryNote ya " +
+                		"exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna detallista:DeliveryNote ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idDVN = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:buyer'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idBYR = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idBYR).append(", NULL, NULL, 'detallista:buyer', '', 2, 'Detallista', 6, 0, ").append(ll_iddetallista).append(", 0, 2, 1, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idBYR).append(", NULL, NULL, " +
+                				"'detallista:buyer', '', 2, 'Detallista', 6, " +
+                				"0, ").append(ll_iddetallista)
+                				.append(", 0, 2, 1, '',  ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:buyer ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idBYR = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:seller'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idSLR = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idSLR).append(", NULL, NULL, 'detallista:seller', '', 2, 'Detallista', 7, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE " +
+                		"(IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+                		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+                		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, " +
+                		"STATUS, IDASC) VALUES (")).append(ll_idSLR)
+                		.append(", NULL, NULL, 'detallista:seller', '', 2, " +
+                				"'Detallista', 7, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:seller ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idSLR = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:shipTo'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idSHT = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idSHT).append(", NULL, NULL, 'detallista:shipTo', '', 2, 'Detallista', 8, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE " +
+                		"(IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+                		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+                		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, " +
+                		"STATUS, IDASC) VALUES (")).append(ll_idSHT)
+                		.append(", NULL, NULL, 'detallista:shipTo', '', " +
+                				"2, 'Detallista', 8, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:shipTo ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idSHT = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:InvoiceCreator'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:InvoiceCreator'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idINC = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idINC).append(", NULL, NULL, 'detallista:InvoiceCreator', '', 2, 'Detallista', 9, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idINC)
+                		.append(", NULL, NULL, 'detallista:InvoiceCreator', " +
+                				"'', 2, 'Detallista', 9, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna detallista:InvoiceCreator " +
+                		"ya exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna detallista:InvoiceCreator ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idINC = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:Customs'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idCTM = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idCTM).append(", NULL, NULL, 'detallista:Customs', '', 2, 'Detallista', 10, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, " +
+                		"IDASC) VALUES (")).append(ll_idCTM)
+                		.append(", NULL, NULL, 'detallista:Customs', '', " +
+                				"2, 'Detallista', 10, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:Customs ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idCTM = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:currency'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idCRC = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idCRC).append(", NULL, NULL, 'detallista:currency', '', 2, 'Detallista', 11, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idCRC).append(", NULL, NULL, " +
+                				"'detallista:currency', '', 2, 'Detallista', " +
+                				"11, NULL, ").append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:currency ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idCRC = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:paymentTerms'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idPTM = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idPTM).append(", NULL, NULL, 'detallista:paymentTerms', '', 2, 'Detallista', 12, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '',  ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idPTM)
+                		.append(", NULL, NULL, 'detallista:paymentTerms', " +
+                				"'', 2, 'Detallista', 12, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '',  ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna Detallista ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idPTM = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:shipmentDetail'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:shipmentDetail'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idSHD = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idSHD).append(", NULL, NULL, 'detallista:shipmentDetail', '', 2, 'Detallista', 13, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE " +
+                		"(IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, " +
+                		"FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, " +
+                		"IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, " +
+                		"IDADD, STATUS, IDASC) VALUES ("))
+                		.append(ll_idSHD).append(", NULL, NULL, " +
+                				"'detallista:shipmentDetail', '', " +
+                				"2, 'Detallista', 13, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '', ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:shipmentDetail ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idSHD = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:allowanceCharge'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:allowanceCharge'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idACH = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idACH).append(", NULL, NULL, 'detallista:allowanceCharge', '', 2, 'Detallista', 14, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idACH)
+                		.append(", NULL, NULL, 'detallista:allowanceCharge', " +
+                				"'', 2, 'Detallista', 14, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '', ")
+                				.append(ll_idadd).append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna detallista:allowanceCharge ya " +
+                		"exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna detallista:allowanceCharge ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idACH = rs.getLong("IDCAMPO");
         }
+        
         sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:lineItem'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idLIT = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idLIT).append(", NULL, NULL, 'detallista:lineItem', '', 2, 'Detallista', 15, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idLIT)
+                		.append(", NULL, NULL, 'detallista:lineItem', '', " +
+                				"2, 'Detallista', 15, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '', ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:lineItem ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idLIT = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:totalAmount'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:totalAmount'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idTAM = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idTAM).append(", NULL, NULL, 'detallista:totalAmount', '', 2, 'Detallista', 16, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+                		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+                		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+                		"VALUES (")).append(ll_idTAM)
+                		.append(", NULL, NULL, 'detallista:totalAmount', " +
+                				"'', 2, 'Detallista', 16, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '', ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
-            }
-            catch(SQLException e)
-            {
+            } catch(SQLException e) {
                 System.out.println("Columna detallista:totalAmount ya exite..");
             }
-        } else
-        {
+        } else {
             ll_idTAM = rs.getLong("IDCAMPO");
         }
-        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = 'detallista:TotalAllowanceCharge'";
+        
+        sql = "SELECT * FROM CFD_CAMADE WHERE NOMBRE = " +
+        		"'detallista:TotalAllowanceCharge'";
         rs = cnx.consulta(sql, true);
-        if(!rs.next())
-        {
+        if (!rs.next()) {
             ll_idTAC = nextID("IDCAMPO", "CFD_CAMADE");
-            try
-            {
-                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (")).append(ll_idTAC).append(", NULL, NULL, 'detallista:TotalAllowanceCharge', '', 2, 'Detallista', 17, NULL, ").append(ll_iddetallista).append(", 0, 2, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+            try {
+                sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+                		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+                		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+                		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, " +
+                		"STATUS, IDASC) VALUES (")).append(ll_idTAC)
+                		.append(", NULL, NULL, " +
+                				"'detallista:TotalAllowanceCharge', '', 2, " +
+                				"'Detallista', 17, NULL, ")
+                				.append(ll_iddetallista)
+                				.append(", 0, 2, 0, '', ").append(ll_idadd)
+                				.append(", 1, 0)").toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
+            } catch(SQLException e) {
+                System.out.println("Columna detallista:TotalAllowanceCharge " +
+                		"ya exite..");
             }
-            catch(SQLException e)
-            {
-                System.out.println("Columna detallista:TotalAllowanceCharge ya exite..");
-            }
-        } else
-        {
+        } else {
             ll_idTAC = rs.getLong("IDCAMPO");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (251, NULL, NULL, 'detallista:entityType', '', 2, 'Detallista', 1, 110, ")).append(ll_idRQFP).append(", 0, 3, 1, 'INVOICE', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (251, " +
+            		"NULL, NULL, 'detallista:entityType', '', 2, " +
+            		"'Detallista', 1, 110, ")).append(ll_idRQFP)
+            		.append(", 0, 3, 1, 'INVOICE', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (252, NULL, NULL, 'detallista:text', '', 2, 'Detallista', 1, 43, ")).append(ll_idSI).append(", 0, 3, 1, 'HOLA MUNDO', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (252, " +
+            		"NULL, NULL, 'detallista:text', '', 2, 'Detallista', " +
+            		"1, 43, ")).append(ll_idSI).append(", 0, 3, 1, " +
+            				"'HOLA MUNDO', ").append(ll_idadd)
+            				.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (253, NULL, NULL, 'code', '', 2, 'Detallista', 1, 111, 0, ")).append(ll_idSI).append(", 3, 1, 'PUR', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE " +
+            		"(IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+            		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+            		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, " +
+            		"IDASC) VALUES (253, NULL, NULL, 'code', '', 2, " +
+            		"'Detallista', 1, 111, 0, ")).append(ll_idSI)
+            		.append(", 3, 1, 'PUR', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (254, NULL, NULL, 'detallista:referenceIdentification', '', 2, 'Detallista', 1, 52, ")).append(ll_idORI).append(", 0, 3, 1, '125546', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, " +
+            		"IDASC) VALUES (254, NULL, NULL, " +
+            		"'detallista:referenceIdentification', '', " +
+            		"2, 'Detallista', 1, 52, ")).append(ll_idORI)
+            		.append(", 0, 3, 1, '125546', ")
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (255, NULL, NULL, 'detallista:ReferenceDate', '', 2, 'Detallista', 2, 106, ")).append(ll_idORI).append(", 0, 3, 0, '2009-10-22', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+            		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+            		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, " +
+            		"IDASC) VALUES (255, NULL, NULL, " +
+            		"'detallista:ReferenceDate', '', 2, 'Detallista', 2, " +
+            		"106, ")).append(ll_idORI)
+            		.append(", 0, 3, 0, '2009-10-22', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (256, NULL, NULL, 'type', '', 2, 'Detallista', 1, 65, 0, 254, 4, 1, 'ON', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (256," +
+            		" NULL, NULL, 'type', '', 2, 'Detallista', 1, 65, 0, " +
+            		"254, 4, 1, 'ON', ")).append(ll_idadd).append(", 1, 0)")
+            		.toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (257, NULL, NULL, 'detallista:referenceIdentification', '', 2, 'Detallista', 1, 52, ")).append(ll_idADI).append(", 0, 3, 1, '6545465', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA," +
+            		" COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (257, " +
+            		"NULL, NULL, 'detallista:referenceIdentification', '', " +
+            		"2, 'Detallista', 1, 52, ")).append(ll_idADI)
+            		.append(", 0, 3, 1, '6545465', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (258, NULL, NULL, 'type', '', 2, 'Detallista', 1, 113, 0, 257, 4, 1, 'ACE', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(258, NULL, NULL, 'type', '', 2, 'Detallista', 1, " +
+            		"113, 0, 257, 4, 1, 'ACE', ")).append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (259, NULL, NULL, 'detallista:referenceIdentification', '', 2, 'Detallista', 1, 52, ")).append(ll_idDVN).append(", 0, 3, 1, '5454545', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA," +
+            		" COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+            		"VALUES (259, NULL, NULL, " +
+            		"'detallista:referenceIdentification', '', " +
+            		"2, 'Detallista', 1, 52, "))
+            		.append(ll_idDVN).append(", 0, 3, 1, '5454545', ")
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (260, NULL, NULL, 'detallista:ReferenceDate', '', 2, 'Detallista', 2, 106, ")).append(ll_idDVN).append(", 0, 3, 0, '2009-10-23', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC)" +
+            		" VALUES (260, NULL, NULL, 'detallista:ReferenceDate', " +
+            		"'', 2, 'Detallista', 2, 106, ")).append(ll_idDVN)
+            		.append(", 0, 3, 0, '2009-10-23', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (261, NULL, NULL, 'detallista:gln', '', 2, 'Detallista', 1, 68, ")).append(ll_idBYR).append(", 0, 3, 1, '54546544578', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+            		"VALUES (261, NULL, NULL, 'detallista:gln', '', 2, " +
+            		"'Detallista', 1, 68, ")).append(ll_idBYR)
+            		.append(", 0, 3, 1, '54546544578', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (262, NULL, NULL, 'detallista:contactInformation', '', 2, 'Detallista', 2, 0, ")).append(ll_idBYR).append(", 0, 3, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+            		"VALUES (262, NULL, NULL, " +
+            		"'detallista:contactInformation', '', 2, 'Detallista', " +
+            		"2, 0, ")).append(ll_idBYR).append(", 0, 3, 0, '', ")
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (263, NULL, NULL, 'detallista:personOrDepartmentName', '', 2, 'Detallista', 1, 0, 262, 0, 4, 1, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (263, " +
+            		"NULL, NULL, 'detallista:personOrDepartmentName', '', " +
+            		"2, 'Detallista', 1, 0, 262, 0, 4, 1, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (264, NULL, NULL, 'detallista:text', '', 2, 'Detallista', 1, 52, 263, 0, 5, 1, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE " +
+            		"(IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+            		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+            		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, " +
+            		"STATUS, IDASC) VALUES (264, NULL, NULL, " +
+            		"'detallista:text', '', 2, 'Detallista', 1, 52, 263, 0, " +
+            		"5, 1, '', ")).append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (265, NULL, NULL, 'detallista:gln', '', 2, 'Detallista', 1, 68, ")).append(ll_idSLR).append(", 0, 3, 1, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(265, NULL, NULL, 'detallista:gln', '', 2, " +
+            		"'Detallista', 1, 68, ")).append(ll_idSLR)
+            		.append(", 0, 3, 1, '', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (266, NULL, NULL, 'detallista:alternatePartyIdentification', '', 2, 'Detallista', 2, 52, ")).append(ll_idSLR).append(", 0, 3, 1, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (266, " +
+            		"NULL, NULL, 'detallista:alternatePartyIdentification', " +
+            		"'', 2, 'Detallista', 2, 52, ")).append(ll_idSLR)
+            		.append(", 0, 3, 1, '', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (267, NULL, NULL, 'type', '', 2, 'Detallista', 1, 114, 0, 266, 4, 1, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+            		"VALUES (267, NULL, NULL, 'type', '', 2, 'Detallista', " +
+            		"1, 114, 0, 266, 4, 1, '', ")).append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (268, NULL, NULL, 'detallista:gln', '', 2, 'Detallista', 1, 68, ")).append(ll_idSHT).append(", 0, 3, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+            		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, " +
+            		"IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, " +
+            		"DEFT_VAL, IDADD, STATUS, IDASC) VALUES (268, NULL, " +
+            		"NULL, 'detallista:gln', '', 2, 'Detallista', 1, 68, "))
+            		.append(ll_idSHT).append(", 0, 3, 0, '', ")
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (269, NULL, NULL, 'detallista:nameAndAddress', '', 2, 'Detallista', 2, NULL, ")).append(ll_idSHT).append(", 0, 3, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (269, " +
+            		"NULL, NULL, 'detallista:nameAndAddress', '', 2, " +
+            		"'Detallista', 2, NULL, ")).append(ll_idSHT)
+            		.append(", 0, 3, 0, '', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (270, NULL, NULL, 'detallista:name', '', 2, 'Detallista', 1, 52, 269, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(270, NULL, NULL, 'detallista:name', '', 2, " +
+            		"'Detallista', 1, 52, 269, 0, 4, 0, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (271, NULL, NULL, 'detallista:streetAddressOne', '', 2, 'Detallista', 2, 52, 269, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, " +
+            		"IDASC) VALUES (271, NULL, NULL, " +
+            		"'detallista:streetAddressOne', '', 2, " +
+            		"'Detallista', 2, 52, 269, 0, 4, 0, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (272, NULL, NULL, 'detallista:city', '', 2, 'Detallista', 3, 52, 269, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, " +
+            		"IDASC) VALUES (272, NULL, NULL, 'detallista:city', '', " +
+            		"2, 'Detallista', 3, 52, 269, 0, 4, 0, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (273, NULL, NULL, 'detallista:postalCode', '', 2, 'Detallista', 4, 115, 269, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, " +
+            		"PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, " +
+            		"IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, " +
+            		"STATUS, IDASC) VALUES (273, NULL, NULL, " +
+            		"'detallista:postalCode', '', 2, 'Detallista', 4, " +
+            		"115, 269, 0, 4, 0, '', ")).append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (274, NULL, NULL, 'detallista:gln', '', 2, 'Detallista', 1, 68, ")).append(ll_idINC).append(", 0, 3, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(274, NULL, NULL, 'detallista:gln', '', 2, " +
+            		"'Detallista', 1, 68, ")).append(ll_idINC)
+            		.append(", 0, 3, 0, '', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (275, NULL, NULL, 'detallista:alternatePartyIdentification', '', 2, 'Detallista', 2, 52, ")).append(ll_idINC).append(", 0, 3, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(275, NULL, NULL, " +
+            		"'detallista:alternatePartyIdentification', '', 2, " +
+            		"'Detallista', 2, 52, ")).append(ll_idINC)
+            		.append(", 0, 3, 0, '', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (276, NULL, NULL, 'detallista:nameAndAddress', '', 2, 'Detallista', 3, NULL, ")).append(ll_idINC).append(", 0, 3, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+            		"VALUES (276, NULL, NULL, 'detallista:nameAndAddress', " +
+            		"'', 2, 'Detallista', 3, NULL, ")).append(ll_idINC)
+            		.append(", 0, 3, 0, '', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (277, NULL, NULL, 'type', '', 2, 'Detallista', 1, 116, 0, 275, 4, 1, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (277, " +
+            		"NULL, NULL, 'type', '', 2, 'Detallista', 1, 116, 0, " +
+            		"275, 4, 1, '', ")).append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (278, NULL, NULL, 'detallista:name', '', 2, 'Detallista', 1, 52, 276, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, " +
+            		"NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+            		"VALUES (278, NULL, NULL, 'detallista:name', '', 2, " +
+            		"'Detallista', 1, 52, 276, 0, 4, 0, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (279, NULL, NULL, 'detallista:streetAddressOne', '', 2, 'Detallista', 2, 52, 276, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(279, NULL, NULL, 'detallista:streetAddressOne', '', " +
+            		"2, 'Detallista', 2, 52, 276, 0, 4, 0, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (280, NULL, NULL, 'detallista:city', '', 2, 'Detallista', 3, 52, 276, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(280, NULL, NULL, 'detallista:city', '', 2, " +
+            		"'Detallista', 3, 52, 276, 0, 4, 0, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (281, NULL, NULL, 'detallista:postalCode', '', 2, 'Detallista', 4, 115, 276, 0, 4, 0, '', ")).append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES " +
+            		"(281, NULL, NULL, 'detallista:postalCode', '', 2, " +
+            		"'Detallista', 4, 115, 276, 0, 4, 0, '', "))
+            		.append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
-            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (282, NULL, NULL, 'detallista:gln', '', 2, 'Detallista', 1, 68, ")).append(ll_idCTM).append(", 0, 3, 0, '', ").append(ll_idadd).append(", 1, 0)").toString();
+        
+        try {
+            sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, " +
+            		"IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, " +
+            		"COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, " +
+            		"REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) " +
+            		"VALUES (282, NULL, NULL, 'detallista:gln', '', 2, " +
+            		"'Detallista', 1, 68, ")).append(ll_idCTM)
+            		.append(", 0, 3, 0, '', ").append(ll_idadd)
+            		.append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Columna Detallista ya exite..");
         }
-        try
-        {
+        
+        try {
             sql = (new StringBuilder("INSERT INTO CFD_CAMADE (IDCAMPO, IDEMPRESA, IDSUCURSAL, NOMBRE, FORMATO, PLANTILLA, COMPANY, ORDEN, IDFORMATO, IDPADRE, IDATRIBUTO, NIVEL, REQUERIDO, DEFT_VAL, IDADD, STATUS, IDASC) VALUES (283, NULL, NULL, 'currencyISOCode', '', 2, 'Detallista', 1, 117, 0, ")).append(ll_idCRC).append(", 3, 1, '', ").append(ll_idadd).append(", 1, 0)").toString();
             rs = cnx.consulta(sql, false);
             cnx.commit();
@@ -4640,215 +4979,185 @@ public class Tarticulos {
         }
     }
 
-    void EImpuestos()
-    {
-        try
-        {
+    void EImpuestos() {
+        try {
             sql = " delete  from cfd_impuestos where IDARTICULO  IS NULL ";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Eliminando Impuestos Duplicados...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("No se eliminando Impuestos Duplicados...");
         }
     }
 
-    public void AddValCoppel()
-        throws SQLException
-    {
-        try
-        {
+    public void AddValCoppel() throws SQLException {
+        try {
             sql = "ALTER TABLE CFD_VALADE ADD IDVALPADRE INTEGER DEFAULT 0";
             rs = cnx.consulta(sql, false);
             cnx.commit();
             System.out.println("Agregando Campo IDVALPADRE...");
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valores ya existentes (IDVALPADRE)");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (22, 'LISTADO COPPEL', 'LIST_ACOPPEL')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) " +
+            		"VALUES (22, 'LISTADO COPPEL', 'LIST_ACOPPEL')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (23, 'CADENA ORIGINAL', 'CO')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) " +
+            		"VALUES (23, 'CADENA ORIGINAL', 'CO')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (24, 'PEDIDO COPPEL', 'PCOPPEL')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (24, 'PEDIDO COPPEL', 'PCOPPEL')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (25, 'BODEGA RES', 'BRES')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) " +
+            		"VALUES (25, 'BODEGA RES', 'BRES')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (26, 'BODEGA DES', 'BDES')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) " +
+            		"VALUES (26, 'BODEGA DES', 'BDES')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (27, 'FECHAENTC', 'FEC')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) " +
+            		"VALUES (27, 'FECHAENTC', 'FEC')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (28, 'ARTICULO COPPEL', 'ARTC')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (28, 'ARTICULO COPPEL', 'ARTC')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (29, 'MODELO COPPEL', 'MOC')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (29, 'MODELO COPPEL', 'MOC')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (30, 'PRECIO COPPEL', 'PRECIO')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (30, 'PRECIO COPPEL', 'PRECIO')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (31, 'SECUENCIA_LISTA', 'SLIST')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) " +
+            		"VALUES (31, 'SECUENCIA_LISTA', 'SLIST')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (32, 'IDSERIECOPPEL', 'ICOPPEL')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (32, 'IDSERIECOPPEL', 'ICOPPEL')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (33, 'CANTIDADART', 'CANART')";
+        
+        try { 
+        	sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) " +
+        			"VALUES (33, 'CANTIDADART', 'CANART')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (34, 'PRECIOBRUTO', 'PB')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (34, 'PRECIOBRUTO', 'PB')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (35, 'PRECIONETO', 'PN')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (35, 'PRECIONETO', 'PN')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (36, 'IMPORTEBRUTO', 'IB')";
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, " +
+            		"REFERENCIA) VALUES (36, 'IMPORTEBRUTO', 'IB')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
-        }
-        try
-        {
-            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA) VALUES (37, 'IMPORTENETO', 'IN')";
+        } 
+        
+        try {
+            sql = "INSERT INTO CFD_ASC_ADD (IDASC, DESCRIPCION, REFERENCIA)" +
+            		" VALUES (37, 'IMPORTENETO', 'IN')";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
+        } catch(SQLException e) {
             System.out.println("Valorcoppel ya existe...");
         }
     }
 
-    public void RestableceEgreso()
-    {
-        try
-        {
+    public void RestableceEgreso() {
+        try {
             System.out.println("RESTABLECER EGRESO...");
             sql = "UPDATE CFD_COMPROBANTE SET TIPO = 'E' WHERE IDTDOCTO = 4";
             rs = cnx.consulta(sql, false);
             cnx.commit();
-        }
-        catch(SQLException e)
-        {
-            System.out.println((new StringBuilder("EGRESO YA ACTIVO...")).append(e.getMessage()).toString());
+        } catch(SQLException e) {
+            System.out.println((new StringBuilder("EGRESO YA ACTIVO..."))
+            		.append(e.getMessage()).toString());
         }
     }
 
-    public static void main(String args[])
-        throws FileNotFoundException, SQLException, IOException
-    {
+    public static void main(String args[]) throws Exception {
         Tarticulos ta = new Tarticulos();
         ta.ControlV("3", "5", "1");
         ta.BackUpMode();
@@ -4880,7 +5189,4 @@ public class Tarticulos {
         ta.RestableceEgreso();
     }
 
-    String sql;
-    ResultSet rs;
-    ConexionFirebird cnx;
 }
