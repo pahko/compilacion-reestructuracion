@@ -18,6 +18,7 @@ import javax.swing.border.SoftBevelBorder;
 
 public class AGENTE_NotasCredito extends JFrame
 {
+	/**Establece el Relog*/
     public class RelojModeloUtil extends Observable
     {
 
@@ -40,7 +41,8 @@ public class AGENTE_NotasCredito extends JFrame
         }
     }
 
-
+    /**Constructor de la Clase AGENTE_NotasCredito 
+     * iniciliza los valores*/
     public AGENTE_NotasCredito()
     {
         SEGUNDOS = 0;
@@ -50,7 +52,7 @@ public class AGENTE_NotasCredito extends JFrame
         initComponents();
         Init_Reloj();
     }
-
+    /**Inicializa el Relog*/
     void Init_Reloj()
     {
         RelojModeloUtil modelo = new RelojModeloUtil();
@@ -60,8 +62,10 @@ public class AGENTE_NotasCredito extends JFrame
             {
                 Reloj.setText(dato.toString());
                 System.out.println(dato);
-                System.out.println((new StringBuilder()).append("SEG : ").append(seg).toString());
-                if(FACTURA && (seg == 0 || seg == 10 || seg == 20 || seg == 30 || seg == 40 || seg == 50))
+                System.out.println((new StringBuilder()).append("SEG : ")
+                		.append(seg).toString());
+                if(FACTURA && (seg == 0 || seg == 10 || seg == 20 || seg == 30 
+                		|| seg == 40 || seg == 50))
                     try
                     {
                         if(!FACTURANDO)
@@ -104,7 +108,7 @@ public class AGENTE_NotasCredito extends JFrame
             }
         });
     }
-
+    /**Inicializa los Componentes*/	
     private void initComponents()
     {
         Reloj = new JLabel();
@@ -119,11 +123,17 @@ public class AGENTE_NotasCredito extends JFrame
         Reloj.setEnabled(false);
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 189, -2).addContainerGap(-1, 32767)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout
+        		.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+        				.addContainerGap().addComponent(Reloj, -2, 189, -2)
+        				.addContainerGap(-1, 32767)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout
+        		.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+        				.addContainerGap().addComponent(Reloj, -2, 32, -2)
+        				.addContainerGap(-1, 32767)));
         pack();
     }
-
+    /**Main de la Clase AGENTE_Devoluciones*/
     public static void main(String args[])
     {
         EventQueue.invokeLater(new Runnable() {

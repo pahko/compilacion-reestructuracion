@@ -59,8 +59,10 @@ public class AGENTE_Devoluciones extends JFrame
             {
                 Reloj.setText(dato.toString());
                 System.out.println(dato);
-                System.out.println((new StringBuilder()).append("SEG : ").append(seg).toString());
-                if(FACTURA && (seg == 0 || seg == 10 || seg == 20 || seg == 30 || seg == 40 || seg == 50))
+                System.out.println((new StringBuilder()).append("SEG : ")
+                		.append(seg).toString());
+                if(FACTURA && (seg == 0 || seg == 10 || seg == 20 || seg == 30 
+                		|| seg == 40 || seg == 50))
                     try
                     {
                         if(!FACTURANDO)
@@ -119,8 +121,13 @@ public class AGENTE_Devoluciones extends JFrame
         Reloj.setEnabled(false);
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 189, -2).addContainerGap(-1, 32767)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing
+        		.GroupLayout.Alignment.LEADING).addGroup(layout
+        				.createSequentialGroup().addContainerGap()
+        				.addComponent(Reloj, -2, 189, -2).addContainerGap(-1, 32767)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing
+        		.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+        				.addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
         pack();
     }
     /**Main de la Clase AGENTE_Devoluciones*/
