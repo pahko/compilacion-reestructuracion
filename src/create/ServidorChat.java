@@ -16,6 +16,7 @@ public class ServidorChat implements Runnable {
 
 	private DefaultListModel charla;
 	
+	/**Manda llamar al metodo: ServidorChat_Inicio() **/
     public void run() {
         try {
             ServidorChat_Inicio();
@@ -25,10 +26,12 @@ public class ServidorChat implements Runnable {
         }
     }
 
+    /**Constructor de la clase. Crea un objeto de la clase DefaultListModel. **/
     public ServidorChat() {
         charla = new DefaultListModel();
     }
 
+    /**Este metodo crea un objeto de la clase ServidorSocket y de la clase HiloDeCliente **/
     public void ServidorChat_Inicio() {
         try {
             ServerSocket socketServidor = new ServerSocket(5557);
