@@ -11,7 +11,10 @@ import java.util.*;
 public class RelojModeloUtil extends Observable {
 
 	TimerTask timerTask;
-	
+
+	/**Constructor de la clase. Crea objetis de las clases:
+	 * Timer
+	 * TimerTask **/
     public RelojModeloUtil() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, 0L, 1000L);
@@ -22,7 +25,9 @@ public class RelojModeloUtil extends Observable {
             }
         };
     }
-
+    
+    /**Metodo principal de la clase. Crea un objeto de la clase:
+     * RelojModeloUtil **/
     public static void main(String args[]) {
         RelojModeloUtil modelo = new RelojModeloUtil();
         modelo.addObserver(new Observer() {
