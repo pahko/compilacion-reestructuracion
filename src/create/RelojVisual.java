@@ -16,6 +16,8 @@ public class RelojVisual extends JLabel {
 
 	SimpleDateFormat format;
 	
+	/**Constructor de la clase RelojVisual. Crea un onjeto de la clase:
+	 * SimpleDateFormat. **/
     public RelojVisual(Observable modelo) {
         format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         setHorizontalAlignment(0);
@@ -32,6 +34,7 @@ public class RelojVisual extends JLabel {
         setPreferredSize(new Dimension(200, 50));
     }
 
+    /**Este metodo asigna el formato **/
     public void setFormat(SimpleDateFormat unFormato) {
         format = unFormato;
     }
