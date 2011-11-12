@@ -19,7 +19,7 @@ import javax.swing.border.SoftBevelBorder;
 
 public class AGENTE_Devoluciones extends JFrame
 {
-	
+	/**Establece el Relog*/
     public class RelojModeloUtil extends Observable
     {
 
@@ -38,7 +38,7 @@ public class AGENTE_Devoluciones extends JFrame
         }
     }
 
-
+    /**Constructor de la Clase AGENTE_Devoluciones*/
     public AGENTE_Devoluciones()
     {
         SEGUNDOS = 0;
@@ -49,6 +49,7 @@ public class AGENTE_Devoluciones extends JFrame
         Init_Reloj();
     }
 
+    /**Inicializa el Relog*/
     void Init_Reloj()
     {
         RelojModeloUtil modelo = new RelojModeloUtil();
@@ -103,6 +104,7 @@ public class AGENTE_Devoluciones extends JFrame
         });
     }
 
+    /**Inicializa los Componentes*/	
     private void initComponents()
     {
         Reloj = new JLabel();
@@ -121,7 +123,7 @@ public class AGENTE_Devoluciones extends JFrame
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
         pack();
     }
-
+    /**Main de la Clase AGENTE_Devoluciones*/
     public static void main(String args[])
     {
         EventQueue.invokeLater(new Runnable() {
