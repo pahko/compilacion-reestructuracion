@@ -657,7 +657,7 @@ public class AppcfdComprobante implements Runnable {
         (new Thread(this)).start();
     }
     
-    /**Realiza Consultas y Generar la Factura*/
+    /**Realiza Consultas y Generar la Factura */
     public void run() {
         try {
             vf.estableceConexion(cnx);

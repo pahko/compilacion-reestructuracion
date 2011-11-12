@@ -14,7 +14,7 @@ import org.jdom.JDOMException;
 //            AppcfdComprobante
 
 public class AppcfdComprobanteExecute {
-	/**Main de la Clase AppcfdComprobableExcecute*/
+	/**Main de la Clase AppcfdComprobableExcecute */
     public static void main(String arg[]) throws Exception {
         apc.conected();
         try
