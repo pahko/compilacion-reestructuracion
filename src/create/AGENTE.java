@@ -18,6 +18,8 @@ import javax.swing.border.SoftBevelBorder;
 //            Fosar_Agente
 
 public class AGENTE extends JFrame {
+	
+	/**Establece el Relog*/
     public class RelojModeloUtil extends Observable {
         TimerTask timerTask;
         
@@ -33,7 +35,9 @@ public class AGENTE extends JFrame {
             timer.schedule(timerTask, 0L, 1000L);
         }
     }
-
+    
+    /**Constructor de la Clase AGENTE 
+     * iniciliza los valores*/
     public AGENTE() {
         SEGUNDOS = 0;
         seg = 0;
@@ -43,6 +47,7 @@ public class AGENTE extends JFrame {
         Init_Reloj();
     }
 
+    /**Inicializa el Relog*/
     void Init_Reloj() {
         RelojModeloUtil modelo = new RelojModeloUtil();
         modelo.addObserver(new Observer() {
@@ -76,7 +81,8 @@ public class AGENTE extends JFrame {
             }
         });
     }
-
+    
+    /**Inicializa los Componentes*/
     private void initComponents() {
         Reloj = new JLabel();
         setDefaultCloseOperation(3);
@@ -90,11 +96,16 @@ public class AGENTE extends JFrame {
         Reloj.setEnabled(false);
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 189, -2).addContainerGap(-1, 32767)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing
+        		.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+        				.addContainerGap().addComponent(Reloj, -2, 189, -2).addContainerGap(-1, 32767)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing
+        		.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+        				.addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
         pack();
     }
-
+    
+    /**Main de la Clase AGENTE*/
     public static void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
