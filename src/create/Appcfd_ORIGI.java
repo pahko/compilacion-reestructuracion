@@ -59,7 +59,7 @@ import org.xml.sax.SAXException;
 
 public class Appcfd_ORIGI
 {
-
+	/**Crea el Progreso de Generacion*/
     public void CrearProgreso()
     {
         ps.CreaFrame("Generando documento");
@@ -68,6 +68,8 @@ public class Appcfd_ORIGI
         ps.CreaBorde();
     }
 
+    /**Constructor de la Clase App_ORIGI
+     * Iniciliza los Valores*/
     public Appcfd_ORIGI()
         throws SQLException, FileNotFoundException, IOException
     {
@@ -98,7 +100,8 @@ public class Appcfd_ORIGI
         nemonico = null;
         pagge = null;
         type = null;
-        demo = " FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO";
+        demo = " FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE " +
+        		"DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO FACTURE DEMO";
         subtotal = 0.0D;
         descuento = 0.0D;
         total_impuestos = 0.0D;
@@ -131,6 +134,7 @@ public class Appcfd_ORIGI
         }
     }
 
+    /**Carga las Propiedades de un archivo .properties*/
     public static Properties loadProperties(String fileName)
     {
         Properties tempProp = new Properties();
@@ -149,6 +153,7 @@ public class Appcfd_ORIGI
         return tempProp;
     }
 
+    /**Modifica un archivo XML*/
     public static void ModifyXML(String file, String Prefix, String Value)
     {
         try
@@ -195,6 +200,7 @@ public class Appcfd_ORIGI
         }
     }
 
+    /**Genera un Comprobante De la Factura*/
     public Comprobante generarComprobante(long idempresa, String folio, String serie, long sucursal)
         throws IOException, SQLException
     {
@@ -206,7 +212,15 @@ public class Appcfd_ORIGI
             rs = cnx.consultaBLOB(sql, true);
             if(rs.next())
                 nemonico = rs.getString("NEMONICO").trim();
-            sql = (new StringBuilder("SELECT * FROM cfd_comprobante,cfd_config  WHERE cfd_comprobante.idempresa = cfd_config.idEmpresa and cfd_comprobante.sucursal = cfd_config.idSucursal and cfd_comprobante.nocertificado = cfd_config.SERIECERTIFICADO and cfd_config.idEmpresa =")).append(idempresa).append(" AND ").append("cfd_config.idSucursal = ").append(sucursal).append(" AND ").append("cfd_comprobante.FOLIO =").append(folio).append(" AND ").append("cfd_comprobante.SERIE ='").append(serie).append("'").toString();
+            sql = (new StringBuilder("SELECT * FROM cfd_comprobante,cfd_config  " +
+            		"WHERE cfd_comprobante.idempresa = cfd_config.idEmpresa and " +
+            		"cfd_comprobante.sucursal = cfd_config.idSucursal and " +
+            		"cfd_comprobante.nocertificado = cfd_config.SERIECERTIFICADO " +
+            		"and cfd_config.idEmpresa =")).append(idempresa).append(" AND ")
+            		.append("cfd_config.idSucursal = ").append(sucursal)
+            		.append(" AND ").append("cfd_comprobante.FOLIO =").append(folio)
+            		.append(" AND ").append("cfd_comprobante.SERIE ='").append(serie)
+            		.append("'").toString();
             rs = cnx.consultaBLOB(sql, true);
             try
             {
@@ -234,18 +248,31 @@ public class Appcfd_ORIGI
                     out.close();
                     in_image.close();
                     len = 0;
-                    java.security.cert.X509Certificate x509certificate = firmasdigitales.cargaCert(new BufferedInputStream(pubkey.getBinaryStream()));
+                    java.security.cert.X509Certificate x509certificate = 
+                    	firmasdigitales.cargaCert(new BufferedInputStream(pubkey.getBinaryStream()));
                     if(x509certificate != null)
-                        if(!firmasdigitales.certNumSerie(x509certificate).equals(rs.getString("seriecertificado")))
+                        if(!firmasdigitales.certNumSerie(x509certificate)
+                        		.equals(rs.getString("seriecertificado")))
                         {
                             m.GetMensajes("Numero de serie incorrecto");
-                            System.out.println((new StringBuilder("Numero de serie incorrecto: ")).append(firmasdigitales.certNumSerie(x509certificate)).append(" vs ").append(rs.getString("seriecertificado")).toString());
+                            System.out.println((new StringBuilder("Numero de " +
+                            		"serie incorrecto: ")).append(firmasdigitales
+                            				.certNumSerie(x509certificate)).append(" vs ")
+                            				.append(rs.getString("seriecertificado")).toString());
                         } else
                         {
-                            System.out.println((new StringBuilder("Numero de serie correcto: ")).append(firmasdigitales.certNumSerie(x509certificate)).append(" vs ").append(rs.getString("seriecertificado")).toString());
+                            System.out.println((new StringBuilder("Numero de serie" +
+                            		" correcto: ")).append(firmasdigitales.
+                            				certNumSerie(x509certificate)).append(" vs ")
+                            				.append(rs.getString("seriecertificado")).toString());
                         }
                     ps.SetBorde("Crea Emisor");
-                    sql = (new StringBuilder("SELECT  emisor,receptor,dom_emisor,dom_receptor,idEmpresa,EXTRACT(YEAR FROM fecha) as anio,noAprobacion,noCertificado,sello,vers FROM cfd_comprobante  WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                    sql = (new StringBuilder("SELECT  emisor,receptor,dom_emisor," +
+                    		"dom_receptor,idEmpresa,EXTRACT(YEAR FROM fecha) as anio," +
+                    		"noAprobacion,noCertificado,sello,vers FROM cfd_comprobante  " +
+                    		"WHERE folio = ")).append(folio).append(" and serie = '")
+                    		.append(serie).append("' and idEmpresa = ").append(idempresa)
+                    		.toString();
                     rs = cnx.consulta(sql, true);
                     if(rs.next())
                     {
@@ -259,7 +286,27 @@ public class Appcfd_ORIGI
                         sello = rs.getString("sello");
                         version = rs.getString("vers");
                     }
-                    sql = (new StringBuilder("SELECT cnet_entidades.nombre,cnet_entidades.rfc,cnet_domicilios.calle,cnet_colonias.codigo_postal,cnet_colonias.descripcion as colonia,cnet_estados.descripcion as estado,cnet_delegacion.nombre as delegacion,cnet_domicilios.n_exterior,cnet_domicilios.n_interior,cnet_pais.nombre as nombrepais,cnet_estados.pais FROM cnet_colonias,cnet_delegacion,cnet_domicilios,cnet_entidades,cnet_pais,cnet_estados WHERE ( cnet_entidades.idEntidad = cnet_domicilios.idEntidad ) and( cnet_domicilios.idDomicilio = ")).append(domEmisor).append(" ) and").append("( cnet_domicilios.idEstado = cnet_estados.idEstado ) and").append("( cnet_domicilios.idColonia = cnet_colonias.idColonia ) and").append("( cnet_colonias.idDelegacion = cnet_delegacion.idDelegacion ) and").append("( cnet_estados.pais = cnet_pais.id ) and").append("( ( cnet_entidades.idEntidad =").append(idEntidadEmisor).append("))").toString();
+                    sql = (new StringBuilder("SELECT cnet_entidades.nombre," +
+                    		"cnet_entidades.rfc,cnet_domicilios.calle," +
+                    		"cnet_colonias.codigo_postal,cnet_colonias.descripcion" +
+                    		" as colonia,cnet_estados.descripcion as estado," +
+                    		"cnet_delegacion.nombre as delegacion," +
+                    		"cnet_domicilios.n_exterior,cnet_domicilios.n_interior," +
+                    		"cnet_pais.nombre as nombrepais,cnet_estados.pais FROM " +
+                    		"cnet_colonias,cnet_delegacion,cnet_domicilios,cnet_entidades," +
+                    		"cnet_pais,cnet_estados WHERE ( cnet_entidades.idEntidad = " +
+                    		"cnet_domicilios.idEntidad ) and( cnet_domicilios.idDomicilio = "))
+                    		.append(domEmisor).append(" ) and").append("( cnet_domicilios.idEstado" +
+                    				" = cnet_estados.idEstado ) and")
+                    				.append("( cnet_domicilios.idColonia = " +
+                    						"cnet_colonias.idColonia ) and")
+                    						.append("( cnet_colonias.idDelegacion = " +
+                    								"cnet_delegacion.idDelegacion ) and")
+                    								.append("( cnet_estados.pais" +
+                    										" = cnet_pais.id ) and")
+                    										.append("( ( cnet_entidades.idEntidad =")
+                    										.append(idEntidadEmisor).append("))")
+                    										.toString();
                     rs = cnx.consulta(sql, true);
                     if(rs.next())
                     {
@@ -267,12 +314,34 @@ public class Appcfd_ORIGI
                         interior = Remplazar(rs.getString("n_interior"));
                         exterior = Remplazar(rs.getString("n_exterior"));
                         rfc_emisor = Remplazar(rs.getString("rfc"));
-                        emisor = ofactory.createComprobanteEmisor(new TUbicacionFiscal(rs.getString("calle"), rs.getString("delegacion"), rs.getString("estado"), rs.getString("nombrepais"), cp), rs.getString("nombre"), rfc_emisor);
+                        emisor = ofactory.createComprobanteEmisor(new 
+                        		TUbicacionFiscal(rs.getString("calle"), 
+                        				rs.getString("delegacion"), 
+                        				rs.getString("estado"), 
+                        				rs.getString("nombrepais"), cp), 
+                        				rs.getString("nombre"), rfc_emisor);
                         emisor.getDomicilioFiscal().setColonia(rs.getString("colonia"));
                         emisor.getDomicilioFiscal().setNoExterior(exterior);
                         if(!interior.equals("0"))
                             emisor.getDomicilioFiscal().setNoInterior(interior);
-                        sql = (new StringBuilder("SELECT cnet_entidades.nombre,cnet_estados.pais,cnet_colonias.codigo_postal,cnet_colonias.descripcion as colonia,cnet_estados.descripcion as estado,cnet_delegacion.nombre as delegacion,cnet_domicilios.calle,cnet_domicilios.n_exterior,cnet_pais.nombre as nombrepais,cnet_sucursal.tipo,cnet_domicilios.n_interior FROM cnet_entidades,cnet_sucursal,cnet_domicilios,cnet_colonias,cnet_delegacion,cnet_pais,cnet_estados WHERE ( cnet_sucursal.identidad = cnet_entidades.idEntidad ) and( cnet_domicilios.identidad  = cnet_sucursal.identidad ) and( cnet_domicilios.idDelegacion = cnet_delegacion.idDelegacion ) and( cnet_domicilios.idEstado = cnet_estados.idEstado ) and( cnet_domicilios.idColonia = cnet_colonias.idColonia ) and( cnet_estados.pais = cnet_pais.id ) and( ( cnet_sucursal.idsucursal = ")).append(sucursal).append(") )").toString();
+                        sql = (new StringBuilder("SELECT cnet_entidades.nombre," +
+                        		"cnet_estados.pais,cnet_colonias.codigo_postal," +
+                        		"cnet_colonias.descripcion as colonia," +
+                        		"cnet_estados.descripcion as estado," +
+                        		"cnet_delegacion.nombre as delegacion," +
+                        		"cnet_domicilios.calle,cnet_domicilios.n_exterior," +
+                        		"cnet_pais.nombre as nombrepais,cnet_sucursal.tipo," +
+                        		"cnet_domicilios.n_interior FROM cnet_entidades," +
+                        		"cnet_sucursal,cnet_domicilios,cnet_colonias," +
+                        		"cnet_delegacion,cnet_pais,cnet_estados WHERE (" +
+                        		" cnet_sucursal.identidad = cnet_entidades.idEntidad )" +
+                        		" and( cnet_domicilios.identidad  = cnet_sucursal.identidad )" +
+                        		" and( cnet_domicilios.idDelegacion = cnet_delegacion.idDelegacion )" +
+                        		" and( cnet_domicilios.idEstado = cnet_estados.idEstado )" +
+                        		" and( cnet_domicilios.idColonia = cnet_colonias.idColonia )" +
+                        		" and( cnet_estados.pais = cnet_pais.id ) and( ( " +
+                        		"cnet_sucursal.idsucursal = ")).append(sucursal).append(") )")
+                        		.toString();
                         rs = cnx.consulta(sql, true);
                         if(rs.next())
                         {
@@ -296,11 +365,34 @@ public class Appcfd_ORIGI
                         }
                     }
                     ps.SetBorde("Crea Receptor");
-                    sql = (new StringBuilder("SELECT cnet_entidades.nombre,cnet_entidades.rfc,cnet_domicilios.calle,cnet_colonias.codigo_postal,cnet_colonias.descripcion as colonia,cnet_estados.descripcion as estado,cnet_delegacion.nombre as delegacion,cnet_domicilios.n_exterior,cnet_domicilios.n_interior,cnet_pais.nombre as nombrepais,cnet_estados.pais FROM cnet_colonias,cnet_delegacion,cnet_domicilios,cnet_entidades,cnet_pais,cnet_estados WHERE ( cnet_entidades.idEntidad = cnet_domicilios.idEntidad ) and( cnet_domicilios.idDomicilio = ")).append(domReceptor).append(" ) and").append("( cnet_domicilios.idEstado = cnet_estados.idEstado ) and").append("( cnet_domicilios.idColonia = cnet_colonias.idColonia ) and").append("( cnet_colonias.idDelegacion = cnet_delegacion.idDelegacion ) and").append("( cnet_estados.pais = cnet_pais.id ) and").append("( ( cnet_entidades.idEntidad =").append(idEntidadReceptor).append("))").toString();
+                    sql = (new StringBuilder("SELECT cnet_entidades.nombre," +
+                    		"cnet_entidades.rfc,cnet_domicilios.calle," +
+                    		"cnet_colonias.codigo_postal,cnet_colonias.descripcion" +
+                    		" as colonia,cnet_estados.descripcion as estado," +
+                    		"cnet_delegacion.nombre as delegacion," +
+                    		"cnet_domicilios.n_exterior,cnet_domicilios.n_interior," +
+                    		"cnet_pais.nombre as nombrepais,cnet_estados.pais FROM " +
+                    		"cnet_colonias,cnet_delegacion,cnet_domicilios," +
+                    		"cnet_entidades,cnet_pais,cnet_estados WHERE ( " +
+                    		"cnet_entidades.idEntidad = cnet_domicilios.idEntidad )" +
+                    		" and( cnet_domicilios.idDomicilio = ")).append(domReceptor)
+                    		.append(" ) and").append("( cnet_domicilios.idEstado = " +
+                    				"cnet_estados.idEstado ) and").append("( " +
+                    						"cnet_domicilios.idColonia = " +
+                    						"cnet_colonias.idColonia ) and")
+                    						.append("( cnet_colonias.idDelegacion" +
+                    								" = cnet_delegacion.idDelegacion ) and")
+                    								.append("( cnet_estados.pais = " +
+                    										"cnet_pais.id ) and")
+                    										.append("( ( cnet_entidades.idEntidad =")
+                    										.append(idEntidadReceptor).append("))")
+                    										.toString();
                     rs = cnx.consulta(sql, true);
                     if(rs.next())
                     {
-                        receptor = ofactory.createComprobanteReceptor(rs.getString("rfc"), rs.getString("nombre"), new TUbicacion(rs.getString("calle")));
+                        receptor = ofactory.createComprobanteReceptor(rs
+                        		.getString("rfc"), rs.getString("nombre"), new 
+                        		TUbicacion(rs.getString("calle")));
                         receptor.getDomicilio().setCalle(rs.getString("calle"));
                         receptor.getDomicilio().setMunicipio(rs.getString("delegacion"));
                         receptor.getDomicilio().setEstado(rs.getString("estado"));
@@ -312,16 +404,29 @@ public class Appcfd_ORIGI
                             receptor.getDomicilio().setNoInterior(rs.getString("n_interior"));
                     }
                     ps.SetBorde("Crea Conceptos");
-                    sql = (new StringBuilder("SELECT cfd_conceptos.cantidad,cfd_conceptos.descripcion,cfd_conceptos.importe,cfd_conceptos.valorUnitario FROM cfd_conceptos WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                    sql = (new StringBuilder("SELECT cfd_conceptos.cantidad," +
+                    		"cfd_conceptos.descripcion,cfd_conceptos.importe," +
+                    		"cfd_conceptos.valorUnitario FROM cfd_conceptos WHERE" +
+                    		" folio = ")).append(folio).append(" and serie = '")
+                    		.append(serie).append("' and idEmpresa = ").append(idempresa)
+                    		.toString();
                     rs = cnx.consulta(sql, true);
                     conceptos = ofactory.createComprobanteConceptos();
                     while(rs.next()) 
                     {
-                        conceptos.getConcepto().add(ofactory.createComprobanteConceptosConcepto(rs.getDouble("cantidad"), rs.getString("descripcion"), rs.getDouble("importe"), rs.getDouble("valorUnitario")));
+                        conceptos.getConcepto().add(ofactory
+                        		.createComprobanteConceptosConcepto(
+                        				rs.getDouble("cantidad"), 
+                        				rs.getString("descripcion"), 
+                        				rs.getDouble("importe"), 
+                        				rs.getDouble("valorUnitario")));
                         subtotal += rs.getDouble("importe");
                     }
                     ps.SetBorde("Crea Descuentos");
-                    sql = (new StringBuilder("SELECT IMPORTE_TOTAL FROM CFD_DESCUENTOS WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                    sql = (new StringBuilder("SELECT IMPORTE_TOTAL FROM " +
+                    		"CFD_DESCUENTOS WHERE folio = ")).append(folio)
+                    		.append(" and serie = '").append(serie).append("' " +
+                    				"and idEmpresa = ").append(idempresa).toString();
                     for(rs = cnx.consulta(sql, true); rs.next();)
                         descuento += rs.getDouble("IMPORTE_TOTAL");
 
@@ -331,25 +436,58 @@ public class Appcfd_ORIGI
                     impuestosTraslados = ofactory.createComprobanteImpuestosTraslados();
                     impuestosRetenciones = ofactory.createComprobanteImpuestosRetenciones();
                     ps.SetBorde("Crea Traslados");
-                    sql = (new StringBuilder("SELECT sum(cfd_impuestos.importe) as importe,cnet_impuesto.descripcion,cfd_impuestos.idCNImpuesto,cfd_impuestos.idCatImpuesto FROM cfd_impuestos,cnet_impuesto WHERE ( cfd_impuestos.idCNImpuesto = cnet_impuesto.idCNImpuesto ) and( ( cfd_impuestos.folio = ")).append(folio).append(" ) AND").append("( cfd_impuestos.serie = '").append(serie).append("' ) AND").append("( cfd_impuestos.idEmpresa =").append(idempresa).append(") AND").append("(( cfd_impuestos.tipo = '+' )or( cfd_impuestos.tipo = 'T' ))) group by cnet_impuesto.descripcion,cfd_impuestos.idCNImpuesto,cfd_impuestos.idCatImpuesto").toString();
+                    sql = (new StringBuilder("SELECT sum(cfd_impuestos.importe)" +
+                    		" as importe,cnet_impuesto.descripcion," +
+                    		"cfd_impuestos.idCNImpuesto,cfd_impuestos.idCatImpuesto" +
+                    		" FROM cfd_impuestos,cnet_impuesto WHERE ( " +
+                    		"cfd_impuestos.idCNImpuesto = cnet_impuesto.idCNImpuesto )" +
+                    		" and( ( cfd_impuestos.folio = ")).append(folio)
+                    		.append(" ) AND").append("( cfd_impuestos.serie = '")
+                    		.append(serie).append("' ) AND").append("( " +
+                    				"cfd_impuestos.idEmpresa =").append(idempresa)
+                    				.append(") AND").append("(( cfd_impuestos.tipo" +
+                    						" = '+' )or( cfd_impuestos.tipo = 'T' )))" +
+                    						" group by cnet_impuesto.descripcion," +
+                    						"cfd_impuestos.idCNImpuesto," +
+                    						"cfd_impuestos.idCatImpuesto").toString();
                     rs = cnx.consulta(sql, true);
                     do
                     {
                         if(!rs.next())
                             break;
-                        sql = (new StringBuilder("SELECT cfd_det_impuestos.impuesto FROM   cfd_det_impuestos WHERE ( cfd_det_impuestos.idCNImpuesto = ")).append(rs.getInt("idCNImpuesto")).append(") and").append("( cfd_det_impuestos.idCatImpuesto =").append(rs.getInt("idCatImpuesto")).append(")").toString();
+                        sql = (new StringBuilder("SELECT cfd_det_impuestos.impuesto" +
+                        		" FROM   cfd_det_impuestos WHERE ( " +
+                        		"cfd_det_impuestos.idCNImpuesto = "))
+                        		.append(rs.getInt("idCNImpuesto")).append(") and")
+                        		.append("( cfd_det_impuestos.idCatImpuesto =")
+                        		.append(rs.getInt("idCatImpuesto")).append(")")
+                        		.toString();
                         rs2 = cnx.consulta(sql, true);
                         if(rs2.next())
                         {
                             if(rs.getString("descripcion").trim().equals("IEPS"))
-                                impuestosTraslados.getTraslado().add(ofactory.createComprobanteImpuestosTrasladosTrasladoIEPS(Math.abs(rs.getDouble("importe")), rs2.getDouble("impuesto")));
+                                impuestosTraslados.getTraslado().add(ofactory
+                                		.createComprobanteImpuestosTrasladosTrasladoIEPS(Math.abs(rs
+                                				.getDouble("importe")), rs2.getDouble("impuesto")));
                             if(rs.getString("descripcion").trim().equals("IVA"))
-                                impuestosTraslados.getTraslado().add(ofactory.createComprobanteImpuestosTrasladosTrasladoIVA(Math.abs(rs.getDouble("importe")), rs2.getDouble("impuesto")));
+                                impuestosTraslados.getTraslado().add(ofactory
+                                		.createComprobanteImpuestosTrasladosTrasladoIVA(Math.abs(rs
+                                				.getDouble("importe")), rs2.getDouble("impuesto")));
                         }
                     } while(true);
                     impuestos.setTraslados(impuestosTraslados);
                     ps.SetBorde("Crea Retenciones");
-                    sql = (new StringBuilder("SELECT sum(cfd_impuestos.importe)as importe,cnet_impuesto.descripcion FROM cfd_impuestos,cnet_impuesto WHERE ( cfd_impuestos.idCNImpuesto = cnet_impuesto.idCNImpuesto ) and( ( cfd_impuestos.folio = ")).append(folio).append(" ) AND").append("( cfd_impuestos.serie = '").append(serie).append("' ) AND").append("( cfd_impuestos.idEmpresa =").append(idempresa).append(") AND").append("(( cfd_impuestos.tipo = '-' )or( cfd_impuestos.tipo = 'R' ))) group by cnet_impuesto.descripcion,cfd_impuestos.idCNImpuesto,cfd_impuestos.idCatImpuesto").toString();
+                    sql = (new StringBuilder("SELECT sum(cfd_impuestos.importe)" +
+                    		"as importe,cnet_impuesto.descripcion FROM cfd_impuestos," +
+                    		"cnet_impuesto WHERE ( cfd_impuestos.idCNImpuesto = " +
+                    		"cnet_impuesto.idCNImpuesto ) and( ( cfd_impuestos.folio = "))
+                    		.append(folio).append(" ) AND").append("( " +
+                    				"cfd_impuestos.serie = '").append(serie).append("' ) AND")
+                    				.append("( cfd_impuestos.idEmpresa =").append(idempresa)
+                    				.append(") AND").append("(( cfd_impuestos.tipo = '-' )" +
+                    						"or( cfd_impuestos.tipo = 'R' ))) group by " +
+                    						"cnet_impuesto.descripcion,cfd_impuestos.idCNImpuesto," +
+                    						"cfd_impuestos.idCatImpuesto").toString();
                     rs = cnx.consulta(sql, true);
                     do
                     {
@@ -357,14 +495,24 @@ public class Appcfd_ORIGI
                             break;
                         rs.getDouble("importe");
                         if(rs.getString("descripcion").trim().equals("IVA"))
-                            impuestosRetenciones.getRetencion().add(ofactory.createComprobanteImpuestosRetencionesRetencionIVA(Math.abs(rs.getDouble("importe"))));
+                            impuestosRetenciones.getRetencion().add(ofactory
+                            		.createComprobanteImpuestosRetencionesRetencionIVA(Math.abs(rs
+                            				.getDouble("importe"))));
                         if(rs.getString("descripcion").trim().equals("ISR"))
-                            impuestosRetenciones.getRetencion().add(ofactory.createComprobanteImpuestosRetencionesRetencionISR(Math.abs(rs.getDouble("importe"))));
+                            impuestosRetenciones.getRetencion().add(ofactory
+                            		.createComprobanteImpuestosRetencionesRetencionISR(Math.abs(rs
+                            				.getDouble("importe"))));
                     } while(true);
                     if(rs.last())
                         impuestos.setRetenciones(impuestosRetenciones);
                     ps.SetBorde("Crea Total Impuestos");
-                    sql = (new StringBuilder("SELECT sum(cfd_impuestos.importe) as importe  FROM cfd_impuestos,cnet_impuesto WHERE ( cfd_impuestos.idCNImpuesto = cnet_impuesto.idCNImpuesto ) and( ( cfd_impuestos.folio = ")).append(folio).append(" ) AND").append("( cfd_impuestos.serie = '").append(serie).append("' ) AND").append("( cfd_impuestos.idEmpresa =").append(idempresa).append("))").toString();
+                    sql = (new StringBuilder("SELECT sum(cfd_impuestos.importe) " +
+                    		"as importe  FROM cfd_impuestos,cnet_impuesto WHERE " +
+                    		"( cfd_impuestos.idCNImpuesto = cnet_impuesto.idCNImpuesto )" +
+                    		" and( ( cfd_impuestos.folio = ")).append(folio).append(" ) AND")
+                    		.append("( cfd_impuestos.serie = '").append(serie).append("' ) AND")
+                    		.append("( cfd_impuestos.idEmpresa =").append(idempresa).append("))")
+                    		.toString();
                     rs = cnx.consulta(sql, true);
                     if(rs.next())
                         total_impuestos = rs.getDouble("importe");
@@ -381,9 +529,15 @@ public class Appcfd_ORIGI
                     System.out.println(subtotal);
                     System.out.println(total_impuestos);
                     ps.SetBorde("Creando Objeto Comprobante");
-                    comprobante = ofactory.createComprobanteIngreso(emisor, receptor, conceptos, impuestos, folio, new Date(), "SELLO", naprovacion, anio_aprob, ncertificado, subtotal, subtotal + total_impuestos);
+                    comprobante = ofactory.createComprobanteIngreso(emisor, 
+                    		receptor, conceptos, impuestos, folio, new Date(), 
+                    		"SELLO", naprovacion, anio_aprob, ncertificado, subtotal,
+                    		subtotal + total_impuestos);
                     comprobante.setDescuento(descuento);
-                    sql = (new StringBuilder("SELECT * FROM cfd_comprobante WHERE folio = ")).append(folio).append(" AND ").append("serie='").append(serie.trim()).append("' AND ").append("idEmpresa = ").append(idempresa).toString();
+                    sql = (new StringBuilder("SELECT * FROM cfd_comprobante " +
+                    		"WHERE folio = ")).append(folio).append(" AND ")
+                    		.append("serie='").append(serie.trim()).append("' AND ")
+                    		.append("idEmpresa = ").append(idempresa).toString();
                     rs = cnx.consulta(sql, true);
                     if(rs.next())
                     {
@@ -394,43 +548,58 @@ public class Appcfd_ORIGI
                         switch(rs.getInt("IDTDOCTO"))
                         {
                         case 1: // '\001'
-                            prefijo = (new StringBuilder("FACT_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+                            prefijo = (new StringBuilder("FACT_")).append(folio)
+                            .append("_").append(serie.trim()).append("_").append(dt)
+                            .toString();
                             type = "I";
                             comprobante.setTipoDeComprobante(1);
                             break;
 
                         case 2: // '\002'
-                            prefijo = (new StringBuilder("RHN_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+                            prefijo = (new StringBuilder("RHN_")).append(folio)
+                            .append("_").append(serie.trim()).append("_").append(dt)
+                            .toString();
                             type = "I";
                             break;
 
                         case 3: // '\003'
-                            prefijo = (new StringBuilder("NCA_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+                            prefijo = (new StringBuilder("NCA_")).append(folio)
+                            .append("_").append(serie.trim()).append("_").append(dt)
+                            .toString();
                             type = "I";
                             break;
 
                         case 4: // '\004'
-                            prefijo = (new StringBuilder("NCR_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+                            prefijo = (new StringBuilder("NCR_")).append(folio)
+                            .append("_").append(serie.trim()).append("_").append(dt)
+                            .toString();
                             type = "E";
                             comprobante.setTipoDeComprobante(2);
                             break;
 
                         case 5: // '\005'
-                            prefijo = (new StringBuilder("RPG_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+                            prefijo = (new StringBuilder("RPG_")).append(folio)
+                            .append("_").append(serie.trim()).append("_").append(dt)
+                            .toString();
                             type = "I";
                             break;
 
                         case 6: // '\006'
-                            prefijo = (new StringBuilder("RAO_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+                            prefijo = (new StringBuilder("RAO_")).append(folio)
+                            .append("_").append(serie.trim()).append("_").append(dt)
+                            .toString();
                             type = "I";
                             break;
 
                         default:
-                            prefijo = (new StringBuilder("XXX_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+                            prefijo = (new StringBuilder("XXX_")).append(folio)
+                            .append("_").append(serie.trim()).append("_").append(dt)
+                            .toString();
                             type = "I";
                             break;
                         }
-                        ps.f.setTitle((new StringBuilder(String.valueOf(prefijo))).append(" ").append(nemonico).toString());
+                        ps.f.setTitle((new StringBuilder(String.valueOf(prefijo)))
+                        		.append(" ").append(nemonico).toString());
                         if(rs.getString("f_pago") != null)
                         {
                             int longitud = rs.getString("f_pago").length();
@@ -441,8 +610,10 @@ public class Appcfd_ORIGI
                                     divide = rs.getString("f_pago").length() / 2 + 1;
                                 else
                                     divide = rs.getString("f_pago").length() / 2;
-                                pagos = Integer.parseInt(rs.getString("f_pago").substring(0, divide - 1).trim());
-                                plazos = Integer.parseInt(rs.getString("f_pago").substring(divide + 1, longitud).trim());
+                                pagos = Integer.parseInt(rs.getString("f_pago")
+                                		.substring(0, divide - 1).trim());
+                                plazos = Integer.parseInt(rs.getString("f_pago")
+                                		.substring(divide + 1, longitud).trim());
                                 if(plazos > 0)
                                     comprobante.setFormaDePagoParcialidades(pagos, plazos);
                             }
@@ -452,7 +623,12 @@ public class Appcfd_ORIGI
                         comprobante.setSerie("");
                     else
                         comprobante.setSerie(serie);
-                    sql = (new StringBuilder("SELECT empresa.nombrecomercial as nombre_empresa, sucursal.descripcion as nombre_sucursal FROM cnet_empresa as empresa, cnet_sucursal as sucursal WHERE empresa.idempresa = ")).append(idempresa).append("and ").append("sucursal.idempresa = empresa.idempresa and ").append("sucursal.idsucursal =").append(sucursal).toString();
+                    sql = (new StringBuilder("SELECT empresa.nombrecomercial as " +
+                    		"nombre_empresa, sucursal.descripcion as nombre_sucursal" +
+                    		" FROM cnet_empresa as empresa, cnet_sucursal as sucursal" +
+                    		" WHERE empresa.idempresa = ")).append(idempresa)
+                    		.append("and ").append("sucursal.idempresa = empresa.idempresa and ")
+                    		.append("sucursal.idsucursal =").append(sucursal).toString();
                     rs = cnx.consulta(sql, true);
                     if(rs.next())
                     {
@@ -471,12 +647,29 @@ public class Appcfd_ORIGI
                     boolean empty = false;
                     String sql_company = "";
                     String sql_val = "";
-                    sql = (new StringBuilder("SELECT CFD_VALADE.IDVAL,CFD_CAMADE.NOMBRE,CFD_CAMADE.IDADD,CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY,CFD_VALADE.IDCAMPO,CFD_VALADE.FOLIO,CFD_VALADE.SERIE,CFD_VALADE.VAL,CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  LEFT JOIN CFD_ADDENDA ON  CFD_CAMADE.IDADD = CFD_ADDENDA.IDADD  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append("CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append("CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND CFD_CAMADE.IDPADRE = 0 AND CFD_CAMADE.IDATRIBUTO = 0 AND CFD_ADDENDA.TIPO = 1 ").toString();
+                    sql = (new StringBuilder("SELECT CFD_VALADE.IDVAL," +
+                    		"CFD_CAMADE.NOMBRE,CFD_CAMADE.IDADD," +
+                    		"CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY," +
+                    		"CFD_VALADE.IDCAMPO,CFD_VALADE.FOLIO," +
+                    		"CFD_VALADE.SERIE,CFD_VALADE.VAL," +
+                    		"CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA FROM" +
+                    		" CFD_VALADE LEFT JOIN CFD_CAMADE ON " +
+                    		"CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  LEFT JOIN" +
+                    		" CFD_ADDENDA ON  CFD_CAMADE.IDADD = CFD_ADDENDA.IDADD" +
+                    		"  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ")
+                    		.append("CFD_VALADE.SERIE ='").append(serie.trim())
+                    		.append("' AND ").append("CFD_VALADE.IDEMPRESA = ")
+                    		.append(idempresa).append(" AND CFD_CAMADE.IDPADRE = 0 AND " +
+                    				"CFD_CAMADE.IDATRIBUTO = 0 AND CFD_ADDENDA.TIPO = 1 ")
+                    				.toString();
                     Element adendaElement;
-                    for(rs = cnx.consulta(sql, true); rs.next(); adden.getAny().add((new CrearObjetoAmlAdenda()).construirAdenda(adendaElement)))
+                    for(rs = cnx.consulta(sql, true); rs.next(); adden.getAny()
+                    .add((new CrearObjetoAmlAdenda()).construirAdenda(adendaElement)))
                     {
                         idadd = (int)rs.getLong("IDADD");
-                        sql2 = (new StringBuilder("SELECT VACIO FROM CFD_ADDENDA WHERE CFD_ADDENDA.IDADD =")).append(rs.getLong("IDADD")).toString();
+                        sql2 = (new StringBuilder("SELECT VACIO FROM CFD_ADDENDA" +
+                        		" WHERE CFD_ADDENDA.IDADD =")).append(rs.getLong("IDADD"))
+                        		.toString();
                         rs2 = cnx.consulta(sql2, true);
                         if(rs2.next())
                             if(rs2.getLong("VACIO") > 0L)
@@ -487,8 +680,11 @@ public class Appcfd_ORIGI
                         adendaElement = null;
                         if(rs.getString("NOMBRE").indexOf(":") > 0)
                         {
-                            adendaElement = new Element(Remplazar(rs.getString("NOMBRE").substring(rs.getString("NOMBRE").indexOf(":") + 1, rs.getString("NOMBRE").length())));
-                            adendaElement.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                            adendaElement = new Element(Remplazar(rs.getString("NOMBRE")
+                            		.substring(rs.getString("NOMBRE").indexOf(":") + 1, 
+                            				rs.getString("NOMBRE").length())));
+                            adendaElement.setNamespace(Namespace.getNamespace("detallista",
+                            		"http://www.sat.gob.mx/detallista"));
                         } else
                         {
                             adendaElement = new Element(Remplazar(rs.getString("NOMBRE")));
@@ -497,8 +693,16 @@ public class Appcfd_ORIGI
                             adendaElement.addContent("");
                         else
                             adendaElement.addContent(Remplazar(rs.getString("VAL").trim()));
-                        GetAtributosAddenda(adendaElement, rs.getString("NOMBRE"), Long.valueOf(Long.parseLong(rs.getString("IDCAMPO"))), Long.valueOf(Long.parseLong("1")), Long.valueOf(Long.parseLong(folio)), serie.trim(), Long.valueOf(idempresa), Boolean.valueOf(empty));
-                        GetHijosAddenda(adendaElement, rs.getString("NOMBRE"), Long.valueOf(Long.parseLong(rs.getString("IDCAMPO"))), Long.valueOf(Long.parseLong("1")), Long.valueOf(Long.parseLong(folio)), serie.trim(), Long.valueOf(idempresa), Boolean.valueOf(empty));
+                        GetAtributosAddenda(adendaElement, rs.getString("NOMBRE"), 
+                        		Long.valueOf(Long.parseLong(rs.getString("IDCAMPO"))), 
+                        		Long.valueOf(Long.parseLong("1")), 
+                        		Long.valueOf(Long.parseLong(folio)), serie.trim(), 
+                        		Long.valueOf(idempresa), Boolean.valueOf(empty));
+                        GetHijosAddenda(adendaElement, rs.getString("NOMBRE"), 
+                        		Long.valueOf(Long.parseLong(rs.getString("IDCAMPO"))), 
+                        		Long.valueOf(Long.parseLong("1")), 
+                        		Long.valueOf(Long.parseLong(folio)), serie.trim(), 
+                        		Long.valueOf(idempresa), Boolean.valueOf(empty));
                     }
 
                     comprobante.setAddenda(adden);
@@ -510,12 +714,27 @@ public class Appcfd_ORIGI
                     empty = false;
                     sql_company = "";
                     sql_val = "";
-                    sql = (new StringBuilder("SELECT CFD_VALADE.IDVAL,CFD_CAMADE.NOMBRE,CFD_CAMADE.IDADD,CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY,CFD_VALADE.IDCAMPO,CFD_VALADE.FOLIO,CFD_VALADE.SERIE,CFD_VALADE.VAL,CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  LEFT JOIN CFD_ADDENDA ON CFD_CAMADE.IDADD = CFD_ADDENDA.IDADD  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append("CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append("CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND CFD_CAMADE.IDPADRE = 0 AND CFD_CAMADE.IDATRIBUTO = 0 AND CFD_ADDENDA.TIPO = 2 ").toString();
+                    sql = (new StringBuilder("SELECT CFD_VALADE.IDVAL,CFD_CAMADE.NOMBRE," +
+                    		"CFD_CAMADE.IDADD,CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY," +
+                    		"CFD_VALADE.IDCAMPO,CFD_VALADE.FOLIO,CFD_VALADE.SERIE," +
+                    		"CFD_VALADE.VAL,CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA FROM " +
+                    		"CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = " +
+                    		"CFD_VALADE.IDCAMPO  LEFT JOIN CFD_ADDENDA ON " +
+                    		"CFD_CAMADE.IDADD = CFD_ADDENDA.IDADD  WHERE " +
+                    		"CFD_VALADE.FOLIO =")).append(folio).append(" AND ")
+                    		.append("CFD_VALADE.SERIE ='").append(serie.trim())
+                    		.append("' AND ").append("CFD_VALADE.IDEMPRESA = ")
+                    		.append(idempresa).append(" AND CFD_CAMADE.IDPADRE " +
+                    				"= 0 AND CFD_CAMADE.IDATRIBUTO = 0 AND " +
+                    				"CFD_ADDENDA.TIPO = 2 ").toString();
                     Element complementoElement;
-                    for(rs = cnx.consulta(sql, true); rs.next(); comple.getAny().add((new CrearObjetoAmlAdenda()).construirAdenda(complementoElement)))
+                    for(rs = cnx.consulta(sql, true); rs.next(); comple.getAny()
+                    .add((new CrearObjetoAmlAdenda()).construirAdenda(complementoElement)))
                     {
                         idcom = (int)rs.getLong("IDADD");
-                        sql2 = (new StringBuilder("SELECT VACIO FROM CFD_ADDENDA WHERE CFD_ADDENDA.IDADD =")).append(rs.getLong("IDADD")).toString();
+                        sql2 = (new StringBuilder("SELECT VACIO FROM CFD_ADDENDA" +
+                        		" WHERE CFD_ADDENDA.IDADD =")).append(rs.getLong("IDADD"))
+                        		.toString();
                         rs2 = cnx.consulta(sql2, true);
                         if(rs2.next())
                             if(rs2.getLong("VACIO") > 0L)
@@ -526,8 +745,13 @@ public class Appcfd_ORIGI
                         complementoElement = null;
                         if(rs.getString("NOMBRE").indexOf(":") > 0)
                         {
-                            complementoElement = new Element(Remplazar(rs.getString("NOMBRE").substring(rs.getString("NOMBRE").indexOf(":") + 1, rs.getString("NOMBRE").length())));
-                            complementoElement.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                            complementoElement = new Element(Remplazar(rs
+                            		.getString("NOMBRE").substring(rs
+                            				.getString("NOMBRE").indexOf(":")
+                            				+ 1, rs.getString("NOMBRE").length())));
+                            complementoElement.setNamespace(Namespace
+                            		.getNamespace("detallista", 
+                            				"http://www.sat.gob.mx/detallista"));
                         } else
                         {
                             complementoElement = new Element(Remplazar(rs.getString("NOMBRE")));
@@ -536,8 +760,18 @@ public class Appcfd_ORIGI
                             complementoElement.addContent("");
                         else
                             complementoElement.addContent(Remplazar(rs.getString("VAL").trim()));
-                        GetAtributosAddenda(complementoElement, rs.getString("NOMBRE"), Long.valueOf(Long.parseLong(rs.getString("IDCAMPO"))), Long.valueOf(Long.parseLong("1")), Long.valueOf(Long.parseLong(folio)), serie.trim(), Long.valueOf(idempresa), Boolean.valueOf(empty));
-                        GetHijosAddenda(complementoElement, rs.getString("NOMBRE"), Long.valueOf(Long.parseLong(rs.getString("IDCAMPO"))), Long.valueOf(Long.parseLong("1")), Long.valueOf(Long.parseLong(folio)), serie.trim(), Long.valueOf(idempresa), Boolean.valueOf(empty));
+                        GetAtributosAddenda(complementoElement, 
+                        		rs.getString("NOMBRE"), Long.valueOf(Long.parseLong(
+                        				rs.getString("IDCAMPO"))), 
+                        				Long.valueOf(Long.parseLong("1")), 
+                        				Long.valueOf(Long.parseLong(folio)), 
+                        				serie.trim(), Long.valueOf(idempresa), 
+                        				Boolean.valueOf(empty));
+                        GetHijosAddenda(complementoElement, rs.getString("NOMBRE"), 
+                        		Long.valueOf(Long.parseLong(rs.getString("IDCAMPO"))), 
+                        		Long.valueOf(Long.parseLong("1")), 
+                        		Long.valueOf(Long.parseLong(folio)), serie.trim(), 
+                        		Long.valueOf(idempresa), Boolean.valueOf(empty));
                     }
 
                     comprobante.setComplemento(comple);
@@ -550,7 +784,8 @@ public class Appcfd_ORIGI
         }
         catch(ComprobanteException ex)
         {
-            System.out.println((new StringBuilder("error.")).append(ex.getTipoError()).toString());
+            System.out.println((new StringBuilder("error."))
+            		.append(ex.getTipoError()).toString());
             ex.printStackTrace();
         }
         catch(ReceptorException ex)
@@ -575,7 +810,8 @@ public class Appcfd_ORIGI
         }
         return comprobante;
     }
-
+    
+    /**Remplaza Cadenas*/
     public String Remplazar(String cadena)
     {
         cadena = cadena.replaceAll(" ", "");
@@ -584,16 +820,21 @@ public class Appcfd_ORIGI
         return cadena.trim();
     }
 
+    /**Obtiene el Folio de la Empresa*/
     public String Getidfolio(String empresa, String serie)
         throws SQLException
     {
         if(serie.equals("_"))
         {
-            sql = (new StringBuilder("SELECT * FROM cfd_folios WHERE idEmpresa = ")).append(empresa).append(" AND ").append("serie is null or serie = '' ").toString();
+            sql = (new StringBuilder("SELECT * FROM cfd_folios WHERE idEmpresa = "))
+            .append(empresa).append(" AND ").append("serie is null or serie = '' ")
+            .toString();
             rs = cnx.consulta(sql, true);
         } else
         {
-            sql = (new StringBuilder("SELECT * FROM cfd_folios WHERE idEmpresa = ")).append(empresa).append(" AND ").append("serie = '").append(serie).append("'").toString();
+            sql = (new StringBuilder("SELECT * FROM cfd_folios WHERE idEmpresa = "))
+            .append(empresa).append(" AND ").append("serie = '").append(serie)
+            .append("'").toString();
             rs = cnx.consulta(sql, true);
         }
         if(rs.next())
@@ -608,33 +849,73 @@ public class Appcfd_ORIGI
         }
     }
 
-    public void GetHijosAddenda(Element adde, String comp, Long padre, Long plantilla, Long folio, String serie, Long idempresa, 
-            Boolean vacio, Long idval)
+    /**Obtiene los Valores de HijosAddenda*/
+    public void GetHijosAddenda(Element adde, String comp, Long padre, Long plantilla, 
+    		Long folio, String serie, Long idempresa, Boolean vacio, Long idval)
         throws SQLException
     {
         long values = 0L;
-        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE idpadre = ")).append(padre).append(" AND  IDVALPADRE = ").append(idval).append(" AND CFD_VALADE.FOLIO = ").append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie).append("'").append(" order by cfd_camade.orden ").toString();
+        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, " +
+        		"CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  " +
+        		"cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  " +
+        		"cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  " +
+        		"cfd_dataformat.formato as form,  cfd_dataformat.mascara,  " +
+        		"cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat" +
+        		" on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join " +
+        		"CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE idpadre = "))
+        		.append(padre).append(" AND  IDVALPADRE = ").append(idval)
+        		.append(" AND CFD_VALADE.FOLIO = ").append(folio)
+        		.append(" AND CFD_VALADE.SERIE = '").append(serie).append("'")
+        		.append(" order by cfd_camade.orden ").toString();
         ResultSet rs_hijos = cnx.consulta(sql, true);
         do
         {
             if(!rs_hijos.next())
                 break;
-            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append(" CFD_VALADE.IDVALPADRE = ").append(rs_hijos.getInt("IDVALPADRE")).append(" AND ").append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ").append(" CFD_CAMADE.IDCAMPO = ").append(rs_hijos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
+            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, " +
+            		"CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, " +
+            		"CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, " +
+            		"CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM " +
+            		"CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = " +
+            		"CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio)
+            		.append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim())
+            		.append("' AND ").append(" CFD_VALADE.IDVALPADRE = ")
+            		.append(rs_hijos.getInt("IDVALPADRE")).append(" AND ")
+            		.append(" CFD_VALADE.IDEMPRESA = ").append(idempresa)
+            		.append(" AND ").append(" CFD_CAMADE.IDCAMPO = ")
+            		.append(rs_hijos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO")
+            		.toString();
             ResultSet rs_hijos2 = cnx.consulta(sql2, true);
             if(rs_hijos2.next())
             {
                 Element Hijos = null;
-                if(Remplazar(rs_hijos2.getString("VAL").trim()) == null || Remplazar(rs_hijos2.getString("VAL").trim()).equals(""))
+                if(Remplazar(rs_hijos2.getString("VAL").trim()) == null || Remplazar(rs_hijos2
+                		.getString("VAL").trim()).equals(""))
                 {
                     values = 0L;
                     if(rs_hijos2.getInt("REQUERIDO") == 0)
                         if(values > 0L)
                         {
-                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                            System.out.println((new StringBuilder("IDC:"))
+                            		.append(rs_hijos.getLong("idcampo"))
+                            		.append(" ").append("IDP:")
+                            		.append(rs_hijos.getLong("IDPADRE"))
+                            		.append(" ").append("IDA:")
+                            		.append(rs_hijos.getLong("IDATRIBUTO"))
+                            		.append(" ").append("IDVAL:")
+                            		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                            		.append("IDVALPADRE:")
+                            		.append(rs_hijos.getLong("IDVALPADRE"))
+                            		.append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE"))
+                            		.toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2
+                                		.getString("NOMBRE").substring(rs_hijos2
+                                				.getString("NOMBRE").indexOf(":") + 1,
+                                				rs_hijos2.getString("NOMBRE").length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -643,21 +924,46 @@ public class Appcfd_ORIGI
                             adde.addContent(Hijos);
                             if(idval.longValue() > 0L)
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         } else
                         if(!vacio.booleanValue())
                         {
-                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                            System.out.println((new StringBuilder("IDC:"))
+                            		.append(rs_hijos.getLong("idcampo")).append(" ")
+                            		.append("IDP:").append(rs_hijos.getLong("IDPADRE"))
+                            		.append(" ").append("IDA:")
+                            		.append(rs_hijos.getLong("IDATRIBUTO"))
+                            		.append(" ").append("IDVAL:")
+                            		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                            		.append("IDVALPADRE:")
+                            		.append(rs_hijos.getLong("IDVALPADRE"))
+                            		.append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE"))
+                            		.toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2
+                                		.getString("NOMBRE").substring(rs_hijos2
+                                				.getString("NOMBRE").indexOf(":")
+                                				+ 1, rs_hijos2.getString("NOMBRE")
+                                				.length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -666,22 +972,46 @@ public class Appcfd_ORIGI
                             adde.addContent(Hijos);
                             if(idval.longValue() > 0L)
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         }
                     if(rs_hijos2.getInt("REQUERIDO") == 1)
                         if(values > 0L)
                         {
-                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos
+                            		.getLong("idcampo")).append(" ").append("IDP:")
+                            		.append(rs_hijos.getLong("IDPADRE")).append(" ")
+                            		.append("IDA:").append(rs_hijos.getLong("IDATRIBUTO"))
+                            		.append(" ").append("IDVAL:")
+                            		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                            		.append("IDVALPADRE:")
+                            		.append(rs_hijos.getLong("IDVALPADRE"))
+                            		.append(" NOMBRE: ")
+                            		.append(rs_hijos2.getString("NOMBRE")).toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2
+                                		.getString("NOMBRE").substring(rs_hijos2
+                                				.getString("NOMBRE").indexOf(":")
+                                				+ 1, rs_hijos2.getString("NOMBRE")
+                                				.length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -690,21 +1020,44 @@ public class Appcfd_ORIGI
                             adde.addContent(Hijos);
                             if(idval.longValue() > 0L)
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         } else
                         if(!vacio.booleanValue())
                         {
-                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos
+                            		.getLong("idcampo")).append(" ").append("IDP:")
+                            		.append(rs_hijos.getLong("IDPADRE")).append(" ")
+                            		.append("IDA:")
+                            		.append(rs_hijos.getLong("IDATRIBUTO"))
+                            		.append(" ").append("IDVAL:")
+                            		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                            		.append("IDVALPADRE:")
+                            		.append(rs_hijos.getLong("IDVALPADRE"))
+                            		.append(" NOMBRE: ")
+                            		.append(rs_hijos2.getString("NOMBRE")).toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")
+                                		.substring(rs_hijos2.getString("NOMBRE").indexOf(":")
+                                				+ 1, rs_hijos2.getString("NOMBRE").length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista",
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -713,21 +1066,42 @@ public class Appcfd_ORIGI
                             adde.addContent(Hijos);
                             if(idval.longValue() > 0L)
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         }
                 } else
                 {
-                    System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                    System.out.println((new StringBuilder("IDC:")).append(rs_hijos
+                    		.getLong("idcampo")).append(" ").append("IDP:")
+                    		.append(rs_hijos.getLong("IDPADRE")).append(" ")
+                    		.append("IDA:").append(rs_hijos.getLong("IDATRIBUTO"))
+                    		.append(" ").append("IDVAL:")
+                    		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                    		.append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE"))
+                    		.append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE"))
+                    		.toString());
                     if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                     {
-                        Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                        Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                        Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")
+                        		.substring(rs_hijos2.getString("NOMBRE").indexOf(":") 
+                        				+ 1, rs_hijos2.getString("NOMBRE").length())));
+                        Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                        		"http://www.sat.gob.mx/detallista"));
                     } else
                     {
                         Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -736,48 +1110,108 @@ public class Appcfd_ORIGI
                     adde.addContent(Hijos);
                     if(idval.longValue() > 0L)
                     {
-                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio, 
+                        		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio, 
+                        		Long.valueOf(rs_hijos.getLong("IDVAL")));
                     } else
                     {
-                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio);
+                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio);
                     }
                 }
             }
         } while(true);
     }
-
-    public void GetHijosAddenda(Element adde, String comp, Long padre, Long plantilla, Long folio, String serie, Long idempresa, 
-            Boolean vacio)
+    /**Obtiene los Valores de HijosAddenda*/
+    public void GetHijosAddenda(Element adde, String comp, Long padre, Long plantilla,
+    		Long folio, String serie, Long idempresa, Boolean vacio)
         throws SQLException
     {
         long values = 0L;
-        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE idpadre = ")).append(padre).append("AND CFD_VALADE.FOLIO = ").append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie).append("'").append(" order by cfd_camade.orden ").toString();
+        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, " +
+        		"CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  " +
+        		"cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  " +
+        		"cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  " +
+        		"cfd_dataformat.formato as form,  cfd_dataformat.mascara,  " +
+        		"cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat on " +
+        		"cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join CFD_VALADE" +
+        		" ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE idpadre = "))
+        		.append(padre).append("AND CFD_VALADE.FOLIO = ").append(folio)
+        		.append(" AND CFD_VALADE.SERIE = '").append(serie).append("'")
+        		.append(" order by cfd_camade.orden ").toString();
         ResultSet rs_hijos = cnx.consulta(sql, true);
         do
         {
             if(!rs_hijos.next())
                 break;
-            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append(" CFD_VALADE.IDVALPADRE = ").append(rs_hijos.getInt("IDVALPADRE")).append(" AND ").append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ").append(" CFD_CAMADE.IDCAMPO = ").append(rs_hijos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
+            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE," +
+            		" CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO," +
+            		" CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, " +
+            		"CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM " +
+            		"CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = " +
+            		"CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio)
+            		.append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim())
+            		.append("' AND ").append(" CFD_VALADE.IDVALPADRE = ")
+            		.append(rs_hijos.getInt("IDVALPADRE")).append(" AND ")
+            		.append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ")
+            		.append(" CFD_CAMADE.IDCAMPO = ").append(rs_hijos.getInt("idcampo"))
+            		.append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
             ResultSet rs_hijos2 = cnx.consulta(sql2, true);
             if(rs_hijos2.next())
             {
                 Element Hijos = null;
-                if(Remplazar(rs_hijos2.getString("VAL").trim()) == null || Remplazar(rs_hijos2.getString("VAL").trim()).equals(""))
+                if(Remplazar(rs_hijos2.getString("VAL").trim()) == null || 
+                		Remplazar(rs_hijos2.getString("VAL").trim()).equals(""))
                 {
                     values = 0L;
                     if(rs_hijos2.getInt("REQUERIDO") == 0)
                         if(values > 0L)
                         {
                             if(Remplazar(rs_hijos2.getString("NOMBRE")).equals("lineItem"))
-                                System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                                System.out.println((new StringBuilder("IDC:"))
+                                		.append(rs_hijos.getLong("idcampo"))
+                                		.append(" ").append("IDP:")
+                                		.append(rs_hijos.getLong("IDPADRE"))
+                                		.append(" ").append("IDA:")
+                                		.append(rs_hijos.getLong("IDATRIBUTO"))
+                                		.append(" ").append("IDVAL:")
+                                		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                                		.append("IDVALPADRE:")
+                                		.append(rs_hijos.getLong("IDVALPADRE"))
+                                		.append(" NOMBRE: ")
+                                		.append(rs_hijos2.getString("NOMBRE"))
+                                		.toString());
                             else
-                                System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                                System.out.println((new StringBuilder("IDC:"))
+                                		.append(rs_hijos.getLong("idcampo"))
+                                		.append(" ").append("IDP:")
+                                		.append(rs_hijos.getLong("IDPADRE"))
+                                		.append(" ").append("IDA:")
+                                		.append(rs_hijos.getLong("IDATRIBUTO"))
+                                		.append(" ").append("IDVAL:")
+                                		.append(rs_hijos.getLong("IDVAL"))
+                                		.append(" ").append("IDVALPADRE:")
+                                		.append(rs_hijos.getLong("IDVALPADRE"))
+                                		.append(" NOMBRE: ")
+                                		.append(rs_hijos2.getString("NOMBRE"))
+                                		.toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")
+                                		.substring(rs_hijos2.getString("NOMBRE")
+                                				.indexOf(":") + 1, rs_hijos2.getString("NOMBRE")
+                                				.length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -786,21 +1220,44 @@ public class Appcfd_ORIGI
                             adde.addContent(Hijos);
                             if(Remplazar(rs_hijos2.getString("NOMBRE")).equals("lineItem"))
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, 
+                                		Long.valueOf(rs_hijos.getLong("idcampo")), 
+                                		plantilla, folio, serie.trim(), idempresa, 
+                                		vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         } else
                         if(!vacio.booleanValue())
                         {
-                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos
+                            		.getLong("idcampo")).append(" ").append("IDP:")
+                            		.append(rs_hijos.getLong("IDPADRE")).append(" ")
+                            		.append("IDA:").append(rs_hijos.getLong("IDATRIBUTO"))
+                            		.append(" ").append("IDVAL:")
+                            		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                            		.append("IDVALPADRE:")
+                            		.append(rs_hijos.getLong("IDVALPADRE"))
+                            		.append(" NOMBRE: ")
+                            		.append(rs_hijos2.getString("NOMBRE"))
+                            		.toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")
+                                		.substring(rs_hijos2.getString("NOMBRE").indexOf(":") 
+                                				+ 1, rs_hijos2.getString("NOMBRE").length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -809,22 +1266,46 @@ public class Appcfd_ORIGI
                             adde.addContent(Hijos);
                             if(Remplazar(rs_hijos2.getString("NOMBRE")).equals("lineItem"))
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         }
                     if(rs_hijos2.getInt("REQUERIDO") == 1)
                         if(values > 0L)
                         {
-                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos
+                            		.getLong("idcampo")).append(" ").append("IDP:")
+                            		.append(rs_hijos.getLong("IDPADRE")).append(" ")
+                            		.append("IDA:").append(rs_hijos.getLong("IDATRIBUTO"))
+                            		.append(" ").append("IDVAL:")
+                            		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                            		.append("IDVALPADRE:")
+                            		.append(rs_hijos.getLong("IDVALPADRE"))
+                            		.append(" NOMBRE: ")
+                            		.append(rs_hijos2.getString("NOMBRE")).toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2
+                                		.getString("NOMBRE").substring(rs_hijos2
+                                				.getString("NOMBRE").indexOf(":") 
+                                				+ 1, rs_hijos2.getString("NOMBRE")
+                                				.length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -856,21 +1337,47 @@ public class Appcfd_ORIGI
                             }
                             if(Remplazar(rs_hijos2.getString("NOMBRE")).equals("lineItem"))
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         } else
                         if(!vacio.booleanValue())
                         {
-                            System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                            System.out.println((new StringBuilder("IDC:"))
+                            		.append(rs_hijos.getLong("idcampo"))
+                            		.append(" ").append("IDP:")
+                            		.append(rs_hijos.getLong("IDPADRE"))
+                            		.append(" ").append("IDA:")
+                            		.append(rs_hijos.getLong("IDATRIBUTO"))
+                            		.append(" ").append("IDVAL:")
+                            		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                            		.append("IDVALPADRE:")
+                            		.append(rs_hijos.getLong("IDVALPADRE"))
+                            		.append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE"))
+                            		.toString());
                             if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                             {
-                                Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                                Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                                Hijos = new Element(Remplazar(rs_hijos2
+                                		.getString("NOMBRE").substring(rs_hijos2
+                                				.getString("NOMBRE").indexOf(":")
+                                				+ 1, rs_hijos2.getString("NOMBRE")
+                                				.length())));
+                                Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                                		"http://www.sat.gob.mx/detallista"));
                             } else
                             {
                                 Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -902,21 +1409,42 @@ public class Appcfd_ORIGI
                             }
                             if(Remplazar(rs_hijos2.getString("NOMBRE")).equals("lineItem"))
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio, 
+                                		Long.valueOf(rs_hijos.getLong("IDVAL")));
                             } else
                             {
-                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                                GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
+                                GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                                		.getLong("idcampo")), plantilla, folio, 
+                                		serie.trim(), idempresa, vacio);
                             }
                         }
                 } else
                 {
-                    System.out.println((new StringBuilder("IDC:")).append(rs_hijos.getLong("idcampo")).append(" ").append("IDP:").append(rs_hijos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_hijos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_hijos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE")).toString());
+                    System.out.println((new StringBuilder("IDC:")).append(rs_hijos
+                    		.getLong("idcampo")).append(" ").append("IDP:")
+                    		.append(rs_hijos.getLong("IDPADRE")).append(" ")
+                    		.append("IDA:").append(rs_hijos.getLong("IDATRIBUTO"))
+                    		.append(" ").append("IDVAL:")
+                    		.append(rs_hijos.getLong("IDVAL")).append(" ")
+                    		.append("IDVALPADRE:").append(rs_hijos.getLong("IDVALPADRE"))
+                    		.append(" NOMBRE: ").append(rs_hijos2.getString("NOMBRE"))
+                    		.toString());
                     if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                     {
-                        Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                        Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                        Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")
+                        		.substring(rs_hijos2.getString("NOMBRE").indexOf(":") 
+                        				+ 1, rs_hijos2.getString("NOMBRE").length())));
+                        Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                        		"http://www.sat.gob.mx/detallista"));
                     } else
                     {
                         Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
@@ -948,117 +1476,248 @@ public class Appcfd_ORIGI
                     }
                     if(Remplazar(rs_hijos2.getString("NOMBRE")).equals("lineItem"))
                     {
-                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
-                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio, Long.valueOf(rs_hijos.getLong("IDVAL")));
+                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio, 
+                        		Long.valueOf(rs_hijos.getLong("IDVAL")));
+                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio, 
+                        		Long.valueOf(rs_hijos.getLong("IDVAL")));
                     } else
                     {
-                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
-                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa, vacio);
+                        GetAtributosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio);
+                        GetHijosAddenda(Hijos, comp, Long.valueOf(rs_hijos
+                        		.getLong("idcampo")), plantilla, folio, 
+                        		serie.trim(), idempresa, vacio);
                     }
                 }
             }
         } while(true);
     }
-
-    public void GetAtributosAddenda(Element atri, String comp, Long atributo, Long plantilla, Long folio, String serie, Long idempresa, 
-            Boolean vacio, Long idval)
+    /**Obtiene los Valores de Addenda*/
+    public void GetAtributosAddenda(Element atri, String comp, Long atributo, 
+    		Long plantilla, Long folio, String serie, Long idempresa, Boolean vacio, Long idval)
         throws SQLException
     {
-        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE  idatributo = ")).append(atributo).append(" AND IDVALPADRE =").append(idval).append("AND CFD_VALADE.FOLIO = ").append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie).append("'").append(" order by cfd_camade.orden ").toString();
+        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, " +
+        		"CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato, " +
+        		" cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company," +
+        		"  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO," +
+        		"  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  " +
+        		"cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat" +
+        		" on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join " +
+        		"CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE  " +
+        		"idatributo = ")).append(atributo).append(" AND IDVALPADRE =")
+        		.append(idval).append("AND CFD_VALADE.FOLIO = ").append(folio)
+        		.append(" AND CFD_VALADE.SERIE = '").append(serie).append("'")
+        		.append(" order by cfd_camade.orden ").toString();
         ResultSet rs_atributos = cnx.consulta(sql, true);
         do
         {
             if(!rs_atributos.next())
                 break;
-            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append(" CFD_VALADE.IDVALPADRE = ").append(rs_atributos.getInt("IDVALPADRE")).append(" AND ").append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ").append(" CFD_CAMADE.IDCAMPO = ").append(rs_atributos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
+            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, " +
+            		"CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, " +
+            		"CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, " +
+            		"CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM " +
+            		"CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = " +
+            		"CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio)
+            		.append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim())
+            		.append("' AND ").append(" CFD_VALADE.IDVALPADRE = ")
+            		.append(rs_atributos.getInt("IDVALPADRE")).append(" AND ")
+            		.append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ")
+            		.append(" CFD_CAMADE.IDCAMPO = ").append(rs_atributos.getInt("idcampo"))
+            		.append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
             ResultSet rs_atributos2 = cnx.consulta(sql2, true);
             if(rs_atributos2.next())
             {
-                System.out.println((new StringBuilder("IDC:")).append(rs_atributos.getLong("idcampo")).append(" ").append("IDP:").append(rs_atributos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_atributos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_atributos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_atributos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_atributos2.getString("NOMBRE")).toString());
-                if(Remplazar(rs_atributos2.getString("VAL").trim()) == null || Remplazar(rs_atributos2.getString("VAL").trim()).equals(""))
+                System.out.println((new StringBuilder("IDC:")).append(rs_atributos
+                		.getLong("idcampo")).append(" ").append("IDP:")
+                		.append(rs_atributos.getLong("IDPADRE")).append(" ")
+                		.append("IDA:").append(rs_atributos.getLong("IDATRIBUTO"))
+                		.append(" ").append("IDVAL:").append(rs_atributos.getLong("IDVAL"))
+                		.append(" ").append("IDVALPADRE:")
+                		.append(rs_atributos.getLong("IDVALPADRE")).append(" NOMBRE: ")
+                		.append(rs_atributos2.getString("NOMBRE")).toString());
+                if(Remplazar(rs_atributos2.getString("VAL").trim()) == null || 
+                		Remplazar(rs_atributos2.getString("VAL").trim()).equals(""))
                 {
                     if(rs_atributos2.getInt("REQUERIDO") == 1)
                         atri.setAttribute(Remplazar(rs_atributos2.getString("NOMBRE")), "");
                 } else
                 {
-                    atri.setAttribute(Remplazar(rs_atributos2.getString("NOMBRE")), (new StringBuilder()).append(Remplazar(rs_atributos2.getString("VAL").trim())).toString());
+                    atri.setAttribute(Remplazar(rs_atributos2.getString("NOMBRE")), 
+                    		(new StringBuilder()).append(Remplazar(rs_atributos2
+                    				.getString("VAL").trim())).toString());
                 }
             }
         } while(true);
     }
-
-    public void GetAtributosAddenda(Element atri, String comp, Long atributo, Long plantilla, Long folio, String serie, Long idempresa, 
+    /**Obtiene los Valores de Addenda Dependiendo de los Parametros que reciva*/
+    public void GetAtributosAddenda(Element atri, String comp, Long atributo, 
+    		Long plantilla, Long folio, String serie, Long idempresa, 
             Boolean vacio)
         throws SQLException
     {
-        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE  idatributo = ")).append(atributo).append(" AND CFD_VALADE.FOLIO = ").append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie).append("'").append(" order by cfd_camade.orden ").toString();
+        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, " +
+        		"CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  " +
+        		"cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  " +
+        		"cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  " +
+        		"cfd_dataformat.formato as form,  cfd_dataformat.mascara,  " +
+        		"cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat" +
+        		" on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join " +
+        		"CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE  " +
+        		"idatributo = ")).append(atributo).append(" AND CFD_VALADE.FOLIO = ")
+        		.append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie)
+        		.append("'").append(" order by cfd_camade.orden ").toString();
         ResultSet rs_atributos = cnx.consulta(sql, true);
         do
         {
             if(!rs_atributos.next())
                 break;
-            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append(" CFD_VALADE.IDVALPADRE = ").append(rs_atributos.getInt("IDVALPADRE")).append(" AND ").append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ").append(" CFD_CAMADE.IDCAMPO = ").append(rs_atributos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
+            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE," +
+            		" CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO," +
+            		" CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE," +
+            		" CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM " +
+            		"CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = " +
+            		"CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio)
+            		.append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim())
+            		.append("' AND ").append(" CFD_VALADE.IDVALPADRE = ")
+            		.append(rs_atributos.getInt("IDVALPADRE")).append(" AND ")
+            		.append(" CFD_VALADE.IDEMPRESA = ").append(idempresa)
+            		.append(" AND ").append(" CFD_CAMADE.IDCAMPO = ")
+            		.append(rs_atributos.getInt("idcampo"))
+            		.append(" ORDER BY CFD_CAMADE.IDCAMPO")
+            		.toString();
             ResultSet rs_atributos2 = cnx.consulta(sql2, true);
             if(rs_atributos2.next())
             {
-                System.out.println((new StringBuilder("IDC:")).append(rs_atributos.getLong("idcampo")).append(" ").append("IDP:").append(rs_atributos.getLong("IDPADRE")).append(" ").append("IDA:").append(rs_atributos.getLong("IDATRIBUTO")).append(" ").append("IDVAL:").append(rs_atributos.getLong("IDVAL")).append(" ").append("IDVALPADRE:").append(rs_atributos.getLong("IDVALPADRE")).append(" NOMBRE: ").append(rs_atributos2.getString("NOMBRE")).toString());
-                if(Remplazar(rs_atributos2.getString("VAL").trim()) == null || Remplazar(rs_atributos2.getString("VAL").trim()).equals(""))
+                System.out.println((new StringBuilder("IDC:"))
+                		.append(rs_atributos.getLong("idcampo")).append(" ")
+                		.append("IDP:").append(rs_atributos.getLong("IDPADRE"))
+                		.append(" ").append("IDA:")
+                		.append(rs_atributos.getLong("IDATRIBUTO"))
+                		.append(" ").append("IDVAL:").append(rs_atributos.getLong("IDVAL"))
+                		.append(" ").append("IDVALPADRE:")
+                		.append(rs_atributos.getLong("IDVALPADRE")).append(" NOMBRE: ")
+                		.append(rs_atributos2.getString("NOMBRE")).toString());
+                if(Remplazar(rs_atributos2.getString("VAL").trim()) == null || 
+                		Remplazar(rs_atributos2.getString("VAL").trim()).equals(""))
                 {
                     if(rs_atributos2.getInt("REQUERIDO") == 1)
                         atri.setAttribute(Remplazar(rs_atributos2.getString("NOMBRE")), "");
                 } else
                 {
-                    atri.setAttribute(Remplazar(rs_atributos2.getString("NOMBRE")), (new StringBuilder()).append(Remplazar(rs_atributos2.getString("VAL").trim())).toString());
+                    atri.setAttribute(Remplazar(rs_atributos2.getString("NOMBRE")),
+                    		(new StringBuilder()).append(Remplazar(rs_atributos2
+                    				.getString("VAL").trim())).toString());
                 }
             }
         } while(true);
     }
-
-    public long GetValHijosAddenda(String comp, Long padre, Long plantilla, Long folio, String serie, Long idempresa)
+    
+    /**Obtiene los Valores de HijosAddenda*/
+    public long GetValHijosAddenda(String comp, Long padre, Long plantilla, 
+    		Long folio, String serie, Long idempresa)
         throws SQLException
     {
         long values = 0L;
-        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE idpadre = ")).append(padre).append("AND CFD_VALADE.FOLIO = ").append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie).append("'").append(" order by cfd_camade.orden ").toString();
+        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL," +
+        		" CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato," +
+        		"  cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company," +
+        		"  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO," +
+        		"  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  " +
+        		"cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat" +
+        		" on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join " +
+        		"CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO " +
+        		" WHERE idpadre = ")).append(padre).append("AND CFD_VALADE.FOLIO = ")
+        		.append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie)
+        		.append("'").append(" order by cfd_camade.orden ").toString();
         ResultSet rs_hijos = cnx.consulta(sql, true);
         do
         {
             if(!rs_hijos.next())
                 break;
-            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append(" CFD_VALADE.IDVALPADRE = ").append(rs_hijos.getInt("IDVALPADRE")).append(" AND ").append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ").append(" CFD_CAMADE.IDCAMPO = ").append(rs_hijos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
+            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, " +
+            		"CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, " +
+            		"CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, " +
+            		"CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM " +
+            		"CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = " +
+            		"CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio)
+            		.append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim())
+            		.append("' AND ").append(" CFD_VALADE.IDVALPADRE = ")
+            		.append(rs_hijos.getInt("IDVALPADRE")).append(" AND ")
+            		.append(" CFD_VALADE.IDEMPRESA = ").append(idempresa)
+            		.append(" AND ").append(" CFD_CAMADE.IDCAMPO = ")
+            		.append(rs_hijos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO")
+            		.toString();
             ResultSet rs_hijos2 = cnx.consulta(sql2, true);
             if(rs_hijos2.next())
             {
                 Element Hijos = null;
                 if(rs_hijos2.getString("NOMBRE").indexOf(":") > 0)
                 {
-                    Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE").substring(rs_hijos2.getString("NOMBRE").indexOf(":") + 1, rs_hijos2.getString("NOMBRE").length())));
-                    Hijos.setNamespace(Namespace.getNamespace("detallista", "http://www.sat.gob.mx/detallista"));
+                    Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")
+                    		.substring(rs_hijos2.getString("NOMBRE").indexOf(":") 
+                    				+ 1, rs_hijos2.getString("NOMBRE").length())));
+                    Hijos.setNamespace(Namespace.getNamespace("detallista", 
+                    		"http://www.sat.gob.mx/detallista"));
                 } else
                 {
                     Hijos = new Element(Remplazar(rs_hijos2.getString("NOMBRE")));
                 }
-                if(Remplazar(rs_hijos2.getString("VAL").trim()) != null && !Remplazar(rs_hijos2.getString("VAL").trim()).equals(""))
+                if(Remplazar(rs_hijos2.getString("VAL").trim()) != null 
+                		&& !Remplazar(rs_hijos2.getString("VAL").trim()).equals(""))
                     values++;
-                values += GetValAtributosAddenda(comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa);
-                values += GetValHijosAddenda(comp, Long.valueOf(rs_hijos.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa);
+                values += GetValAtributosAddenda(comp, Long.valueOf(rs_hijos
+                		.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa);
+                values += GetValHijosAddenda(comp, Long.valueOf(rs_hijos
+                		.getLong("idcampo")), plantilla, folio, serie.trim(), idempresa);
             }
         } while(true);
         return values;
     }
-
-    public long GetValAtributosAddenda(String comp, Long atributo, Long plantilla, Long folio, String serie, Long idempresa)
+    /**Obtiene los Valores de Addenda*/
+    public long GetValAtributosAddenda(String comp, Long atributo, Long plantilla,
+    		Long folio, String serie, Long idempresa)
         throws SQLException
     {
         long value = 0L;
-        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato,  cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company,  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO,  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE  idatributo = ")).append(atributo).append(" AND CFD_VALADE.FOLIO = ").append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie).append("'").append(" order by cfd_camade.orden ").toString();
+        sql = (new StringBuilder("SELECT cfd_camade.nombre, CFD_VALADE.IDVAL, " +
+        		"CFD_VALADE.IDVALPADRE, cfd_camade.orden,  cfd_camade.formato, " +
+        		" cfd_camade.plantilla,  cfd_camade.idcampo,  cfd_camade.company," +
+        		"  cfd_camade.IDFORMATO,  cfd_camade.IDPADRE,  cfd_camade.IDATRIBUTO," +
+        		"  cfd_dataformat.formato as form,  cfd_dataformat.mascara,  " +
+        		"cfd_dataformat.longitud  FROM cfd_camade left join cfd_dataformat" +
+        		" on cfd_camade.idformato = cfd_dataformat.idformat  RIGHT join " +
+        		"CFD_VALADE ON CFD_VALADE.IDCAMPO = CFD_CAMADE.IDCAMPO  WHERE  " +
+        		"idatributo = ")).append(atributo).append(" AND CFD_VALADE.FOLIO = ")
+        		.append(folio).append(" AND CFD_VALADE.SERIE = '").append(serie)
+        		.append("'").append(" order by cfd_camade.orden ").toString();
         ResultSet rs_atributos = cnx.consulta(sql, true);
         do
         {
             if(!rs_atributos.next())
                 break;
-            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append(" CFD_VALADE.IDVALPADRE = ").append(rs_atributos.getInt("IDVALPADRE")).append(" AND ").append(" CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ").append(" CFD_CAMADE.IDCAMPO = ").append(rs_atributos.getInt("idcampo")).append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
+            sql2 = (new StringBuilder("SELECT CFD_VALADE.IDVAL, CFD_CAMADE.NOMBRE, " +
+            		"CFD_CAMADE.FORMATO, CFD_CAMADE.COMPANY, CFD_CAMADE.REQUERIDO, " +
+            		"CFD_VALADE.IDCAMPO, CFD_VALADE.FOLIO, CFD_VALADE.SERIE, " +
+            		"CFD_VALADE.VAL, CFD_VALADE.CVEART, CFD_VALADE.IDEMPRESA FROM " +
+            		"CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = " +
+            		"CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio)
+            		.append(" AND ").append(" CFD_VALADE.SERIE ='").append(serie.trim())
+            		.append("' AND ").append(" CFD_VALADE.IDVALPADRE = ")
+            		.append(rs_atributos.getInt("IDVALPADRE")).append(" AND ")
+            		.append(" CFD_VALADE.IDEMPRESA = ").append(idempresa)
+            		.append(" AND ").append(" CFD_CAMADE.IDCAMPO = ")
+            		.append(rs_atributos.getInt("idcampo"))
+            		.append(" ORDER BY CFD_CAMADE.IDCAMPO").toString();
             ResultSet rs_atributos2 = cnx.consulta(sql2, true);
-            if(rs_atributos2.next() && Remplazar(rs_atributos2.getString("VAL").trim()) != null && !Remplazar(rs_atributos2.getString("VAL").trim()).equals(""))
+            if(rs_atributos2.next() && Remplazar(rs_atributos2.getString("VAL").trim())
+            		!= null && !Remplazar(rs_atributos2.getString("VAL").trim()).equals(""))
                 value++;
         } while(true);
         return value;
