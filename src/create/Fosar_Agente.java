@@ -35,6 +35,9 @@ public class Fosar_Agente implements Runnable {
     AppcfdExample appcfdexample;
     int ERROR;
 
+    /**El constructor de la clase. Crea objetos de las clases: 
+     * ConexionParadox()
+     * Archivos() **/
     public Fosar_Agente() {
         sql = "";
         cnx = new ConexionParadox();
@@ -49,6 +52,10 @@ public class Fosar_Agente implements Runnable {
         System.out.println("BUSCANDO ......");
     }
 
+    /**Contructor con diferentes parametros. Crea objetos de las clases:
+     * ConexionParadox()
+     * Archivos() 
+     * Y manda llamar al metodo Nucleo() **/
     public Fosar_Agente(int i) throws SQLException, ClassNotFoundException,
         IOException {
         sql = "";
@@ -64,6 +71,7 @@ public class Fosar_Agente implements Runnable {
         Nucleo();
     }
 
+    /**Método que crea objeto del tipo Archivos() **/
     void Inicializa_Series() {
         Archivos Arch = new Archivos("C:\\FDE\\Series.txt");
         String series = Arch.Leer();
@@ -76,13 +84,15 @@ public class Fosar_Agente implements Runnable {
         System.out.println((new StringBuilder()).append("VALOR DE SERIE ---> ").append(series).append("|").toString());
     }
 
+    /**Método booleano que retorna la variable ban **/
     boolean Consulta() {
         boolean ban = true;
         if(Ultimo_Folio.contentEquals("-1"))
             ban = false;
         return ban;
     }
-
+    
+    /**Método Nucleo. Manda llamar al método BUSCAR() si Consulta() = true **/
     synchronized void Nucleo() throws SQLException, ClassNotFoundException,
         IOException {
         Inicializa_Series();
@@ -97,6 +107,10 @@ public class Fosar_Agente implements Runnable {
         System.gc();
     }
 
+    /**Constructor con diferentes parámetros. Crea objetos de las clases:
+     * ConexionParadox ()
+     * Archivos()
+     * Y manda llamar al método Nucleo() **/
     public Fosar_Agente(String dns) throws SQLException, ClassNotFoundException,
         IOException {
         sql = "";
@@ -113,12 +127,15 @@ public class Fosar_Agente implements Runnable {
         Nucleo();
     }
 
+    /**Este método crea un objeto de la clase FosarMain() **/
     void Genera_Scripts(String NUM_REG) throws SQLException,
         ClassNotFoundException, IOException {
         FosarMain = new Fosar_Main(TIPO, SERIE, IDTDOCTO, NUM_REG);
         ERROR = FosarMain.ERROR;
     }
 
+    /**Este método crea objetos del tipo Fosar_Main() y manda llamar la clase:
+     * FOSAR() **/
     void Ejecuta_Scripts() throws SQLException, ComprobanteArchRefException,
         ClassNotFoundException, IOException {
         String serie = FosarMain.SERIE;
@@ -140,6 +157,8 @@ public class Fosar_Agente implements Runnable {
         ERROR = Fosar.ERROR;
     }
 
+    /**Este método crea un objeto de la clase:
+     * AppcfdExample() **/
     void Ejecuta_Factura() throws ComprobanteArchRefException, SQLException,
         CFDException, JDOMException, HeadlessException, SgiLibException,
         JaxenException, IOException, NumberFormatException,
@@ -153,6 +172,9 @@ public class Fosar_Agente implements Runnable {
         appcfdexample.AppcfdExample_main(args);
     }
 
+    /**Este método manda llamar a los métodos:
+     * Ejecuta_Scripts()
+     * Ejecuta_Factura() **/
     void Genera_Factura(String NUM_REG) throws IOException, SQLException,
         ClassNotFoundException {
         boolean centinela = true;
@@ -184,10 +206,13 @@ public class Fosar_Agente implements Runnable {
         }
     }
 
+    /**Este método actualiza el contenido del archivo haciendo uso del objeto de la clase Archivos()• **/
     void Actualiza_Archivo(String NUM_REG) {
         Arch.Escribir((new StringBuilder()).append(NUM_REG).append("|").toString());
     }
 
+    /**Este método crea un objeto tipo ArrayList(), hace conexion conla base de datos utilizando el onjeto
+     * de la clase ConexionParadox() y actualiza el Archivo haciendo uso de los objetos de clase Archivos() **/
     void BUSCAR() throws ClassNotFoundException, SQLException, IOException {
         String sql = "";
         String num_reg = "";
@@ -228,6 +253,7 @@ public class Fosar_Agente implements Runnable {
         }
     }
 
+    /**Este método manda llamar al mñetodo Genera_Factura() **/
     public void Obtener_Registros(String num_reg) throws IOException,
         IOException, SQLException, ClassNotFoundException {
         NUM_REG = Integer.parseInt(num_reg);
@@ -237,12 +263,14 @@ public class Fosar_Agente implements Runnable {
         System.out.println((new StringBuilder()).append("FACTURA GENERADA DE -----> ").append(num_reg).toString());
     }
 
+    /**Método principal de la clase. Crea objeto de la clase Fosar_Agente() **/
     public static void main(String args[]) throws SQLException,
         ClassNotFoundException, IOException {
         new Fosar_Agente(1);
         System.exit(0);
     }
 
+    /**Método que manda llamar al método Nucleo() y atrapa las posibles Ecepciones que puedan ocurrir. **/
     public void run() {
         try {
 			Nucleo();
