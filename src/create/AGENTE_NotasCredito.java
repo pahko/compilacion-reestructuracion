@@ -133,7 +133,7 @@ public class AGENTE_NotasCredito extends JFrame
         				.addContainerGap(-1, 32767)));
         pack();
     }
-    /**Main de la Clase AGENTE_Devoluciones*/
+    /**Main de la Clase AGENTE_NotasCredito*/
     public static void main(String args[])
     {
         EventQueue.invokeLater(new Runnable() {

@@ -17,6 +17,8 @@ import javax.swing.border.SoftBevelBorder;
 //            EJECUTA_COMANDO, Fosar_Agente
 
 public class AGENTE_PRIN extends JFrame {
+	
+	/**Establece el Relog*/
     public class RelojModeloUtil extends Observable {
         TimerTask timerTask;
         final AGENTE_PRIN this$0;
@@ -37,6 +39,8 @@ public class AGENTE_PRIN extends JFrame {
         }
     }
 
+    /**Constructor de la Clase AGENTE_PRIN 
+     * iniciliza los valores*/
     public AGENTE_PRIN() {
         SEGUNDOS = 0;
         seg = 0;
@@ -50,7 +54,8 @@ public class AGENTE_PRIN extends JFrame {
             if(hijo.exitValue() == 0)
                 System.out.println("Finalizado");
             else
-                System.out.println((new StringBuilder()).append("imposible finalizar . Exit code: ").append(hijo.exitValue()).toString());
+                System.out.println((new StringBuilder()).append("imposible " +
+                		"finalizar . Exit code: ").append(hijo.exitValue()).toString());
         }
         catch(IOException e) {
             System.out.println("Incapaz de matar soffice.");
@@ -59,7 +64,7 @@ public class AGENTE_PRIN extends JFrame {
             System.out.println("Incapaz de matar soffice.");
         }
     }
-
+    /**Inicializa el Relog*/
     void Init_Reloj() {
         RelojModeloUtil modelo = new RelojModeloUtil();
         modelo.addObserver(new Observer() {
@@ -67,12 +72,14 @@ public class AGENTE_PRIN extends JFrame {
             public void update(Observable unObservable, Object dato) {
                 Reloj.setText(dato.toString());
                 System.out.println(dato);
-                System.out.println((new StringBuilder()).append("SEG : ").append(seg).toString());
+                System.out.println((new StringBuilder()).append("SEG : ")
+                		.append(seg).toString());
                 (new EJECUTA_COMANDO()).EJECUTA();
             }
         });
     }
-
+    
+    /**Inicializa los Componentes*/
     private void initComponents() {
         Reloj = new JLabel();
         setDefaultCloseOperation(3);
@@ -86,11 +93,15 @@ public class AGENTE_PRIN extends JFrame {
         Reloj.setEnabled(false);
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 189, -2).addContainerGap(-1, 32767)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing
+        		.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+        				.addContainerGap().addComponent(Reloj, -2, 189, -2).addContainerGap(-1, 32767)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing
+        		.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+        				.addContainerGap().addComponent(Reloj, -2, 32, -2).addContainerGap(-1, 32767)));
         pack();
     }
-
+    /**Main de la Clase AGENTE_PRIN*/
     public static void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
