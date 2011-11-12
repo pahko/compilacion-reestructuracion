@@ -13,18 +13,24 @@ public class SelloDigitalV2_2011 {
     private int _$1824;
     private String _$1838;
 	
+    /**Retorna el valor del Error **/
     public int getMsgError() {
         return _$1824;
     }
 
+    /**Retorna el valor del Error **/
     public String getMsgErrorTxt() {
         return _$1838;
     }
 
+    /**Retorna el sello **/
     public String getSello() {
         return sello;
     }
 
+    /**Constructor de la clase. Crea objeti de las clases:
+     * GeneraSello_2011
+     * FirmasDigitales **/
     public SelloDigitalV2_2011() {
         sello = "";
         firmasdigitales = null;
@@ -35,6 +41,7 @@ public class SelloDigitalV2_2011 {
         firmasdigitales = new FirmasDigitales();
     }
 
+    /**Metodo con los diferentes errores **/
     private void setTipoError(short err) {
         _$1824 = err;
         switch (err) {
@@ -56,6 +63,7 @@ public class SelloDigitalV2_2011 {
         }
     }
 
+    /**Este metodo genera el Sello **/
     public boolean generarSello(InputStream RCert, InputStream RLlave,
                                 String Pass, String RFC, String cadenaOriginal)
         throws IOException {
