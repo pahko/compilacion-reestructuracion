@@ -18,6 +18,8 @@ import javax.swing.*;
 import mx.com.codinet.err.ImpresionRefException;
 import org.jdom.Element;
 
+
+
 public class AppcfdComprobante implements Runnable {
 	FileInputStream f, t;
     FirmasDigitales firmasdigitales;
@@ -69,6 +71,7 @@ public class AppcfdComprobante implements Runnable {
     Properties myProp;
     boolean certificadoAsignado;
     
+    /**Constructor de la Clase AppcfdComprobante*/
     public AppcfdComprobante() {
         firmasdigitales = new FirmasDigitales();
         direccion = null;
@@ -120,6 +123,7 @@ public class AppcfdComprobante implements Runnable {
         rs_val = null;
     }
 
+    /**Establece la Conexion a la Base de Datos Firebird*/	
     public void conected() throws FileNotFoundException, SQLException, 
     							 	IOException {
         try {
@@ -129,7 +133,8 @@ public class AppcfdComprobante implements Runnable {
             e1.printStackTrace();
         }
     }
-
+    
+    /**Desconexión de la Case de Datos Firebird */
     public void disconect() {
         try {
             cnx.finalizar();
@@ -138,7 +143,7 @@ public class AppcfdComprobante implements Runnable {
             e.printStackTrace();
         }
     }
-
+    /**Establece los parametros de la Empresa*/
     public void setParams(long parm1, String parm2, String parm3, long parm4)
     			throws Exception {
         fr = new JFrame();
@@ -161,6 +166,7 @@ public class AppcfdComprobante implements Runnable {
         					 Integer.parseInt(parm2));
     }
 
+    /**Obtiene el Folio de la Empresa Mediante Una Consulta*/
     public String Getidfolio(String empresa, String serie) throws SQLException {
         if (serie.equals("_")) {
             sql = (new StringBuilder("SELECT * FROM cfd_folios WHERE idEmpre" +
@@ -179,7 +185,7 @@ public class AppcfdComprobante implements Runnable {
         	return "0";
         }        
     }
-
+    /**Carga las Propiedades del un archivo .properties*/
     public static Properties loadProperties(String fileName) {
         Properties tempProp = new Properties();
         try {
@@ -193,7 +199,7 @@ public class AppcfdComprobante implements Runnable {
         }
         return tempProp;
     }
-
+    /**Reestablece los Valores*/
     public void reiniciaObjetos() {
         comprobante = new Comprobante();
         emisor = null;
@@ -215,7 +221,7 @@ public class AppcfdComprobante implements Runnable {
         cadenaoriginal = new CadenaOriginalv2();
         certificadoAsignado = false;
     }
-
+    /**Configura los Datos de la Empresa*/
     public void creaConfiguracion() throws SQLException, IOException {
         ps.SetBorde("Crea Configuracion");
         sql = (new StringBuilder("SELECT * FROM cfd_config  WHERE cfd_config." +
@@ -272,6 +278,7 @@ public class AppcfdComprobante implements Runnable {
         }
     }
 
+    /**Obtiene y Establece los datos del Emisor*/	
     public void creaEmisor() throws SQLException, Exception {
         ps.SetBorde("Crea Emisor");
         sql = (new StringBuilder("SELECT  emisor,receptor,idEmpresa,EXTRACT" +
@@ -326,7 +333,7 @@ public class AppcfdComprobante implements Runnable {
                 emisor.getDomicilioFiscal().setNoInterior(interior);
         }
     }
-
+    /**Obtiene y Establece los Datos del Receptor*/
     public void creaReceptor() throws SQLException, Exception {
         ps.SetBorde("Crea Receptor");
         sql = (new StringBuilder("SELECT cnet_entidades.nombre,cnet_entidades" +
@@ -363,7 +370,7 @@ public class AppcfdComprobante implements Runnable {
             }
         }
     }
-
+    /**Obtiene los Datos de La Sucursal de Expedición*/
     public void creaLugarExpedicion() throws Exception {
         ps.SetBorde("Crea Lugar de Expedicion");
         sql = (new StringBuilder("SELECT cnet_entidades.nombre,cnet_estados." +
@@ -400,7 +407,8 @@ public class AppcfdComprobante implements Runnable {
             System.out.println("No existe referencia de la sucursal");
         }
     }
-
+    
+    /**Obtiene los Valores Del Producto*/
     public void creaConceptos() throws Exception {
         ps.SetBorde("Crea Conceptos");
         sql = (new StringBuilder("SELECT cfd_conceptos.cantidad,cfd_concepto" +
@@ -417,13 +425,15 @@ public class AppcfdComprobante implements Runnable {
             		rs.getDouble("valorUnitario")));
             subtotal += rs.getDouble("importe");
         }
-        sql = (new StringBuilder("SELECT IMPORTE_TOTAL FROM CFD_DESCUENTOS WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+        sql = (new StringBuilder("SELECT IMPORTE_TOTAL FROM CFD_DESCUENTOS WHERE " +
+        		"folio = ")).append(folio).append(" and serie = '").append(serie)
+        		.append("' and idEmpresa = ").append(idempresa).toString();
         for (rs = cnx.consulta(sql, true); rs.next();) {
             descuento += rs.getDouble("IMPORTE_TOTAL");
         }
         subtotal -= descuento;
     }
-
+    /**Obtiene los Valores de los Impuestos*/
     public void creaImpuestos() throws SQLException {
         ps.SetBorde("Crea Impuestos");
         impuestos = ofactory.createComprobanteImpuestos();
@@ -508,7 +518,7 @@ public class AppcfdComprobante implements Runnable {
             total_impuestos = rs.getDouble("importe");
         }
     }
-
+    /**Crea un Comprobante de Pago*/
     public void creaObjetoComprobante() throws Exception {
         ps.SetBorde("Crea Objeto Comprobante");
         comprobante = ofactory.createComprobanteIngreso(emisor, receptor,
@@ -526,19 +536,29 @@ public class AppcfdComprobante implements Runnable {
             String dt = formatter.format(rs.getTimestamp("fecha"));
             switch (rs.getInt("IDTDOCTO")) {
             	case 1: // '\001'
-            		prefijo = (new StringBuilder("FACT_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+            		prefijo = (new StringBuilder("FACT_")).append(folio)
+            		.append("_").append(serie.trim()).append("_").append(dt)
+            		.toString();
             		break;
             	case 2: // '\002'
-	                prefijo = (new StringBuilder("RHN_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+	                prefijo = (new StringBuilder("RHN_")).append(folio)
+	                .append("_").append(serie.trim()).append("_").append(dt)
+	                .toString();
 	                break;
             	case 3: // '\003'
-	                prefijo = (new StringBuilder("NCA_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+	                prefijo = (new StringBuilder("NCA_")).append(folio)
+	                .append("_").append(serie.trim()).append("_").append(dt)
+	                .toString();
 	                break;
 	            case 4: // '\004'
-	                prefijo = (new StringBuilder("NCR_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+	                prefijo = (new StringBuilder("NCR_")).append(folio)
+	                .append("_").append(serie.trim()).append("_").append(dt)
+	                .toString();
 	                break;
 	            default:
-	            	prefijo = (new StringBuilder("XXX_")).append(folio).append("_").append(serie.trim()).append("_").append(dt).toString();
+	            	prefijo = (new StringBuilder("XXX_")).append(folio)
+	            	.append("_").append(serie.trim()).append("_").append(dt)
+	            	.toString();
 	            	break;
             }
             ps.f.setTitle(prefijo);
@@ -551,8 +571,10 @@ public class AppcfdComprobante implements Runnable {
                     } else {
                         divide = rs.getString("f_pago").length() / 2;
                     }
-                    pagos = Integer.parseInt(rs.getString("f_pago").substring(0, divide - 1).trim());
-                    plazos = Integer.parseInt(rs.getString("f_pago").substring(divide + 1, longitud).trim());
+                    pagos = Integer.parseInt(rs.getString("f_pago")
+                    		.substring(0, divide - 1).trim());
+                    plazos = Integer.parseInt(rs.getString("f_pago")
+                    		.substring(divide + 1, longitud).trim());
                     if (plazos > 0) {
                         comprobante.setFormaDePagoParcialidades(pagos, plazos);
                     }
@@ -564,22 +586,37 @@ public class AppcfdComprobante implements Runnable {
         } else {
             comprobante.setSerie(serie);
         }
-        sql = (new StringBuilder("SELECT empresa.nombrecomercial as nombre_empresa, sucursal.descripcion as nombre_sucursal FROM cnet_empresa as empresa, cnet_sucursal as sucursal WHERE empresa.idempresa = ")).append(idempresa).append("and ").append("sucursal.idempresa = empresa.idempresa and ").append("sucursal.idsucursal =").append(sucursal).toString();
+        sql = (new StringBuilder("SELECT empresa.nombrecomercial as " +
+        		"nombre_empresa, sucursal.descripcion as nombre_sucursal FROM " +
+        		"cnet_empresa as empresa, cnet_sucursal as sucursal WHERE " +
+        		"empresa.idempresa = ")).append(idempresa).append("and ")
+        		.append("sucursal.idempresa = empresa.idempresa and ")
+        		.append("sucursal.idsucursal =").append(sucursal).toString();
         rs = cnx.consulta(sql, true);
         if (rs.next()) {
             nombre_empresa = rs.getString("nombre_empresa");
             nombre_sucursal = rs.getString("nombre_sucursal");
         }
     }
-
+    /**Obtiene los Datos y construye la Addenda de la Empresa Emisora*/
     public void crearAddenda() throws Exception {
         ps.SetBorde("Crea Addenda");
         String sql_company = "";
         String sql_val = "";
-        sql = (new StringBuilder("SELECT CFD_VALADE.IDVAL,CFD_CAMADE.NOMBRE,CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY,CFD_VALADE.IDCAMPO,CFD_VALADE.FOLIO,CFD_VALADE.SERIE,CFD_VALADE.VAL,CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append("CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append("CFD_VALADE.IDEMPRESA = ").append(idempresa).toString();
+        sql = (new StringBuilder("SELECT CFD_VALADE.IDVAL,CFD_CAMADE.NOMBRE," +
+        		"CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY,CFD_VALADE.IDCAMPO," +
+        		"CFD_VALADE.FOLIO,CFD_VALADE.SERIE,CFD_VALADE.VAL," +
+        		"CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT " +
+        		"JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO WHERE" +
+        		" CFD_VALADE.FOLIO =")).append(folio).append(" AND ")
+        		.append("CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ")
+        		.append("CFD_VALADE.IDEMPRESA = ").append(idempresa).toString();
         rs = cnx.consulta(sql, true);
         if (rs.next()) {
-            sql_company = (new StringBuilder("SELECT cfd_camade.formato FROM cfd_camade WHERE cfd_camade.company = '")).append(rs.getString("company")).append("'").append("group by cfd_camade.formato ").toString();
+            sql_company = (new StringBuilder("SELECT cfd_camade.formato FROM " +
+            		"cfd_camade WHERE cfd_camade.company = '"))
+            		.append(rs.getString("company")).append("'").append("group " +
+            				"by cfd_camade.formato ").toString();
             rs_company = cnx.consulta(sql_company, true);
             adden = ofactory.createComprobanteAddenda();
             Element adendaElement2 = new Element(rs.getString("company"));
@@ -587,7 +624,19 @@ public class AppcfdComprobante implements Runnable {
                 if (!rs_company.next()) {
                     break;
                 }
-                sql_val = (new StringBuilder("SELECT CFD_VALADE.IDVAL,CFD_CAMADE.NOMBRE,CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY,CFD_VALADE.IDCAMPO,CFD_VALADE.FOLIO,CFD_VALADE.SERIE,CFD_VALADE.VAL,CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO =")).append(folio).append(" AND ").append("CFD_VALADE.SERIE ='").append(serie.trim()).append("' AND ").append("CFD_VALADE.CVEART = '-1' AND ").append("CFD_VALADE.IDEMPRESA = ").append(idempresa).append(" AND ").append("CFD_CAMADE.FORMATO = '").append(rs_company.getString("formato")).append("' ").append("ORDER BY CFD_CAMADE.IDCAMPO").toString();
+                sql_val = (new StringBuilder("SELECT CFD_VALADE.IDVAL," +
+                		"CFD_CAMADE.NOMBRE,CFD_CAMADE.FORMATO,CFD_CAMADE.COMPANY," +
+                		"CFD_VALADE.IDCAMPO,CFD_VALADE.FOLIO,CFD_VALADE.SERIE," +
+                		"CFD_VALADE.VAL,CFD_VALADE.CVEART,CFD_VALADE.IDEMPRESA " +
+                		"FROM CFD_VALADE LEFT JOIN CFD_CAMADE ON CFD_CAMADE.IDCAMPO" +
+                		" = CFD_VALADE.IDCAMPO  WHERE CFD_VALADE.FOLIO ="))
+                		.append(folio).append(" AND ").append("CFD_VALADE.SERIE ='")
+                		.append(serie.trim()).append("' AND ").append("CFD_VALADE.CVEART" +
+                				" = '-1' AND ").append("CFD_VALADE.IDEMPRESA = ")
+                				.append(idempresa).append(" AND ")
+                				.append("CFD_CAMADE.FORMATO = '")
+                				.append(rs_company.getString("formato")).append("' ")
+                				.append("ORDER BY CFD_CAMADE.IDCAMPO").toString();
                 rs_val = cnx.consulta(sql_val, true);
                 Element remision = new Element(rs_company.getString("formato"));
                 Element contenido_r;
@@ -607,7 +656,8 @@ public class AppcfdComprobante implements Runnable {
     public void creaComprobante() throws Exception {
         (new Thread(this)).start();
     }
-
+    
+    /**Realiza Consultas y Generar la Factura*/
     public void run() {
         try {
             vf.estableceConexion(cnx);
@@ -627,24 +677,39 @@ public class AppcfdComprobante implements Runnable {
                     try {
                         ps.SetBorde("Crea Cadena Original");
                         co.generarCadenaOriginal(comprobante);
-                        System.out.println((new StringBuilder("Cadena original: ")).append(co.getCadenaOriginal()).toString());
-                        File fichero = new File((new StringBuilder(String.valueOf(direccion))).append("\\Mis Facturas\\").append(nombre_empresa).append("\\").append(nombre_sucursal).append("\\").toString());
+                        System.out.println((new StringBuilder("Cadena original: "))
+                        		.append(co.getCadenaOriginal()).toString());
+                        File fichero = new File((new StringBuilder(String
+                        		.valueOf(direccion))).append("\\Mis Facturas\\")
+                        		.append(nombre_empresa).append("\\")
+                        		.append(nombre_sucursal).append("\\").toString());
                         if (!fichero.exists()) {
                             fichero.mkdirs();
-                            direccion = (new StringBuilder(String.valueOf(direccion))).append("\\Mis Facturas\\").append(nombre_empresa).append("\\").append(nombre_sucursal).append("\\").toString();
+                            direccion = (new StringBuilder(String.valueOf(direccion)))
+                            .append("\\Mis Facturas\\").append(nombre_empresa)
+                            .append("\\").append(nombre_sucursal).append("\\")
+                            .toString();
                         } else {
-                            direccion = (new StringBuilder(String.valueOf(direccion))).append("\\Mis Facturas\\").append(nombre_empresa).append("\\").append(nombre_sucursal).append("\\").toString();
+                            direccion = (new StringBuilder(String.valueOf(direccion)))
+                            .append("\\Mis Facturas\\").append(nombre_empresa)
+                            .append("\\").append(nombre_sucursal).append("\\")
+                            .toString();
                         }                        
                     }
                     catch(GenerarCadenaOriginalException e) {
                         e.printStackTrace();
-                        sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                        sql = (new StringBuilder("UPDATE cfd_comprobante set " +
+                        		"estado = 'X' WHERE folio = ")).append(folio)
+                        		.append(" and serie = '").append(serie)
+                        		.append("' and idEmpresa = ").append(idempresa)
+                        		.toString();
                         rs = cnx.consulta(sql, false);
                         cnx.commit();
                     }
                 }
                 ps.SetBorde("Crea Sello Digital");
-                sign.generarSello(in_certificado, in_llave, pass, rfc_emisor, co.getCadenaOriginal());
+                sign.generarSello(in_certificado, in_llave, pass, rfc_emisor, co
+                		.getCadenaOriginal());
                 try {
                     comprobante.setCertificado(c64.base64Encode(in_certificado64));
                 } catch(Exception e) {
@@ -653,64 +718,116 @@ public class AppcfdComprobante implements Runnable {
                 if (sign != null && sign.getSello() !=
                 	null && sign.getSello() != "") {
                     comprobante.setSello(sign.getSello());
-                    System.out.println((new StringBuilder("Sello: ")).append(sign.getSello()).toString());
+                    System.out.println((new StringBuilder("Sello: "))
+                    		.append(sign.getSello()).toString());
                     try {
                         ps.SetBorde("Crea XML");
                         if (comprobante != null) {
                             new MarshallCFDv2XML();
-                            MarshallCFDv2XML.marshalCfdV2(comprobante, new FileOutputStream((new StringBuilder(String.valueOf(direccion))).append(prefijo).append(".xml").toString()));
-                            System.out.println((new StringBuilder("Archivo ")).append(direccion).append(prefijo).append(".xml").append(" creado...").toString());
+                            MarshallCFDv2XML.marshalCfdV2(comprobante, 
+                            		new FileOutputStream((new StringBuilder(String
+                            				.valueOf(direccion))).append(prefijo)
+                            				.append(".xml").toString()));
+                            System.out.println((new StringBuilder("Archivo "))
+                            		.append(direccion).append(prefijo)
+                            		.append(".xml").append(" creado...").toString());
                         }
                     } catch(FileNotFoundException ex) {
-                        sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                        sql = (new StringBuilder("UPDATE cfd_comprobante set " +
+                        		"estado = 'X' WHERE folio = ")).append(folio)
+                        		.append(" and serie = '").append(serie)
+                        		.append("' and idEmpresa = ").append(idempresa)
+                        		.toString();
                         rs = cnx.consulta(sql, false);
                         cnx.commit();
-                        JOptionPane.showMessageDialog(fr, (new StringBuilder("No se pudo generar XML de factura: ")).append(prefijo).toString(), "Aviso", 1);
+                        JOptionPane.showMessageDialog(fr, (new StringBuilder("No" +
+                        		" se pudo generar XML de factura: "))
+                        		.append(prefijo).toString(), "Aviso", 1);
                         ps.CerrarProgreso();
                         ex.printStackTrace();
                     } catch(Exception ex) {
-                        JOptionPane.showMessageDialog(fr, (new StringBuilder("No se pudo generar XML de factura: ")).append(prefijo).toString(), "Aviso", 1);
+                        JOptionPane.showMessageDialog(fr, (new StringBuilder("No" +
+                        		" se pudo generar XML de factura: "))
+                        		.append(prefijo).toString(), "Aviso", 1);
                         ps.CerrarProgreso();
                         ex.printStackTrace();
                     }
                     try {
-                        cbd.insertaCFD((new StringBuilder(String.valueOf(direccion))).append(prefijo).append(".xml").toString(), Integer.parseInt(Long.toString(idempresa)), "I", Integer.parseInt(Long.toString(sucursal)));
+                        cbd.insertaCFD((new StringBuilder(String.valueOf(direccion)))
+                        		.append(prefijo).append(".xml").toString(), 
+                        		Integer.parseInt(Long.toString(idempresa)), "I", 
+                        		Integer.parseInt(Long.toString(sucursal)));
                         try {
                             ps.SetBorde("Crea PDF");
-                            imp.setNombre((new StringBuilder(String.valueOf(direccion))).append(prefijo).append(".pdf").toString(), image.getAbsolutePath(), pagge);
-                            imp.construyeComprobante(folio, serie, co.getCadenaOriginal(), idempresa, sucursal, 1L);
-                            System.out.println((new StringBuilder("Archivo ")).append(direccion).append(prefijo).append(".pdf").append(" creado...").toString());
+                            imp.setNombre((new StringBuilder(String
+                            		.valueOf(direccion))).append(prefijo)
+                            		.append(".pdf").toString(), 
+                            		image.getAbsolutePath(), pagge);
+                            imp.construyeComprobante(folio, serie, co
+                            		.getCadenaOriginal(), idempresa, sucursal, 1L);
+                            System.out.println((new StringBuilder("Archivo "))
+                            		.append(direccion).append(prefijo).append(".pdf")
+                            		.append(" creado...").toString());
                         } catch(DocumentException e) {
-                            sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                            sql = (new StringBuilder("UPDATE cfd_comprobante set" +
+                            		" estado = 'X' WHERE folio = ")).append(folio)
+                            		.append(" and serie = '").append(serie)
+                            		.append("' and idEmpresa = ").append(idempresa)
+                            		.toString();
                             rs = cnx.consulta(sql, false);
                             cnx.commit();
-                            JOptionPane.showMessageDialog(fr, (new StringBuilder("No se pudo generar PDF de factura: ")).append(prefijo).toString(), "Aviso", 1);
+                            JOptionPane.showMessageDialog(fr, (new StringBuilder("No" +
+                            		" se pudo generar PDF de factura: ")).append(prefijo)
+                            		.toString(), "Aviso", 1);
                             ps.CerrarProgreso();
                             e.printStackTrace();
                         } catch(ImpresionRefException e) {
-                            sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                            sql = (new StringBuilder("UPDATE cfd_comprobante set" +
+                            		" estado = 'X' WHERE folio = ")).append(folio)
+                            		.append(" and serie = '").append(serie)
+                            		.append("' and idEmpresa = ").append(idempresa)
+                            		.toString();
                             rs = cnx.consulta(sql, false);
                             cnx.commit();
-                            JOptionPane.showMessageDialog(fr, (new StringBuilder("No se pudo generar PDF de factura: ")).append(prefijo).toString(), "Aviso", 1);
+                            JOptionPane.showMessageDialog(fr, (new StringBuilder("No" +
+                            		" se pudo generar PDF de factura: ")).append(prefijo)
+                            		.toString(), "Aviso", 1);
                             ps.CerrarProgreso();
                             e.printStackTrace();
                         } catch(Exception e) {
-                            JOptionPane.showMessageDialog(fr, (new StringBuilder("No se pudo generar PDF de factura: ")).append(prefijo).toString(), "Aviso", 1);
+                            JOptionPane.showMessageDialog(fr, (new StringBuilder("No" +
+                            		" se pudo generar PDF de factura: ")).append(prefijo)
+                            		.toString(), "Aviso", 1);
                             ps.CerrarProgreso();
                             e.printStackTrace();
                         }
-                        if ((new File((new StringBuilder(String.valueOf(direccion))).append(prefijo).append(".pdf").toString())).exists() && (new File((new StringBuilder(String.valueOf(direccion))).append(prefijo).append(".xml").toString())).exists()) {
+                        if ((new File((new StringBuilder(String.valueOf(direccion)))
+                        		.append(prefijo).append(".pdf").toString()))
+                        		.exists() && (new File((new StringBuilder(String
+                        				.valueOf(direccion))).append(prefijo)
+                        				.append(".xml").toString())).exists()) {
                             ps.SetBorde("Se concluye proseso");
-                            sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'V' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                            sql = (new StringBuilder("UPDATE cfd_comprobante set" +
+                            		" estado = 'V' WHERE folio = ")).append(folio)
+                            		.append(" and serie = '").append(serie)
+                            		.append("' and idEmpresa = ").append(idempresa)
+                            		.toString();
                             rs = cnx.consulta(sql, false);
                             cnx.commit();
-                            JOptionPane.showMessageDialog(fr, (new StringBuilder("Se ha generado su factura: ")).append(prefijo).toString(), "Aviso", 1);
+                            JOptionPane.showMessageDialog(fr, (new StringBuilder("Se" +
+                            		" ha generado su factura: ")).append(prefijo)
+                            		.toString(), "Aviso", 1);
                             ps.CerrarProgreso();
                         } else {
-                            sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                            sql = (new StringBuilder("UPDATE cfd_comprobante set" +
+                            		" estado = 'X' WHERE folio = ")).append(folio)
+                            		.append(" and serie = '").append(serie)
+                            		.append("' and idEmpresa = ").append(idempresa)
+                            		.toString();
                             rs = cnx.consulta(sql, false);
                             cnx.commit();
-                            JOptionPane.showMessageDialog(fr, "No fue posible generar su factura", "Aviso", 1);
+                            JOptionPane.showMessageDialog(fr, "No fue posible " +
+                            		"generar su factura", "Aviso", 1);
                             ps.CerrarProgreso();
                         }
                     } catch(Exception e) {
@@ -721,15 +838,22 @@ public class AppcfdComprobante implements Runnable {
                     ps.CerrarProgreso();
                 }
             } else {
-                JOptionPane.showMessageDialog(fr, "El folio no es valido, no fue posible generar su factura", "Aviso", 1);
+                JOptionPane.showMessageDialog(fr, "El folio no es valido, no fue" +
+                		" posible generar su factura", "Aviso", 1);
                 ps.CerrarProgreso();
-                sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+                sql = (new StringBuilder("UPDATE cfd_comprobante set estado = " +
+                		"'X' WHERE folio = ")).append(folio).append(" and serie = '")
+                		.append(serie).append("' and idEmpresa = ").append(idempresa)
+                		.toString();
                 rs = cnx.consulta(sql, false);
                 cnx.commit();
             }
         } catch(Exception e) {
             e.printStackTrace();
-            sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' WHERE folio = ")).append(folio).append(" and serie = '").append(serie).append("' and idEmpresa = ").append(idempresa).toString();
+            sql = (new StringBuilder("UPDATE cfd_comprobante set estado = 'X' " +
+            		"WHERE folio = ")).append(folio).append(" and serie = '")
+            		.append(serie).append("' and idEmpresa = ").append(idempresa)
+            		.toString();
             try {
                 rs = cnx.consulta(sql, false);
             } catch(SQLException e1) {
